@@ -5,6 +5,25 @@ const FORMAT: &str = "zcash-js-network/1";
 const DOC: &[u8] = br#"{"encoding":"regtest","Overwinter":10,"Sapling":20,"Blossom":30,"Heartwood":40,"Canopy":50,"Nu5":60,"Nu6":70,"Nu6_1":80,"Nu6_2":90,"Nu6_3":100}"#;
 
 #[test]
+fn nu7_activation_is_explicit_and_legacy_documents_remain_unchanged() {
+    let legacy = std::str::from_utf8(DOC).unwrap();
+    let upgraded = legacy.replace('}', ",\"Nu7\":110}");
+    assert_eq!(consensus_branch("zcash-js-network/2", upgraded.as_bytes(), 109), Ok(0x37a5165b));
+    assert_eq!(consensus_branch("zcash-js-network/2", upgraded.as_bytes(), 110), Ok(0x77190ad9));
+    assert_eq!(consensus_branch(FORMAT, DOC, u32::MAX), Ok(0x37a5165b));
+    let disabled = legacy.replace('}', ",\"Nu7\":null}");
+    assert_eq!(consensus_branch("zcash-js-network/2", disabled.as_bytes(), u32::MAX), Ok(0x37a5165b));
+    assert!(consensus_branch(FORMAT, upgraded.as_bytes(), 110).is_err());
+    assert!(consensus_branch("zcash-js-network/2", DOC, 110).is_err());
+    for bad in [upgraded.replace("\"Nu7\":110", "\"Nu7\":99"),
+        upgraded.replace("\"Nu7\":110", "\"Nu7\":4294967296"),
+        upgraded.replace("\"Nu6_3\":100", "\"Nu6_3\":null"),
+        upgraded.replace('}', ",\"Nu7\":110}")] {
+        assert!(consensus_branch("zcash-js-network/2", bad.as_bytes(), 110).is_err());
+    }
+}
+
+#[test]
 fn explicit_schedule_selects_real_consensus_branch() {
     assert_eq!(consensus_branch(FORMAT, DOC, 9), Ok(u32::from(BranchId::Sprout)));
     assert_eq!(consensus_branch(FORMAT, DOC, 10), Ok(u32::from(BranchId::Overwinter)));

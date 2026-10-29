@@ -13,11 +13,11 @@ fresh-checkout workflow.
 A `publish = false` production Rust binding crate for bounded network documents
 and exact transaction bytes/identity, related to zcash.js #3/#4/#6. The crate name
 `zakura-network-bindings` is retained for compatibility. Exact dependencies include
-`zcash_protocol 0.10.6`, `zakura-primitives 1.0.0` (no defaults, std), and genuine
+`zakura-protocol 4.0.0`, `zakura-primitives 4.0.0` (no defaults, std and backend-halo2), and genuine
 `wasm-bindgen 0.2.128`, with the full Cargo lock.
 
 The JS entry exposes `consensusContext(parametersFormat, parameters, height)` and
-returns a frozen `{ height, branchId }`. It validates `zcash-js-network/1` and an
+returns a frozen `{ height, branchId }`. It validates `zcash-js-network/1` or `zcash-js-network/2` and an
 ordinary, attached Uint8Array (Node Buffer/subviews included), snapshots at most
 256 bytes, and checks integer uint32 heights before generated-glue coercion.
 Shared buffers and foreign-realm inputs are unsupported. Rust independently
@@ -25,8 +25,10 @@ validates the canonical document and calls the actual upstream
 `BranchId::for_height`. Invalid documents/formats fail with fixed strings;
 JS admission fails with TypeError. These are private binding errors, not H1 errors.
 
-All ten explicit upgrade heights through Nu6_3 are required, nondecreasing, with
-null-only suffixes. Equal heights use upstream order. The encoding selector never
+Version 1 requires all ten upgrade heights through Nu6_3. Version 2 requires
+the same fields followed by Nu7. Heights are nondecreasing with null-only suffixes.
+Version 1 retains its exact bytes and treats NU7 as inactive; version 2 can disable
+NU7 explicitly with null. Format tags must match the canonical document. Equal heights use upstream order. The encoding selector never
 imports a built-in schedule. The maximum valid document is under the 256-byte cap.
 The parser adapts the independently accepted component at SDK revision
 `a280d31d9e1c3c624cb9a340089b3ad79117e011`; its qualification crate stays intact.
@@ -166,7 +168,7 @@ The private stateless lightwallet protobuf production codec is documented in [li
 
 The optional `wallet-storage` feature and `wallet.mjs` implement an internal schema lifecycle primitive for a later H1 owner. This is **not `wallet_open`, `WalletClient`, or complete recovery**. The branch starts from transaction candidate `acaf706`, which remains under independent review.
 
-`initializeStorage(verifiedWasmBytes, ownedBackend, format, parameters, genesis)` returns an instance-bound storage owner with `binding(generation, instance)` and `close(generation, instance)`. The enclosing host must supply an already validated `zcash-js-network/1` registration and checked genesis; this primitive persists and compares that identity, without making network requests to authenticate it. Parameters lower through the unchanged frozen parser. The backend performs real WalletDb migrations, loads rusqlite's array module and queries the resulting account schema. There are no account/signing/send or arbitrary SQL commands.
+`initializeStorage(verifiedWasmBytes, ownedBackend, format, parameters, genesis)` returns an instance-bound storage owner with `binding(generation, instance)` and `close(generation, instance)`. The enclosing host must supply an already validated version-1 or version-2 network registration and checked genesis; this primitive persists and compares that identity, without making network requests to authenticate it. Parameters lower through the unchanged frozen parser. The backend performs real WalletDb migrations, loads rusqlite's array module and queries the resulting account schema. There are no account/signing/send or arbitrary SQL commands.
 
 The deliberate bound is **one initialization attempt and one active DB per dedicated worker**, with one bundled SQLite instance, no shared memory, a 16 MiB SQLite allocator and a 256 MiB WASM memory maximum. Use a fresh worker for reopening. The raw Rust generation is worker-local; JS also checks a fresh CSPRNG instance identity. Inputs are checked and copied before generated glue and outputs are independent copies. No memory storage fallback exists.
 
@@ -200,7 +202,7 @@ for signing a populated Sapling note with this pinned native role.
 Account IDs are routing hints; native key correspondence is authoritative.
 
 Qualified source fixtures cover transparent and Sapling V5 on Nu5, Nu6, Nu6_1,
-Nu6_2 (PCZT wire 1 and 2), and all three pools V6 on Nu6_3 (wire 2).
+Nu6_2 (PCZT wire 1 and 2), and all three pools V6 on Nu6_3 and Nu7 (wire 2).
 Circuit labels are sapling-groth16/1 (the pinned Sapling spend/output circuit)
 and ironwood-post-nu6_3/1 (native OrchardCircuitVersion::PostNu6_3);
 transparent has no circuit label. These identify authorization context, not a

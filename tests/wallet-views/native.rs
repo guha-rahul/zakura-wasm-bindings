@@ -474,8 +474,15 @@ fn policy_scan_matrix(legacy: bool) -> Vec<Value> {
         let ironwood_commitments=scan.ironwood().commitments().to_vec();
         crate::wallet::DOMAIN.with(|domain| {
             let mut domain=domain.borrow_mut();let db=&mut domain.active.first_mut().unwrap().wallet;
-            db.update_chain_tip(100u32.into()).unwrap();
-            db.put_blocks(birthday.prior_chain_state(),vec![scan]).unwrap();
+            let confirmation=zcash_client_backend::proto::compact_formats::CompactBlock {
+                height:101,hash:vec![12;32],prev_hash:vec![8;32],time:2,
+                chain_metadata:Some(zcash_client_backend::proto::compact_formats::ChainMetadata {
+                    sapling_commitment_tree_size:2,orchard_commitment_tree_size:2,ironwood_commitment_tree_size:2
+                }),..Default::default()
+            };
+            let confirmed=scan_block(&p,confirmation,&keys,&Nullifiers::empty(),Some(&scan.to_block_metadata())).unwrap();
+            db.update_chain_tip(101u32.into()).unwrap();
+            db.put_blocks(birthday.prior_chain_state(),vec![scan,confirmed]).unwrap();
             let address = *db.get_last_generated_address_matching(account_id,UnifiedAddressRequest::AllAvailableKeys).unwrap().unwrap().transparent().unwrap();
             let output = zcash_client_backend::wallet::WalletTransparentOutput::from_parts(
                 zcash_transparent::bundle::OutPoint::new([10;32],0),
@@ -556,17 +563,17 @@ fn policy_scan_matrix(legacy: bool) -> Vec<Value> {
             }
             let selected = db.select_spendable_notes(account_id,
                 zcash_client_backend::data_api::TargetValue::AtLeast(zcash_protocol::value::Zatoshis::const_from_u64(10_000)),
-                &[ShieldedPool::Sapling,ShieldedPool::Orchard,ShieldedPool::Ironwood],101u32.into(),
+                &[ShieldedPool::Sapling,ShieldedPool::Orchard,ShieldedPool::Ironwood],102u32.into(),
                 zcash_client_backend::data_api::wallet::ConfirmationsPolicy::MIN,&[],LockFilter::Unfiltered).unwrap();
             assert_eq!([selected.sapling().len(),selected.orchard().len(),selected.ironwood().len()],[expected;3]);
             let address = *db.get_last_generated_address_matching(account_id,UnifiedAddressRequest::AllAvailableKeys).unwrap().unwrap().transparent().unwrap();
-            let outputs = db.get_spendable_transparent_outputs(&address,101u32.into(),
+            let outputs = db.get_spendable_transparent_outputs(&address,102u32.into(),
                 zcash_client_backend::data_api::wallet::ConfirmationsPolicy::MIN,
                 zcash_client_backend::data_api::CoinbaseFilter::AllTransparentOutputs,LockFilter::Unfiltered).unwrap();
             assert_eq!(outputs.len(),expected);
-            assert_eq!(db.get_unspent_transparent_output(&zcash_transparent::bundle::OutPoint::new([10;32],0),101u32.into()).unwrap().is_some(),expected==1);
+            assert_eq!(db.get_unspent_transparent_output(&zcash_transparent::bundle::OutPoint::new([10;32],0),102u32.into()).unwrap().is_some(),expected==1);
             for pool in [ShieldedPool::Sapling,ShieldedPool::Orchard,ShieldedPool::Ironwood] {
-                assert_eq!(db.get_spendable_note(&TxId::from_bytes([9;32]),pool,0,101u32.into(),LockFilter::Unfiltered).unwrap().is_some(),expected==1,"{pool:?}");
+                assert_eq!(db.get_spendable_note(&TxId::from_bytes([9;32]),pool,0,102u32.into(),LockFilter::Unfiltered).unwrap().is_some(),expected==1,"{pool:?}");
             }
         });
         let mut queries=Vec::new();
@@ -1104,7 +1111,8 @@ fn balance_scanner_edge_cases()->Vec<Value> {
                         for (balance,value) in [(b.sapling_balance(),40_000),(b.orchard_balance(),45_000),(b.ironwood_balance(),45_000)] {
                             assert_eq!(u64::from(balance.change_pending_confirmation()),if trusted==2 {value} else {0});
                         }
-                        assert_eq!(u64::from(b.sapling_balance().spendable_value()),if trusted==1 {40_000} else {0});
+                        assert_eq!(u64::from(b.sapling_balance().spendable_value()),0,"a newly mined change note has no older anchor yet");
+                        assert_eq!(u64::from(b.sapling_balance().value_pending_spendability()),if trusted==1 {40_000} else {0});
                     },
                     _=>unreachable!(),
                 }
@@ -1206,6 +1214,21 @@ fn persistent_scan_ingestion_plan_rollback_revision_and_reopen() {
     assert_eq!(reopened["scan"]["fullyScannedHeight"],100);
     assert_ne!(reopened["scan"]["revision"],balance["scan"]["revision"]);
     crate::wallet::storage_close(g).unwrap();
+}
+
+// Spend tests need a checkpoint behind the tip; scan tests retain the boundary fixture.
+fn confirmed_scan_fixture() -> Value {
+    let mut fixture=full_scan_fixture();
+    let batches=fixture["batches"].as_array_mut().unwrap();
+    let blocks=batches.last_mut().unwrap()["blocks"].as_array_mut().unwrap();
+    let last=zcash_client_backend::proto::compact_formats::CompactBlock::decode(&hex::decode(blocks.last().unwrap().as_str().unwrap()).unwrap()[..]).unwrap();
+    let next=zcash_client_backend::proto::compact_formats::CompactBlock {
+        height:last.height+1,hash:vec![12;32],prev_hash:last.hash,time:last.time+1,
+        chain_metadata:last.chain_metadata,..Default::default()
+    };
+    blocks.push(json!(hex::encode(next.encode_to_vec())));
+    fixture["target"]=json!({"height":next.height,"hash":"0c".repeat(32)});
+    fixture
 }
 
 fn full_scan_fixture() -> Value {

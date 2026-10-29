@@ -70,6 +70,27 @@ fn enhancement_full_transaction_is_atomic_and_persists_after_reopen() {
 }
 
 #[test]
+fn enhancement_and_status_negative_replies_complete_only_their_own_work() {
+    let (path,g)=open();
+    crate::wallet::DOMAIN.with(|d|d.borrow_mut().active.first_mut().unwrap().wallet.update_chain_tip(100.into())).unwrap();
+    crate::wallet::storage_close(g).unwrap();
+    let id=[41u8;32];
+    let conn=rusqlite::Connection::open(&path).unwrap();
+    for kind in [0,1] {conn.execute("INSERT INTO tx_retrieval_queue(txid,query_type) VALUES(?1,?2)",rusqlite::params![&id,kind]).unwrap();}
+    drop(conn);
+    let g=crate::wallet::initialize_path(&path,"zcash-js-network/1",PARAMS,&[3;32]).unwrap();
+    let pending=enhance(g,"enhancement_requests",json!({})).unwrap();
+    assert_eq!(pending["requests"].as_array().unwrap().len(),2);
+    let status=pending["requests"].as_array().unwrap().iter().find(|r|r["kind"]=="status").unwrap();
+    enhance(g,"enhancement_apply",json!({"revision":pending["revision"],"request":status,"result":{"status":"notRecognized"}})).unwrap();
+    let pending=enhance(g,"enhancement_requests",json!({})).unwrap();
+    assert_eq!(pending["requests"],json!([{"kind":"enhancement","txid":hex::encode(id)}]));
+    enhance(g,"enhancement_apply",json!({"revision":pending["revision"],"request":pending["requests"][0],"result":{"status":"notRecognized"}})).unwrap();
+    assert_eq!(enhance(g,"enhancement_requests",json!({})).unwrap()["requests"],json!([]));
+    crate::wallet::storage_close(g).unwrap();
+}
+
+#[test]
 fn enhancement_unspent_positive_only_and_atomic() {
     unspent_checks(false);
     unspent_checks(true);

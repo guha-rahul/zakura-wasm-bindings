@@ -22,7 +22,6 @@ pub(super) fn combine(retained:Pczt,incoming:Pczt)->Result<Pczt>{
     }).map_err(|_|invalid())?;
     for sig in pczt::roles::signer::extract_orchard_spend_auth_signatures(&combined){role.apply_orchard_spend_auth_signature(&sig).map_err(|_|invalid())?;}
     let tx=combined.clone().into_effects().map_err(|_|invalid())?;let digests=tx.digest(TxIdDigester);
-    let secp=secp256k1::Secp256k1::verification_only();
     Verifier::new(combined.clone()).with_transparent::<(),_>(|bundle|{
         let mut check=||->Result<()>{
             for(index,input)in bundle.inputs().iter().enumerate(){
@@ -37,7 +36,7 @@ pub(super) fn combine(retained:Pczt,incoming:Pczt)->Result<Pczt>{
                     if let Some(address @ zcash_transparent::address::TransparentAddress::PublicKeyHash(_))=zcash_transparent::address::TransparentAddress::from_script_from_chain(script){
                         if zcash_transparent::address::TransparentAddress::from_pubkey(&key)!=address{return Err(invalid());}
                     }
-                    secp.verify_ecdsa(&secp256k1::Message::from_digest(role.transparent_sighash(index).map_err(|_|invalid())?),&signature,&key).map_err(|_|invalid())?;
+                    secp256k1::ecdsa::verify(&signature,secp256k1::Message::from_digest(role.transparent_sighash(index).map_err(|_|invalid())?),&key).map_err(|_|invalid())?;
                     role.append_transparent_signature(index,signature).map_err(|_|invalid())?;
                 }
                 if let Some(sig)=input.script_sig(){
@@ -83,10 +82,10 @@ mod tests {
             let mut signature=vec![];
             Verifier::new(signed.clone()).with_transparent::<(),_>(|bundle|{signature=bundle.inputs()[0].partial_signatures().values().next().unwrap().clone();Ok(())}).unwrap();
             // Forge both signature-map key and P2PKH preimage while retaining the spent script.
-            let secp=secp256k1::Secp256k1::new();let foreign=secp256k1::SecretKey::from_slice(&[7;32]).unwrap();
-            let public=secp256k1::PublicKey::from_secret_key(&secp,&secret).serialize();let foreign_public=secp256k1::PublicKey::from_secret_key(&secp,&foreign).serialize();
+            let foreign=secp256k1::SecretKey::from_secret_bytes([7;32]).unwrap();
+            let public=secp256k1::PublicKey::from_secret_key(&secret).serialize();let foreign_public=secp256k1::PublicKey::from_secret_key(&foreign).serialize();
             let sighash=Signer::new(original.clone()).unwrap().transparent_sighash(0).unwrap();
-            let mut forged_sig=secp.sign_ecdsa(&secp256k1::Message::from_digest(sighash),&foreign).serialize_der().to_vec();forged_sig.push(1);
+            let mut forged_sig=secp256k1::ecdsa::sign(secp256k1::Message::from_digest(sighash),&foreign).serialize_der().to_vec();forged_sig.push(1);
             let mut forged=signed.clone().serialize().unwrap();
             let mut offset=0;while let Some(at)=forged[offset..].windows(33).position(|part|part==public){let at=offset+at;forged[at..at+33].copy_from_slice(&foreign_public);offset=at+33;}
             let at=forged.windows(signature.len()).position(|part|part==signature).unwrap();assert_eq!(forged[at-1] as usize,signature.len());

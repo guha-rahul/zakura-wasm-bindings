@@ -161,7 +161,7 @@ pub(super) const MIGRATIONS: &[Migration] = &[
                 )
             )"###) }) },
     ] },
-    // add_transaction_views; source sha256 0eebdf22f9aa75ecad096ce6aa266ad8dd42feeb6155c3cf6b5e10cb5316d5ff
+    // add_transaction_views; source sha256 d4063973e8204d8be29a1cadb9bb68a3f056628b2b03cc81b6d2e233704a23ca
     Migration { id: 0x282fad2e83724ca08bed71821320909f, dependencies: &[0x761884d630d844efb2040b82551c4ca1, 0x0ddbe561825942129ab766fdc4a74e1d], effects: &[
         Effect { name: r###"transactions"###, object: Some(Object { kind: r###"table"###, table: r###"transactions"###, sql: Some(r###"CREATE TABLE transactions (
                 id_tx INTEGER PRIMARY KEY,
@@ -739,7 +739,7 @@ pub(super) const MIGRATIONS: &[Migration] = &[
                 subtree_end_height,
                 contains_marked"###) }) },
     ] },
-    // receiving_key_scopes; source sha256 386ebfbe47673f74f4dc5586064128a84421c27db5a368f8c93ac0f1f2cd7b20
+    // receiving_key_scopes; source sha256 b9bbaffcd5692e0ace89042923a8209568803aec74a080e8559ce3359856548b
     Migration { id: 0xee89ed2bc1c2421e9e98c1e3e54a7fc2, dependencies: &[0x7da6489de83546578be5f512bcce6cbf], effects: &[
         Effect { name: r###"sapling_received_notes"###, object: Some(Object { kind: r###"table"###, table: r###"sapling_received_notes"###, sql: Some(r###"CREATE TABLE sapling_received_notes (
                 id_note INTEGER PRIMARY KEY,
@@ -2230,7 +2230,7 @@ pub(super) const MIGRATIONS: &[Migration] = &[
                 PRIMARY KEY (block_height, tx_index)
             )"###) }) },
     ] },
-    // tx_retrieval_queue; source sha256 c394d2cb1bf56deeb4d90676120bef83d227f2f778ddfc916ca3ca61edc6e290
+    // tx_retrieval_queue; source sha256 fd5d1a63039353097b5e571cde5551e2173f07eff39a9a42908be217e845266e
     Migration { id: 0xfec02b6139884b4f969998977fac9e7f, dependencies: &[0x3a6487f7e06842bb9d126bb8dbe6da00, 0x604349c75ce54768bea612d106ccda93, 0x0e1d42741f8e44e2909d689a4bc2967b, 0x07610aacb0e34ba8aaa6cda606f0fd7b, 0xe2d71ac56a444c6ba9a06d0a79d355f1], effects: &[
         Effect { name: r###"sqlite_autoindex_transparent_spend_map_1"###, object: Some(Object { kind: r###"index"###, table: r###"transparent_spend_map"###, sql: None }) },
         Effect { name: r###"sqlite_autoindex_transparent_spend_search_queue_1"###, object: Some(Object { kind: r###"index"###, table: r###"transparent_spend_search_queue"###, sql: None }) },
@@ -2274,7 +2274,7 @@ pub(super) const MIGRATIONS: &[Migration] = &[
                 FOREIGN KEY (dependent_transaction_id) REFERENCES transactions(id_tx)
             )"###) }) },
     ] },
-    // tx_retrieval_queue_expiry; source sha256 f6c6b7ad5b423e4179afa00c184bc4d866ede04ab43443af45f73e16da558f3c
+    // tx_retrieval_queue_expiry; source sha256 89ec7d4252b3a8d0f5c4d46bfb6f915bd16468636197eaece16a725c5ab8ad32
     Migration { id: 0x9ffe82d43bf5459a9a217affd9e88e95, dependencies: &[0xfec02b6139884b4f969998977fac9e7f], effects: &[
         Effect { name: r###"tx_retrieval_queue"###, object: Some(Object { kind: r###"table"###, table: r###"tx_retrieval_queue"###, sql: Some(r###"CREATE TABLE tx_retrieval_queue (
                 txid BLOB NOT NULL UNIQUE,
@@ -2319,7 +2319,7 @@ pub(super) const MIGRATIONS: &[Migration] = &[
             -- exclude any sent notes for which a row exists in the v_received_outputs view
             WHERE ro.account_id IS NULL"###) }) },
     ] },
-    // fix_broken_commitment_trees; source sha256 fda006e2d0b428e964ecd5701111b5e56a61eab4026ca4ef2bd104f4fad1b6f2
+    // fix_broken_commitment_trees; source sha256 fe76c5b6749a1a6538b9ed4676d1e7076996d989a1aaa229d58e16ec3469d657
     Migration { id: 0x9fa43ce0a38745d1be0357a3edc76d01, dependencies: &[0x156d8c8f21734b5989b675697d5a2103], effects: &[
     ] },
     // fix_bad_change_flagging; source sha256 7043fca0e86a33c8f0ef1cb2a52a7ac37841214b5f05fd5206e3f2e3fb49e318
@@ -2666,7 +2666,7 @@ pub(super) const MIGRATIONS: &[Migration] = &[
                  AND sent_note_counts.txid = notes.txid
             GROUP BY notes.account_id, notes.txid"###) }) },
     ] },
-    // transparent_gap_limit_handling; source sha256 8adcda6ac63fec26b2b1c5b9e0649e02eb10b1d6a36e16a8f2462de60e1117d6
+    // transparent_gap_limit_handling; source sha256 a274af86738fb2fe2bbee63593bb653fda2e0a1b3befb835dc4a5fb9c6be78b5
     Migration { id: 0xc41dfc0ee8704859be47d2f572f5ca73, dependencies: &[0xcccc623f324343c7b884ceef25149e04], effects: &[
         Effect { name: r###"addresses"###, object: Some(Object { kind: r###"table"###, table: r###"addresses"###, sql: Some(r###"CREATE TABLE "addresses" (
                 id INTEGER NOT NULL PRIMARY KEY,
@@ -3827,7 +3827,7 @@ pub(super) const MIGRATIONS: &[Migration] = &[
         Effect { name: r###"idx_transparent_received_outputs_value_zat"###, object: Some(Object { kind: r###"index"###, table: r###"transparent_received_outputs"###, sql: Some(r###"CREATE INDEX idx_transparent_received_outputs_value_zat
                  ON transparent_received_outputs (value_zat DESC)"###) }) },
     ] },
-    // ironwood_shardtree; source sha256 dc827974e99906fb7e503fdd717f6899c3eee2daa624b5d6b6cda3c3cc501f14
+    // ironwood_shardtree; source sha256 955bc281ceaa8920eeb0b3603eea91bd52a4f8886801426504b6ddec2f8aa490
     Migration { id: 0x1f5420e3f8a04afda9e5e20fc6fae271, dependencies: &[0x3a6487f7e06842bb9d126bb8dbe6da00, 0xc5bf7f71229741ff89e175e07c4e8838], effects: &[
         Effect { name: r###"blocks"###, object: Some(Object { kind: r###"table"###, table: r###"blocks"###, sql: Some(r###"CREATE TABLE blocks (
                 height INTEGER PRIMARY KEY,
@@ -4351,10 +4351,10 @@ pub(super) const MIGRATIONS: &[Migration] = &[
         Effect { name: r###"sqlite_autoindex_orchard_ironwood_migration_transaction_deps_1"###, object: Some(Object { kind: r###"index"###, table: r###"orchard_ironwood_migration_transaction_deps"###, sql: None }) },
         Effect { name: r###"sqlite_autoindex_orchard_ironwood_migration_transactions_1"###, object: Some(Object { kind: r###"index"###, table: r###"orchard_ironwood_migration_transactions"###, sql: None }) },
     ] },
-    // orchard_ironwood_migration_anchor_interval; source sha256 4c45ff7e79d1de02bcf17724032e75ca17ce421534a699e477b5849f565651c6
+    // orchard_ironwood_migration_anchor_interval; source sha256 106d0d49bc1f2b30669f56bcc7a4a7b4a4532bdcf0e98a91924d984f760f1158
     Migration { id: 0x1ab3caf9ef1e482c93a3a3f1080038df, dependencies: &[0x7b2f6a419c3d4e588a172f6b9d0c4e11], effects: &[
     ] },
-    // orchard_ironwood_migration_unsatisfiability; source sha256 d4145b19f340697123bf7554e3f57d9f55928e0492440c22003edcff9c794bdc
+    // orchard_ironwood_migration_unsatisfiability; source sha256 e97304a9c112b0420a637d092636c76f94dc4cb45b730ddbbdb1e6e384ff3424
     Migration { id: 0xd334a9fab9dc46bd9b311fba6aa47f55, dependencies: &[0x1ab3caf9ef1e482c93a3a3f1080038df], effects: &[
         Effect { name: r###"orchard_ironwood_migration_spend_nullifiers"###, object: Some(Object { kind: r###"table"###, table: r###"orchard_ironwood_migration_spend_nullifiers"###, sql: Some(r###"CREATE TABLE orchard_ironwood_migration_spend_nullifiers (
     migration_id INTEGER NOT NULL,
@@ -4966,5 +4966,1198 @@ pub(super) const MIGRATIONS: &[Migration] = &[
                 MAX(recipient_key_scope)    AS recipient_key_scope
             FROM unioned
             GROUP BY transaction_id, output_pool, output_index"###) }) },
+    ] },
+    // ironwood_enhance; source sha256 fa05ccffd8a73cc9516702e10e263c3c9f95789cf4758f70517e064e46d40c7c
+    Migration { id: 0xcf147152694f47e88c05c6dd853ac329, dependencies: &[0xa1d4a28c75824457b0f4d3f297b62a71, 0xd7ab0ab214874cb7ba7472ece5fdba2f, 0x6f2b1c849a3d4e50b7c62d9f1a4e83b7], effects: &[
+        Effect { name: r###"ironwood_enhance_discovery_queue"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_enhance_discovery_queue"###, sql: Some(r###"CREATE TABLE ironwood_enhance_discovery_queue (
+                transaction_id INTEGER PRIMARY KEY
+                    REFERENCES transactions(id_tx) ON DELETE CASCADE,
+                suspended INTEGER NOT NULL DEFAULT 0 CHECK (suspended IN (0, 1))
+            )"###) }) },
+        Effect { name: r###"ironwood_enhance_metadata_queue"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_enhance_metadata_queue"###, sql: Some(r###"CREATE TABLE ironwood_enhance_metadata_queue (
+                transaction_id INTEGER PRIMARY KEY REFERENCES transactions(id_tx) ON DELETE CASCADE,
+                commitment_tree_position INTEGER UNIQUE CHECK (commitment_tree_position >= 0),
+                output_index INTEGER CHECK (output_index >= 0),
+                compact_bound INTEGER NOT NULL DEFAULT 0 CHECK (compact_bound IN (0, 1)),
+                CHECK ((commitment_tree_position IS NULL) = (output_index IS NULL)),
+                CHECK (compact_bound = 0 OR commitment_tree_position IS NOT NULL)
+            )"###) }) },
+        Effect { name: r###"ironwood_enhance_outgoing_accounts"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_enhance_outgoing_accounts"###, sql: Some(r###"CREATE TABLE ironwood_enhance_outgoing_accounts (
+                commitment_tree_position INTEGER NOT NULL
+                    REFERENCES ironwood_enhance_outgoing_queue(commitment_tree_position)
+                    ON DELETE CASCADE,
+                account_id INTEGER NOT NULL
+                    REFERENCES accounts(id) ON DELETE CASCADE,
+                PRIMARY KEY(commitment_tree_position, account_id)
+            )"###) }) },
+        Effect { name: r###"ironwood_enhance_outgoing_queue"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_enhance_outgoing_queue"###, sql: Some(r###"CREATE TABLE ironwood_enhance_outgoing_queue (
+                commitment_tree_position INTEGER PRIMARY KEY
+                    CHECK (commitment_tree_position >= 0),
+                transaction_id INTEGER NOT NULL
+                    REFERENCES transactions(id_tx) ON DELETE CASCADE,
+                output_index INTEGER NOT NULL CHECK (output_index >= 0),
+                nullifier BLOB NOT NULL CHECK (length(nullifier) = 32),
+                cmx BLOB NOT NULL CHECK (length(cmx) = 32),
+                ephemeral_key BLOB NOT NULL CHECK (length(ephemeral_key) = 32),
+                compact_ciphertext BLOB NOT NULL CHECK (length(compact_ciphertext) = 52),
+                not_recoverable INTEGER NOT NULL DEFAULT 0 CHECK (not_recoverable IN (0, 1)),
+                UNIQUE(transaction_id, output_index)
+            )"###) }) },
+        Effect { name: r###"ironwood_enhance_routing"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_enhance_routing"###, sql: Some(r###"CREATE TABLE ironwood_enhance_routing (
+                transaction_id INTEGER PRIMARY KEY
+                    REFERENCES transactions(id_tx) ON DELETE CASCADE,
+                route INTEGER NOT NULL CHECK (route IN (0, 1)),
+                history_expiry_height INTEGER
+                    CHECK (history_expiry_height >= 0 AND history_expiry_height < 500000000)
+            )"###) }) },
+        Effect { name: r###"ironwood_memo_retrieval_queue"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_memo_retrieval_queue"###, sql: Some(r###"CREATE TABLE ironwood_memo_retrieval_queue (
+                received_note_id INTEGER PRIMARY KEY
+                    REFERENCES ironwood_received_notes(id) ON DELETE CASCADE,
+                commitment_tree_position INTEGER NOT NULL UNIQUE
+                    CHECK (commitment_tree_position >= 0)
+            )"###) }) },
+        Effect { name: r###"ironwood_received_notes"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_received_notes"###, sql: Some(r###"CREATE TABLE ironwood_received_notes (
+                id INTEGER PRIMARY KEY,
+                transaction_id INTEGER NOT NULL
+                    REFERENCES transactions(id_tx) ON DELETE CASCADE,
+                action_index INTEGER NOT NULL,
+                account_id INTEGER NOT NULL
+                    REFERENCES accounts(id) ON DELETE CASCADE,
+                diversifier BLOB NOT NULL,
+                value INTEGER NOT NULL,
+                rho BLOB NOT NULL,
+                rseed BLOB NOT NULL,
+                nf BLOB UNIQUE,
+                is_change INTEGER NOT NULL,
+                memo BLOB,
+                commitment_tree_position INTEGER,
+                recipient_key_scope INTEGER,
+                address_id INTEGER
+                    REFERENCES addresses(id) ON DELETE CASCADE,
+                witness_stabilized INTEGER NOT NULL DEFAULT 0,
+                note_version INTEGER NOT NULL, lock_expiry_height INTEGER, lock_owner BLOB, ephemeral_key BLOB, compact_ciphertext BLOB
+                CHECK ((ephemeral_key IS NULL AND compact_ciphertext IS NULL) OR
+                       (ephemeral_key IS NOT NULL AND compact_ciphertext IS NOT NULL AND
+                        length(ephemeral_key) = 32 AND length(compact_ciphertext) = 52)),
+                UNIQUE (transaction_id, action_index)
+            )"###) }) },
+        Effect { name: r###"sqlite_autoindex_ironwood_enhance_metadata_queue_1"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_enhance_metadata_queue"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_ironwood_enhance_outgoing_accounts_1"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_enhance_outgoing_accounts"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_ironwood_enhance_outgoing_queue_1"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_enhance_outgoing_queue"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_ironwood_memo_retrieval_queue_1"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_memo_retrieval_queue"###, sql: None }) },
+        Effect { name: r###"v_transactions"###, object: Some(Object { kind: r###"view"###, table: r###"v_transactions"###, sql: Some(r###"CREATE VIEW v_transactions AS
+            WITH
+            notes AS (
+                -- Outputs received in this transaction
+                SELECT ro.account_id              AS account_id,
+                       ro.transaction_id          AS transaction_id,
+                       ro.pool                    AS pool,
+                       id_within_pool_table,
+                       ro.value                   AS value,
+                       ro.value                   AS received_value,
+                       0                          AS spent_value,
+                       0                          AS spent_note_count,
+                       CASE
+                            WHEN ro.is_change THEN 1
+                            ELSE 0
+                       END AS change_note_count,
+                       CASE
+                            WHEN ro.is_change THEN 0
+                            ELSE 1
+                       END AS received_count,
+                       CASE
+                         WHEN (ro.memo IS NULL OR ro.memo = X'F6')
+                           THEN 0
+                         ELSE 1
+                       END AS memo_present,
+                       -- The wallet cannot receive transparent outputs in shielding transactions.
+                       CASE
+                         WHEN ro.pool = 0
+                           THEN 1
+                         ELSE 0
+                       END AS does_not_match_shielding
+                FROM v_received_outputs ro
+                UNION
+                -- Outputs spent in this transaction
+                SELECT ro.account_id              AS account_id,
+                       ros.transaction_id         AS transaction_id,
+                       ro.pool                    AS pool,
+                       id_within_pool_table,
+                       -ro.value                  AS value,
+                       0                          AS received_value,
+                       ro.value                   AS spent_value,
+                       1                          AS spent_note_count,
+                       0                          AS change_note_count,
+                       0                          AS received_count,
+                       0                          AS memo_present,
+                       -- The wallet cannot spend shielded outputs in shielding transactions.
+                       CASE
+                         WHEN ro.pool != 0
+                           THEN 1
+                         ELSE 0
+                       END AS does_not_match_shielding
+                FROM v_received_outputs ro
+                JOIN v_received_output_spends ros
+                     ON ros.pool = ro.pool
+                     AND ros.received_output_id = ro.id_within_pool_table
+            ),
+            -- What each account spent and received in each pool, per transaction. A pool the account
+            -- received value in but spent nothing from is a pool that value crossed into from
+            -- elsewhere, which is what `pool_crossings` below is built on.
+            notes_by_pool AS (
+                SELECT account_id, transaction_id, pool,
+                       SUM(spent_note_count)                   AS spent_note_count,
+                       SUM(received_count + change_note_count) AS received_note_count,
+                       SUM(received_value)                     AS received_value
+                FROM notes
+                GROUP BY account_id, transaction_id, pool
+            ),
+            -- Obtain a count of the notes that the wallet created in each transaction,
+            -- not counting change notes.
+            sent_note_counts AS (
+                SELECT sent_notes.from_account_id     AS account_id,
+                       sent_notes.transaction_id      AS transaction_id,
+                       COUNT(DISTINCT sent_notes.id)  AS sent_notes,
+                       SUM(
+                         CASE
+                           WHEN (sent_notes.memo IS NULL OR sent_notes.memo = X'F6' OR ro.transaction_id IS NOT NULL)
+                             THEN 0
+                           ELSE 1
+                         END
+                       ) AS memo_count
+                FROM sent_notes
+                LEFT JOIN v_received_outputs ro ON sent_notes.id = ro.sent_note_id
+                WHERE COALESCE(ro.is_change, 0) = 0
+                GROUP BY account_id, sent_notes.transaction_id
+            ),
+            -- Identifies the transactions that are wallet-internal transfers moving an account's own
+            -- funds between shielded pools, and reports the value that crossed. `crossing_value` is
+            -- non-NULL exactly for such a transaction, so it carries both the classification and the
+            -- amount; see the `pool_crossing_value` column below.
+            pool_crossings AS (
+                SELECT notes_by_pool.account_id     AS account_id,
+                       notes_by_pool.transaction_id AS transaction_id,
+                       CASE WHEN (
+                            -- Every note spent and every output received by the wallet is shielded.
+                            SUM(CASE WHEN notes_by_pool.pool = 0 THEN notes_by_pool.spent_note_count + notes_by_pool.received_note_count ELSE 0 END) = 0
+                            -- The transaction spends at least one of the account's notes.
+                            AND SUM(notes_by_pool.spent_note_count) > 0
+                            -- At least one output was received in a pool the account spent nothing
+                            -- from, so value crossed between pools.
+                            AND SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_note_count ELSE 0 END) > 0
+                            -- We do not know about any external outputs of the transaction.
+                            AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0
+                       )
+                       -- The total value received in the pools the account did not spend from. The
+                       -- condition above guarantees at least one such output, so when this branch is
+                       -- taken the sum is never NULL.
+                       THEN SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_value ELSE 0 END)
+                       END AS crossing_value
+                FROM notes_by_pool
+                LEFT JOIN sent_note_counts
+                     ON sent_note_counts.account_id = notes_by_pool.account_id
+                     AND sent_note_counts.transaction_id = notes_by_pool.transaction_id
+                GROUP BY notes_by_pool.account_id, notes_by_pool.transaction_id
+            ),
+            blocks_max_height AS (
+                SELECT MAX(blocks.height) AS max_height FROM blocks
+            )
+            SELECT accounts.uuid                AS account_uuid,
+                   transactions.mined_height    AS mined_height,
+                   transactions.txid            AS txid,
+                   transactions.tx_index        AS tx_index,
+                   COALESCE(transactions.expiry_height, (SELECT history_expiry_height FROM ironwood_enhance_routing WHERE transaction_id = transactions.id_tx AND route = 0)) AS expiry_height,
+                   transactions.raw             AS raw,
+                   SUM(notes.value)             AS account_balance_delta,
+                   SUM(notes.spent_value)       AS total_spent,
+                   SUM(notes.received_value)    AS total_received,
+                   transactions.fee             AS fee_paid,
+                   SUM(notes.change_note_count) > 0  AS has_change,
+                   MAX(COALESCE(sent_note_counts.sent_notes, 0))  AS sent_note_count,
+                   SUM(notes.received_count)         AS received_note_count,
+                   SUM(notes.memo_present) + MAX(COALESCE(sent_note_counts.memo_count, 0)) AS memo_count,
+                   blocks.time                       AS block_time,
+                   (
+                        transactions.mined_height IS NULL
+                        AND transactions.expiry_height BETWEEN 1 AND blocks_max_height.max_height
+                   ) AS expired_unmined,
+                   SUM(notes.spent_note_count) AS spent_note_count,
+                   (
+                        -- All of the wallet-spent and wallet-received notes are consistent with a
+                        -- shielding transaction.
+                        SUM(notes.does_not_match_shielding) = 0
+                        -- The transaction contains at least one wallet-spent output.
+                        AND SUM(notes.spent_note_count) > 0
+                        -- The transaction contains at least one wallet-received note.
+                        AND (SUM(notes.received_count) + SUM(notes.change_note_count)) > 0
+                        -- We do not know about any external outputs of the transaction.
+                        AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0
+                   ) AS is_shielding,
+                   -- The value that crossed pools, when this transaction is a wallet-internal transfer
+                   -- between shielded pools; NULL when it is not such a transfer. A transaction is one
+                   -- exactly when this column is non-NULL.
+                   pool_crossings.crossing_value AS pool_crossing_value,
+                   transactions.trust_status,
+                   transactions.zip318_kind
+            FROM notes
+            JOIN accounts ON accounts.id = notes.account_id
+            JOIN transactions ON transactions.id_tx = notes.transaction_id
+            LEFT JOIN blocks_max_height
+            LEFT JOIN blocks ON blocks.height = transactions.mined_height
+            LEFT JOIN sent_note_counts
+                 ON sent_note_counts.account_id = notes.account_id
+                 AND sent_note_counts.transaction_id = notes.transaction_id
+            LEFT JOIN pool_crossings
+                 ON pool_crossings.account_id = notes.account_id
+                 AND pool_crossings.transaction_id = notes.transaction_id
+            GROUP BY notes.account_id, notes.transaction_id"###) }) },
+    ] },
+    // one_time_ivk; source sha256 07f12a13863e2b94feb8efc01b4d6a82cd193bda494abfb04d8859b6693dd4b1
+    Migration { id: 0x5775610295834af5b4115eead49fc9f0, dependencies: &[0xcf147152694f47e88c05c6dd853ac329], effects: &[
+        Effect { name: r###"idx_ironwood_one_time_keys_account_receiver"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_one_time_keys"###, sql: Some(r###"CREATE INDEX idx_ironwood_one_time_keys_account_receiver
+                ON ironwood_one_time_keys(account_id, receiver)"###) }) },
+        Effect { name: r###"idx_ironwood_one_time_operations_key"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_one_time_operations"###, sql: Some(r###"CREATE INDEX idx_ironwood_one_time_operations_key
+                ON ironwood_one_time_operations(one_time_key_id)"###) }) },
+        Effect { name: r###"idx_ironwood_received_notes_one_time_key"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_received_notes"###, sql: Some(r###"CREATE INDEX idx_ironwood_received_notes_one_time_key ON ironwood_received_notes (
+                one_time_key_id ASC
+            ) WHERE one_time_key_id IS NOT NULL"###) }) },
+        Effect { name: r###"ironwood_one_time_keys"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_one_time_keys"###, sql: Some(r###"CREATE TABLE ironwood_one_time_keys (
+                id INTEGER PRIMARY KEY,
+                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+                purpose INTEGER NOT NULL CHECK (purpose BETWEEN 0 AND 255),
+                key_index BLOB NOT NULL CHECK (typeof(key_index) = 'blob' AND length(key_index) = 8),
+                receiver BLOB NOT NULL CHECK (typeof(receiver) = 'blob' AND length(receiver) = 43),
+                funding_height INTEGER CHECK (funding_height BETWEEN 0 AND 4294967295),
+                used INTEGER NOT NULL DEFAULT 0 CHECK (used IN (0, 1)),
+                prebirthday_height INTEGER CHECK (prebirthday_height BETWEEN 0 AND 4294967295),
+                registered_at INTEGER NOT NULL DEFAULT 0,
+                reserved_at INTEGER,
+                released_at INTEGER,
+                reservation_floor INTEGER,
+                UNIQUE (account_id, purpose, key_index)
+            )"###) }) },
+        Effect { name: r###"ironwood_one_time_operations"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_one_time_operations"###, sql: Some(r###"CREATE TABLE ironwood_one_time_operations (
+                id INTEGER PRIMARY KEY,
+                one_time_key_id INTEGER NOT NULL REFERENCES ironwood_one_time_keys(id) ON DELETE CASCADE,
+                request TEXT UNIQUE,
+                reference TEXT,
+                memo TEXT,
+                deadline INTEGER NOT NULL,
+                begun_at INTEGER NOT NULL,
+                started INTEGER NOT NULL DEFAULT 0 CHECK (started IN (0, 1)),
+                funded INTEGER NOT NULL DEFAULT 0 CHECK (funded IN (0, 1)),
+                rejected INTEGER NOT NULL DEFAULT 0 CHECK (rejected IN (0, 1)),
+                observed_at INTEGER NOT NULL DEFAULT 0,
+                expectation INTEGER NOT NULL DEFAULT 0 CHECK (expectation BETWEEN 0 AND 255),
+                expected_value INTEGER CHECK (expected_value > 0),
+                CHECK (request IS NOT NULL OR reference IS NOT NULL)
+            )"###) }) },
+        Effect { name: r###"ironwood_received_notes"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_received_notes"###, sql: Some(r###"CREATE TABLE ironwood_received_notes (
+                id INTEGER PRIMARY KEY,
+                transaction_id INTEGER NOT NULL
+                    REFERENCES transactions(id_tx) ON DELETE CASCADE,
+                action_index INTEGER NOT NULL,
+                account_id INTEGER NOT NULL
+                    REFERENCES accounts(id) ON DELETE CASCADE,
+                diversifier BLOB NOT NULL,
+                value INTEGER NOT NULL,
+                rho BLOB NOT NULL,
+                rseed BLOB NOT NULL,
+                nf BLOB UNIQUE,
+                is_change INTEGER NOT NULL,
+                memo BLOB,
+                commitment_tree_position INTEGER,
+                recipient_key_scope INTEGER,
+                address_id INTEGER
+                    REFERENCES addresses(id) ON DELETE CASCADE,
+                witness_stabilized INTEGER NOT NULL DEFAULT 0,
+                note_version INTEGER NOT NULL, lock_expiry_height INTEGER, lock_owner BLOB, ephemeral_key BLOB, compact_ciphertext BLOB
+                CHECK ((ephemeral_key IS NULL AND compact_ciphertext IS NULL) OR
+                       (ephemeral_key IS NOT NULL AND compact_ciphertext IS NOT NULL AND
+                        length(ephemeral_key) = 32 AND length(compact_ciphertext) = 52)), one_time_key_id INTEGER
+                REFERENCES ironwood_one_time_keys(id),
+                UNIQUE (transaction_id, action_index)
+            )"###) }) },
+        Effect { name: r###"sqlite_autoindex_ironwood_one_time_keys_1"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_one_time_keys"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_ironwood_one_time_operations_1"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_one_time_operations"###, sql: None }) },
+    ] },
+    // one_time_ivk_discovery; source sha256 388c0b0aa771e2529c8940446eaa2ee6c9c361cb223d0f5ab8dfcab85814961e
+    Migration { id: 0xc5b63b3b81904d0fb2173921d7aac225, dependencies: &[0x5775610295834af5b4115eead49fc9f0], effects: &[
+        Effect { name: r###"idx_ironwood_spend_journal_nullifiers_nf"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_spend_journal_nullifiers"###, sql: Some(r###"CREATE INDEX idx_ironwood_spend_journal_nullifiers_nf
+                ON ironwood_spend_journal_nullifiers(nf)"###) }) },
+        Effect { name: r###"ironwood_journal_coverage"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_journal_coverage"###, sql: Some(r###"CREATE TABLE ironwood_journal_coverage (
+                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+                start_height INTEGER NOT NULL CHECK (start_height BETWEEN 0 AND 4294967295),
+                end_height INTEGER NOT NULL
+                    CHECK (end_height > start_height AND end_height <= 4294967296),
+                PRIMARY KEY (account_id, start_height)
+            )"###) }) },
+        Effect { name: r###"ironwood_one_time_lookups"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_one_time_lookups"###, sql: Some(r###"CREATE TABLE ironwood_one_time_lookups (
+                one_time_key_id INTEGER PRIMARY KEY REFERENCES ironwood_one_time_keys(id) ON DELETE CASCADE,
+                target_height INTEGER CHECK (target_height BETWEEN 0 AND 4294967295),
+                reasons INTEGER NOT NULL DEFAULT 0 CHECK (reasons BETWEEN 0 AND 7),
+                done_height INTEGER CHECK (done_height BETWEEN 0 AND 4294967295),
+                done_from INTEGER CHECK (done_from BETWEEN 0 AND 4294967295),
+                start_height INTEGER NOT NULL DEFAULT 0 CHECK (start_height BETWEEN 0 AND 4294967295),
+                checked_height INTEGER CHECK (checked_height BETWEEN 0 AND 4294967295),
+                inventory BLOB CHECK (length(inventory) = 32),
+                shard INTEGER CHECK (shard BETWEEN 0 AND 4294967295),
+                segment INTEGER CHECK (segment BETWEEN 0 AND 4294967295),
+                last_record BLOB CHECK (length(last_record) = 289),
+                read_complete INTEGER NOT NULL DEFAULT 0 CHECK (read_complete IN (0, 1)),
+                attempts INTEGER NOT NULL DEFAULT 0 CHECK (attempts >= 0),
+                next_attempt_at INTEGER NOT NULL DEFAULT 0,
+                CHECK ((inventory IS NULL) = (shard IS NULL)
+                    AND (inventory IS NULL) = (segment IS NULL)),
+                CHECK (inventory IS NOT NULL OR last_record IS NULL)
+            )"###) }) },
+        Effect { name: r###"ironwood_one_time_payment_recovery"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_one_time_payment_recovery"###, sql: Some(r###"CREATE TABLE ironwood_one_time_payment_recovery (
+                one_time_key_id INTEGER NOT NULL REFERENCES ironwood_one_time_keys(id) ON DELETE CASCADE,
+                txid BLOB NOT NULL CHECK (length(txid) = 32),
+                action_index INTEGER NOT NULL CHECK (action_index BETWEEN 0 AND 4294967295),
+                height INTEGER NOT NULL CHECK (height BETWEEN 0 AND 4294967295),
+                block_hash BLOB NOT NULL CHECK (length(block_hash) = 32),
+                tx_index INTEGER NOT NULL CHECK (tx_index BETWEEN 0 AND 65535),
+                position INTEGER NOT NULL CHECK (position BETWEEN 0 AND 4294967295),
+                encrypted_note BLOB NOT NULL CHECK (length(encrypted_note) = 148),
+                payments BLOB CHECK (length(payments) = 32),
+                witnesses BLOB CHECK (length(witnesses) = 32),
+                ordinal INTEGER CHECK (ordinal BETWEEN 0 AND 4294967295),
+                witness BLOB CHECK (length(witness) = 512),
+                witness_height INTEGER CHECK (witness_height BETWEEN 0 AND 4294967295),
+                witness_hash BLOB CHECK (length(witness_hash) = 32),
+                witness_size INTEGER CHECK (witness_size BETWEEN 0 AND 4294967296),
+                PRIMARY KEY (txid, action_index),
+                CHECK ((payments IS NULL) = (ordinal IS NULL)
+                    AND (payments IS NULL) = (witnesses IS NULL)),
+                CHECK ((witness IS NULL OR payments IS NOT NULL)
+                    AND (witness IS NULL) = (witness_height IS NULL)
+                    AND (witness IS NULL) = (witness_hash IS NULL)
+                    AND (witness IS NULL) = (witness_size IS NULL))
+            )"###) }) },
+        Effect { name: r###"ironwood_one_time_recovery"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_one_time_recovery"###, sql: Some(r###"CREATE TABLE ironwood_one_time_recovery (
+                account_id INTEGER PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE,
+                enabled INTEGER NOT NULL DEFAULT 0 CHECK (enabled IN (0, 1)),
+                generation INTEGER NOT NULL DEFAULT 0 CHECK (generation >= 0),
+                history_revision BLOB NOT NULL DEFAULT X'0000000000000000'
+                    CHECK (length(history_revision) = 8),
+                filter_height INTEGER CHECK (filter_height BETWEEN 0 AND 4294967295),
+                filter_hash BLOB CHECK (length(filter_hash) = 32),
+                skipped_height INTEGER CHECK (skipped_height BETWEEN 0 AND 4294967295),
+                restore_height INTEGER CHECK (restore_height BETWEEN 0 AND 4294967295),
+                restore_next BLOB NOT NULL DEFAULT X'0000000000000000' CHECK (length(restore_next) = 8),
+                restore_gap INTEGER NOT NULL DEFAULT 0 CHECK (restore_gap BETWEEN 0 AND 4),
+                restore_done INTEGER NOT NULL DEFAULT 0 CHECK (restore_done IN (0, 1)),
+                manual_active INTEGER NOT NULL DEFAULT 0 CHECK (manual_active IN (0, 1)),
+                manual_purpose INTEGER NOT NULL DEFAULT 0 CHECK (manual_purpose IN (0, 1)),
+                manual_next BLOB NOT NULL DEFAULT X'0000000000000000' CHECK (length(manual_next) = 8),
+                manual_end BLOB CHECK (length(manual_end) = 8),
+                manual_height INTEGER CHECK (manual_height BETWEEN 0 AND 4294967295),
+                CHECK ((filter_height IS NULL) = (filter_hash IS NULL))
+            )"###) }) },
+        Effect { name: r###"ironwood_spend_journal"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_spend_journal"###, sql: Some(r###"CREATE TABLE ironwood_spend_journal (
+                block_height INTEGER NOT NULL CHECK (block_height BETWEEN 0 AND 4294967295),
+                tx_index INTEGER NOT NULL CHECK (tx_index BETWEEN 0 AND 65535),
+                txid BLOB NOT NULL CHECK (length(txid) = 32),
+                PRIMARY KEY (block_height, tx_index)
+            )"###) }) },
+        Effect { name: r###"ironwood_spend_journal_nullifiers"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_spend_journal_nullifiers"###, sql: Some(r###"CREATE TABLE ironwood_spend_journal_nullifiers (
+                block_height INTEGER NOT NULL,
+                tx_index INTEGER NOT NULL,
+                action_index INTEGER NOT NULL CHECK (action_index >= 0),
+                nf BLOB NOT NULL CHECK (length(nf) = 32),
+                PRIMARY KEY (block_height, tx_index, action_index),
+                FOREIGN KEY (block_height, tx_index)
+                    REFERENCES ironwood_spend_journal(block_height, tx_index) ON DELETE CASCADE
+            )"###) }) },
+        Effect { name: r###"sqlite_autoindex_ironwood_journal_coverage_1"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_journal_coverage"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_ironwood_one_time_payment_recovery_1"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_one_time_payment_recovery"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_ironwood_spend_journal_1"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_spend_journal"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_ironwood_spend_journal_nullifiers_1"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_spend_journal_nullifiers"###, sql: None }) },
+    ] },
+    // status_inclusion_evidence; source sha256 013e8c403afe53369237c581c03406784a2246d50a7c04f719651fdc2f654e27
+    Migration { id: 0xb6f3d060803a4b17aecd6a02d9cb2249, dependencies: &[0xcf147152694f47e88c05c6dd853ac329, 0xd334a9fab9dc46bd9b311fba6aa47f55, 0xdab89587cd0543b0a5b58cb64a702791, 0xcc104d0d54d64e079404202676561d94, 0x62032f4a88b5454da59110f3d4c4d2b7], effects: &[
+    ] },
+    // drop_zip318_pool_migration; source sha256 d8933220c03d746aa7bedc7c8d20c9c60e7e2b41d773d72748169a970a74dfd8
+    Migration { id: 0x772a06323d0e4dffb1f8c64863eefaaa, dependencies: &[0xb6f3d060803a4b17aecd6a02d9cb2249], effects: &[
+        Effect { name: r###"idx_orchard_ironwood_migration_tx_due"###, object: None },
+        Effect { name: r###"idx_orchard_ironwood_migrations_account"###, object: None },
+        Effect { name: r###"orchard_ironwood_migration_crossing_values"###, object: None },
+        Effect { name: r###"orchard_ironwood_migration_prep_direct_funding"###, object: None },
+        Effect { name: r###"orchard_ironwood_migration_prep_inputs"###, object: None },
+        Effect { name: r###"orchard_ironwood_migration_prep_outputs"###, object: None },
+        Effect { name: r###"orchard_ironwood_migration_spend_nullifiers"###, object: None },
+        Effect { name: r###"orchard_ironwood_migration_transaction_deps"###, object: None },
+        Effect { name: r###"orchard_ironwood_migration_transactions"###, object: None },
+        Effect { name: r###"orchard_ironwood_migrations"###, object: None },
+        Effect { name: r###"sqlite_autoindex_orchard_ironwood_migration_crossing_values_1"###, object: None },
+        Effect { name: r###"sqlite_autoindex_orchard_ironwood_migration_prep_direct_funding_1"###, object: None },
+        Effect { name: r###"sqlite_autoindex_orchard_ironwood_migration_prep_inputs_1"###, object: None },
+        Effect { name: r###"sqlite_autoindex_orchard_ironwood_migration_prep_outputs_1"###, object: None },
+        Effect { name: r###"sqlite_autoindex_orchard_ironwood_migration_spend_nullifiers_1"###, object: None },
+        Effect { name: r###"sqlite_autoindex_orchard_ironwood_migration_transaction_deps_1"###, object: None },
+        Effect { name: r###"sqlite_autoindex_orchard_ironwood_migration_transactions_1"###, object: None },
+    ] },
+    // transparent_ledger_schema; source sha256 b0bf10834d7b5c35c905aed4afd9582bebbb648623508832b3a2b218919d5036
+    Migration { id: 0x8f290af0eb5a4f1e88d43550fc0ff911, dependencies: &[0x772a06323d0e4dffb1f8c64863eefaaa, 0x856ecde7c67047c19345b80ba5b12c4f, 0x93278b0f77fe473cb88e7f285da38dd3, 0x3d4f12d63da94aceac65a0dd0a7adc32, 0x47c0e9c22eda4b9cbe1563c636c0e1c7], effects: &[
+        Effect { name: r###"sqlite_autoindex_tpir_output_origins_1"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_output_origins"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_tpir_spend_origins_1"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_spend_origins"###, sql: None }) },
+        Effect { name: r###"tpir_meta"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_meta"###, sql: Some(r###"CREATE TABLE tpir_meta (
+                id INTEGER PRIMARY KEY CHECK (id = 0),
+                applied_mode INTEGER NOT NULL CHECK (applied_mode IN (0, 2)),
+                policy_generation INTEGER NOT NULL CHECK (policy_generation >= 0),
+                min_reader_version INTEGER NOT NULL CHECK (min_reader_version >= 1)
+            )"###) }) },
+        Effect { name: r###"tpir_output_origins"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_output_origins"###, sql: Some(r###"CREATE TABLE tpir_output_origins (
+                output_id INTEGER NOT NULL
+                    REFERENCES transparent_received_outputs(id) ON DELETE CASCADE,
+                origin INTEGER NOT NULL CHECK (origin IN (0, 1, 2, 3)),
+                UNIQUE (output_id, origin)
+            )"###) }) },
+        Effect { name: r###"tpir_spend_origins"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_spend_origins"###, sql: Some(r###"CREATE TABLE tpir_spend_origins (
+                spending_transaction_id INTEGER NOT NULL
+                    REFERENCES transactions(id_tx) ON DELETE CASCADE,
+                prevout_txid BLOB NOT NULL,
+                prevout_output_index INTEGER NOT NULL,
+                origin INTEGER NOT NULL CHECK (origin IN (0, 1, 2, 3)),
+                UNIQUE (spending_transaction_id, prevout_txid, prevout_output_index, origin)
+            )"###) }) },
+    ] },
+    // transparent_policy_generation; source sha256 77a142f445e887fd4eb03bea2b7c17116b868b6b3ddd1f6c23adf2967657aeb6
+    Migration { id: 0xb7c4e2a19d3f4e8ba6c51f0e8d7c6b5a, dependencies: &[0x8f290af0eb5a4f1e88d43550fc0ff911], effects: &[
+        Effect { name: r###"ironwood_enhance_routing"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_enhance_routing"###, sql: Some(r###"CREATE TABLE "ironwood_enhance_routing" (
+                transaction_id INTEGER PRIMARY KEY
+                    REFERENCES transactions(id_tx) ON DELETE CASCADE,
+                route INTEGER NOT NULL CHECK (route IN (0, 1, 2)),
+                history_expiry_height INTEGER
+                    CHECK (history_expiry_height >= 0 AND history_expiry_height < 500000000)
+            )"###) }) },
+        Effect { name: r###"tx_retrieval_queue"###, object: Some(Object { kind: r###"table"###, table: r###"tx_retrieval_queue"###, sql: Some(r###"CREATE TABLE "tx_retrieval_queue" (
+                txid BLOB NOT NULL,
+                query_type INTEGER NOT NULL,
+                dependent_transaction_id INTEGER
+                    REFERENCES transactions(id_tx) ON DELETE CASCADE, policy_generation INTEGER NOT NULL DEFAULT 0,
+                CONSTRAINT tx_retrieval_intent UNIQUE (txid, query_type)
+            )"###) }) },
+    ] },
+    // transparent_recovery_schema; source sha256 eccb93498cef315a4e7d19df39c6cb9e0f93703a66a1b4a82aaf89cbaf2e6021
+    Migration { id: 0x9302bbcf425a426b9074084d626e45bd, dependencies: &[0xb7c4e2a19d3f4e8ba6c51f0e8d7c6b5a], effects: &[
+        Effect { name: r###"idx_tpir_coverage_script"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_coverage"###, sql: Some(r###"CREATE INDEX idx_tpir_coverage_script ON tpir_coverage (account_id, script)"###) }) },
+        Effect { name: r###"idx_tpir_receive_events_account"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_receive_events"###, sql: Some(r###"CREATE INDEX idx_tpir_receive_events_account ON tpir_receive_events (account_id)"###) }) },
+        Effect { name: r###"idx_tpir_spend_events_account"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_spend_events"###, sql: Some(r###"CREATE INDEX idx_tpir_spend_events_account ON tpir_spend_events (account_id)"###) }) },
+        Effect { name: r###"idx_tpir_spend_events_prevout"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_spend_events"###, sql: Some(r###"CREATE INDEX idx_tpir_spend_events_prevout ON tpir_spend_events (prevout_txid, prevout_output_index)"###) }) },
+        Effect { name: r###"sqlite_autoindex_tpir_candidate_windows_1"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_candidate_windows"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_tpir_pending_page_scripts_1"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_pending_page_scripts"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_tpir_pending_pages_1"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_pending_pages"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_tpir_receive_events_1"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_receive_events"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_tpir_receive_observations_1"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_receive_observations"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_tpir_revisions_1"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_revisions"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_tpir_revisions_2"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_revisions"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_tpir_spend_events_1"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_spend_events"###, sql: None }) },
+        Effect { name: r###"sqlite_autoindex_tpir_spend_observations_1"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_spend_observations"###, sql: None }) },
+        Effect { name: r###"tpir_candidate_windows"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_candidate_windows"###, sql: Some(r###"CREATE TABLE tpir_candidate_windows (
+                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+                key_scope INTEGER NOT NULL CHECK (key_scope IN (0, 1, 2)),
+                end_index INTEGER NOT NULL CHECK (end_index >= 0 AND end_index <= 2147483648),
+                PRIMARY KEY (account_id, key_scope)
+            )"###) }) },
+        Effect { name: r###"tpir_coverage"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_coverage"###, sql: Some(r###"CREATE TABLE tpir_coverage (
+                id INTEGER PRIMARY KEY,
+                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+                script BLOB NOT NULL,
+                from_height INTEGER NOT NULL CHECK (from_height >= 0),
+                through_height INTEGER NOT NULL,
+                anchor_height INTEGER NOT NULL,
+                anchor_hash BLOB NOT NULL,
+                revision_id INTEGER NOT NULL REFERENCES tpir_revisions(id),
+                supported INTEGER NOT NULL CHECK (supported IN (0, 1)),
+                CHECK (from_height <= through_height AND through_height <= anchor_height)
+            )"###) }) },
+        Effect { name: r###"tpir_pending_page_scripts"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_pending_page_scripts"###, sql: Some(r###"CREATE TABLE tpir_pending_page_scripts (
+                page_id INTEGER NOT NULL REFERENCES tpir_pending_pages(id) ON DELETE CASCADE,
+                script BLOB NOT NULL,
+                PRIMARY KEY (page_id, script)
+            )"###) }) },
+        Effect { name: r###"tpir_pending_pages"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_pending_pages"###, sql: Some(r###"CREATE TABLE tpir_pending_pages (
+                id INTEGER PRIMARY KEY,
+                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+                revision_id INTEGER NOT NULL REFERENCES tpir_revisions(id),
+                page BLOB NOT NULL,
+                from_height INTEGER NOT NULL CHECK (from_height >= 0),
+                through_height INTEGER NOT NULL,
+                target_height INTEGER NOT NULL,
+                target_hash BLOB NOT NULL,
+                UNIQUE (account_id, revision_id, page),
+                CHECK (from_height <= through_height AND through_height <= target_height)
+            )"###) }) },
+        Effect { name: r###"tpir_receive_events"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_receive_events"###, sql: Some(r###"CREATE TABLE tpir_receive_events (
+                id INTEGER PRIMARY KEY,
+                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+                txid BLOB NOT NULL,
+                output_index INTEGER NOT NULL CHECK (output_index >= 0),
+                script BLOB NOT NULL,
+                value_zat INTEGER NOT NULL CHECK (value_zat >= 0),
+                coinbase INTEGER NOT NULL CHECK (coinbase IN (0, 1)),
+                mined_height INTEGER CHECK (mined_height >= 0),
+                UNIQUE (txid, output_index)
+            )"###) }) },
+        Effect { name: r###"tpir_receive_observations"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_receive_observations"###, sql: Some(r###"CREATE TABLE tpir_receive_observations (
+                receive_id INTEGER NOT NULL REFERENCES tpir_receive_events(id) ON DELETE CASCADE,
+                revision_id INTEGER NOT NULL REFERENCES tpir_revisions(id),
+                PRIMARY KEY (receive_id, revision_id)
+            )"###) }) },
+        Effect { name: r###"tpir_revisions"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_revisions"###, sql: Some(r###"CREATE TABLE tpir_revisions (
+                id INTEGER PRIMARY KEY,
+                source BLOB NOT NULL,
+                revision BLOB NOT NULL,
+                lineage INTEGER NOT NULL CHECK (lineage >= 0),
+                sealed INTEGER NOT NULL CHECK (sealed IN (0, 1)),
+                publication_height INTEGER NOT NULL CHECK (publication_height >= 0),
+                publication_hash BLOB NOT NULL,
+                UNIQUE (source, revision),
+                UNIQUE (source, lineage)
+            )"###) }) },
+        Effect { name: r###"tpir_spend_events"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_spend_events"###, sql: Some(r###"CREATE TABLE tpir_spend_events (
+                id INTEGER PRIMARY KEY,
+                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+                spending_txid BLOB NOT NULL,
+                input_index INTEGER NOT NULL CHECK (input_index >= 0),
+                prevout_txid BLOB NOT NULL,
+                prevout_output_index INTEGER NOT NULL CHECK (prevout_output_index >= 0),
+                prevout_script BLOB NOT NULL,
+                mined_height INTEGER CHECK (mined_height >= 0),
+                UNIQUE (spending_txid, input_index)
+            )"###) }) },
+        Effect { name: r###"tpir_spend_observations"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_spend_observations"###, sql: Some(r###"CREATE TABLE tpir_spend_observations (
+                spend_id INTEGER NOT NULL REFERENCES tpir_spend_events(id) ON DELETE CASCADE,
+                revision_id INTEGER NOT NULL REFERENCES tpir_revisions(id),
+                PRIMARY KEY (spend_id, revision_id)
+            )"###) }) },
+    ] },
+    // transparent_activation_schema; source sha256 6e5e877ce315b4a84ac30e1a5bc380894bab0aac00dd7743c3ca56a97508f551
+    Migration { id: 0x88cad11149144382a78fd85bb3507c5c, dependencies: &[0x9302bbcf425a426b9074084d626e45bd], effects: &[
+        Effect { name: r###"sqlite_autoindex_tpir_quarantined_sources_1"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_quarantined_sources"###, sql: None }) },
+        Effect { name: r###"tpir_active_accounts"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_active_accounts"###, sql: Some(r###"CREATE TABLE tpir_active_accounts (
+                account_id INTEGER PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE
+            )"###) }) },
+        Effect { name: r###"tpir_qualified_revisions"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_qualified_revisions"###, sql: Some(r###"CREATE TABLE tpir_qualified_revisions (
+                revision_id INTEGER PRIMARY KEY REFERENCES tpir_revisions(id)
+            )"###) }) },
+        Effect { name: r###"tpir_quarantined_accounts"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_quarantined_accounts"###, sql: Some(r###"CREATE TABLE tpir_quarantined_accounts (
+                account_id INTEGER PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE
+            )"###) }) },
+        Effect { name: r###"tpir_quarantined_sources"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_quarantined_sources"###, sql: Some(r###"CREATE TABLE tpir_quarantined_sources (
+                source BLOB PRIMARY KEY
+            )"###) }) },
+    ] },
+    // transparent_activity_metadata; source sha256 adcdbb6e92d0df1e9d3f5518076349ee6341e29961b932497d5081ceef4df15c
+    Migration { id: 0x935cd43609fd4f4fa808260ee399cb21, dependencies: &[0x88cad11149144382a78fd85bb3507c5c], effects: &[
+        Effect { name: r###"sqlite_autoindex_tpir_transaction_metadata_1"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_transaction_metadata"###, sql: None }) },
+        Effect { name: r###"tpir_transaction_metadata"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_transaction_metadata"###, sql: Some(r###"CREATE TABLE tpir_transaction_metadata (
+    account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+    txid BLOB NOT NULL CHECK (length(txid) = 32),
+    revision_id INTEGER NOT NULL REFERENCES tpir_revisions(id) ON DELETE CASCADE,
+    mined_height INTEGER NOT NULL CHECK (mined_height >= 0),
+    fee_state INTEGER NOT NULL CHECK (fee_state IN (0, 1, 2)),
+    fee_zat INTEGER CHECK (fee_zat >= 0 AND fee_zat <= 2100000000000000),
+    input_count INTEGER NOT NULL CHECK (input_count >= 0 AND input_count <= 4294967295),
+    shielded INTEGER NOT NULL CHECK (shielded IN (0, 1)),
+    CHECK ((fee_state = 0 AND fee_zat IS NOT NULL) OR (fee_state != 0 AND fee_zat IS NULL)),
+    CHECK (fee_state != 2 OR input_count = 0),
+    PRIMARY KEY (account_id, txid, revision_id)
+)"###) }) },
+    ] },
+    // transparent_shared_derivations; source sha256 ff43ee53c9c12cf515322568429e6e08d71ffdbef1938708194076ca57539ca4
+    Migration { id: 0xa03b0d6a60854859ae77bce948345214, dependencies: &[0x935cd43609fd4f4fa808260ee399cb21], effects: &[
+        Effect { name: r###"sqlite_autoindex_tpir_shared_derivations_1"###, object: Some(Object { kind: r###"index"###, table: r###"tpir_shared_derivations"###, sql: None }) },
+        Effect { name: r###"tpir_shared_derivations"###, object: Some(Object { kind: r###"table"###, table: r###"tpir_shared_derivations"###, sql: Some(r###"CREATE TABLE tpir_shared_derivations (
+    account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+    key_scope INTEGER NOT NULL CHECK (key_scope IN (0, 1, 2)),
+    child_index INTEGER NOT NULL CHECK (child_index >= 0 AND child_index < 2147483648),
+    PRIMARY KEY (account_id, key_scope, child_index)
+)"###) }) },
+    ] },
+    // v_transactions_sender_grouping; source sha256 8201e49be95a493fac738854c51f6e836f18c60c3a7be6d5231f06e22a604489
+    Migration { id: 0x0eaf99b94db74d0bb0bd00a9a6bbd8cf, dependencies: &[0xa03b0d6a60854859ae77bce948345214], effects: &[
+        Effect { name: r###"v_transactions"###, object: Some(Object { kind: r###"view"###, table: r###"v_transactions"###, sql: Some(r###"CREATE VIEW v_transactions AS
+WITH
+notes AS (
+    -- Outputs received in this transaction
+    SELECT ro.account_id              AS account_id,
+           ro.transaction_id          AS transaction_id,
+           ro.pool                    AS pool,
+           id_within_pool_table,
+           ro.value                   AS value,
+           ro.value                   AS received_value,
+           0                          AS spent_value,
+           0                          AS spent_note_count,
+           CASE
+                WHEN ro.is_change THEN 1
+                ELSE 0
+           END AS change_note_count,
+           CASE
+                WHEN ro.is_change THEN 0
+                ELSE 1
+           END AS received_count,
+           CASE
+             WHEN (ro.memo IS NULL OR ro.memo = X'F6')
+               THEN 0
+             ELSE 1
+           END AS memo_present,
+           -- The wallet cannot receive transparent outputs in shielding transactions.
+           CASE
+             WHEN ro.pool = 0
+               THEN 1
+             ELSE 0
+           END AS does_not_match_shielding
+    FROM v_received_outputs ro
+    UNION
+    -- Outputs spent in this transaction
+    SELECT ro.account_id              AS account_id,
+           ros.transaction_id         AS transaction_id,
+           ro.pool                    AS pool,
+           id_within_pool_table,
+           -ro.value                  AS value,
+           0                          AS received_value,
+           ro.value                   AS spent_value,
+           1                          AS spent_note_count,
+           0                          AS change_note_count,
+           0                          AS received_count,
+           0                          AS memo_present,
+           -- The wallet cannot spend shielded outputs in shielding transactions.
+           CASE
+             WHEN ro.pool != 0
+               THEN 1
+             ELSE 0
+           END AS does_not_match_shielding
+    FROM v_received_outputs ro
+    JOIN v_received_output_spends ros
+         ON ros.pool = ro.pool
+         AND ros.received_output_id = ro.id_within_pool_table
+),
+-- What each account spent and received in each pool, per transaction. A pool the account
+-- received value in but spent nothing from is a pool that value crossed into from
+-- elsewhere, which is what `pool_crossings` below is built on.
+notes_by_pool AS (
+    SELECT account_id, transaction_id, pool,
+           SUM(spent_note_count)                   AS spent_note_count,
+           SUM(received_count + change_note_count) AS received_note_count,
+           SUM(received_value)                     AS received_value
+    FROM notes
+    GROUP BY account_id, transaction_id, pool
+),
+-- Obtain a count of the notes that the wallet created in each transaction,
+-- not counting change notes.
+sent_note_counts AS (
+    SELECT sent_notes.from_account_id     AS account_id,
+           sent_notes.transaction_id      AS transaction_id,
+           COUNT(DISTINCT sent_notes.id)  AS sent_notes,
+           SUM(
+             CASE
+               WHEN (sent_notes.memo IS NULL OR sent_notes.memo = X'F6' OR ro.transaction_id IS NOT NULL)
+                 THEN 0
+               ELSE 1
+             END
+           ) AS memo_count
+    FROM sent_notes
+    LEFT JOIN v_received_outputs ro ON sent_notes.id = ro.sent_note_id
+    WHERE COALESCE(ro.is_change, 0) = 0
+    -- Group by the sending account. A bare `account_id` here would resolve to the joined
+    -- `ro.account_id`, splitting one sender's notes into a group per receiving account.
+    GROUP BY sent_notes.from_account_id, sent_notes.transaction_id
+),
+-- Identifies the transactions that are wallet-internal transfers moving an account's own
+-- funds between shielded pools, and reports the value that crossed. `crossing_value` is
+-- non-NULL exactly for such a transaction, so it carries both the classification and the
+-- amount; see the `pool_crossing_value` column below.
+pool_crossings AS (
+    SELECT notes_by_pool.account_id     AS account_id,
+           notes_by_pool.transaction_id AS transaction_id,
+           CASE WHEN (
+                -- Every note spent and every output received by the wallet is shielded.
+                SUM(CASE WHEN notes_by_pool.pool = 0 THEN notes_by_pool.spent_note_count + notes_by_pool.received_note_count ELSE 0 END) = 0
+                -- The transaction spends at least one of the account's notes.
+                AND SUM(notes_by_pool.spent_note_count) > 0
+                -- At least one output was received in a pool the account spent nothing
+                -- from, so value crossed between pools.
+                AND SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_note_count ELSE 0 END) > 0
+                -- We do not know about any external outputs of the transaction.
+                AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0
+           )
+           -- The total value received in the pools the account did not spend from. The
+           -- condition above guarantees at least one such output, so when this branch is
+           -- taken the sum is never NULL.
+           THEN SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_value ELSE 0 END)
+           END AS crossing_value
+    FROM notes_by_pool
+    LEFT JOIN sent_note_counts
+         ON sent_note_counts.account_id = notes_by_pool.account_id
+         AND sent_note_counts.transaction_id = notes_by_pool.transaction_id
+    GROUP BY notes_by_pool.account_id, notes_by_pool.transaction_id
+),
+blocks_max_height AS (
+    SELECT MAX(blocks.height) AS max_height FROM blocks
+)
+SELECT accounts.uuid                AS account_uuid,
+       transactions.mined_height    AS mined_height,
+       transactions.txid            AS txid,
+       transactions.tx_index        AS tx_index,
+       COALESCE(transactions.expiry_height, (SELECT history_expiry_height
+        FROM ironwood_enhance_routing WHERE transaction_id = transactions.id_tx AND route = 0))
+           AS expiry_height,
+       transactions.raw             AS raw,
+       SUM(notes.value)             AS account_balance_delta,
+       SUM(notes.spent_value)       AS total_spent,
+       SUM(notes.received_value)    AS total_received,
+       transactions.fee             AS fee_paid,
+       SUM(notes.change_note_count) > 0  AS has_change,
+       MAX(COALESCE(sent_note_counts.sent_notes, 0))  AS sent_note_count,
+       SUM(notes.received_count)         AS received_note_count,
+       SUM(notes.memo_present) + MAX(COALESCE(sent_note_counts.memo_count, 0)) AS memo_count,
+       blocks.time                       AS block_time,
+       (
+            transactions.mined_height IS NULL
+            AND transactions.expiry_height BETWEEN 1 AND blocks_max_height.max_height
+       ) AS expired_unmined,
+       SUM(notes.spent_note_count) AS spent_note_count,
+       (
+            -- All of the wallet-spent and wallet-received notes are consistent with a
+            -- shielding transaction.
+            SUM(notes.does_not_match_shielding) = 0
+            -- The transaction contains at least one wallet-spent output.
+            AND SUM(notes.spent_note_count) > 0
+            -- The transaction contains at least one wallet-received note.
+            AND (SUM(notes.received_count) + SUM(notes.change_note_count)) > 0
+            -- We do not know about any external outputs of the transaction.
+            AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0
+       ) AS is_shielding,
+       -- The value that crossed pools, when this transaction is a wallet-internal transfer
+       -- between shielded pools; NULL when it is not such a transfer. A transaction is one
+       -- exactly when this column is non-NULL.
+       pool_crossings.crossing_value AS pool_crossing_value,
+       transactions.trust_status,
+       transactions.zip318_kind
+FROM notes
+JOIN accounts ON accounts.id = notes.account_id
+JOIN transactions ON transactions.id_tx = notes.transaction_id
+LEFT JOIN blocks_max_height
+LEFT JOIN blocks ON blocks.height = transactions.mined_height
+LEFT JOIN sent_note_counts
+     ON sent_note_counts.account_id = notes.account_id
+     AND sent_note_counts.transaction_id = notes.transaction_id
+LEFT JOIN pool_crossings
+     ON pool_crossings.account_id = notes.account_id
+     AND pool_crossings.transaction_id = notes.transaction_id
+GROUP BY notes.account_id, notes.transaction_id"###) }) },
+    ] },
+    // unmined_status_obligations; source sha256 4b7437f399851f1963ec13a213880a9a77de311c703331b3f368b5da3b556227
+    Migration { id: 0x31eeaa720c174e22b8023f8161d6accd, dependencies: &[0x0eaf99b94db74d0bb0bd00a9a6bbd8cf], effects: &[
+    ] },
+    // status_reconfirmation; source sha256 467f6fd68943f6316248637f116cc1b6039206272dc2ed7f6d6205b12f08c135
+    Migration { id: 0x6ad71499aa45439d8b4b3f7cff9c0017, dependencies: &[0x31eeaa720c174e22b8023f8161d6accd], effects: &[
+        Effect { name: r###"tx_retrieval_queue"###, object: Some(Object { kind: r###"table"###, table: r###"tx_retrieval_queue"###, sql: Some(r###"CREATE TABLE "tx_retrieval_queue" (
+                txid BLOB NOT NULL,
+                query_type INTEGER NOT NULL,
+                dependent_transaction_id INTEGER
+                    REFERENCES transactions(id_tx) ON DELETE CASCADE, policy_generation INTEGER NOT NULL DEFAULT 0, reconfirm_mined INTEGER NOT NULL DEFAULT 0,
+                CONSTRAINT tx_retrieval_intent UNIQUE (txid, query_type)
+            )"###) }) },
+    ] },
+    // transaction_reconfirmation_receipts; source sha256 863bd755cb953c2d9861defe75746d69d98905349863a1b4e3ba9a055fa450b2
+    Migration { id: 0x96bc0e7251cf4cdbb11f85a460db37ab, dependencies: &[0x6ad71499aa45439d8b4b3f7cff9c0017], effects: &[
+        Effect { name: r###"idx_tx_reconfirmation_receipts_height"###, object: Some(Object { kind: r###"index"###, table: r###"tx_reconfirmation_receipts"###, sql: Some(r###"CREATE INDEX idx_tx_reconfirmation_receipts_height ON tx_reconfirmation_receipts(mined_height)"###) }) },
+        Effect { name: r###"tx_reconfirmation_receipts"###, object: Some(Object { kind: r###"table"###, table: r###"tx_reconfirmation_receipts"###, sql: Some(r###"CREATE TABLE tx_reconfirmation_receipts (
+        transaction_id INTEGER PRIMARY KEY REFERENCES transactions(id_tx) ON DELETE CASCADE,
+        mined_height INTEGER NOT NULL CHECK (typeof(mined_height) = 'integer' AND mined_height BETWEEN 0 AND 4294967295),
+        block_hash BLOB NOT NULL CHECK (typeof(block_hash) = 'blob' AND length(block_hash) = 32),
+        tx_index INTEGER CHECK (tx_index IS NULL OR (typeof(tx_index) = 'integer' AND tx_index BETWEEN 0 AND 65535)),
+        replacement_observed INTEGER NOT NULL DEFAULT 0 CHECK (replacement_observed IN (0, 1))
+    )"###) }) },
+    ] },
+    // v_transactions_legacy_projection; source sha256 2b2d53ac08f857e4d7204910156617ae635a6256d47359a72d7524ce853aaf08
+    Migration { id: 0xcbf88891ba834329a798c986649d77e8, dependencies: &[0x0eaf99b94db74d0bb0bd00a9a6bbd8cf], effects: &[
+    ] },
+    // ironwood_unsupported_memo_retry; source sha256 756ebc0b7fd99bee0f79052b4343da9a345144b92875e6edfdfc542d33797561
+    Migration { id: 0x3d1c7a528e0b4f6d9a475be2c0f19e84, dependencies: &[0xcbf88891ba834329a798c986649d77e8, 0x96bc0e7251cf4cdbb11f85a460db37ab], effects: &[
+    ] },
+    // ironwood_transparent_output_shape; source sha256 2ed0dca5e891fb40bbb48959b425aecf95c5bd67c8bebd06c9f960265b32942c
+    Migration { id: 0x8f4c321004e149eb9de2d713ee0a8426, dependencies: &[0x3d1c7a528e0b4f6d9a475be2c0f19e84], effects: &[
+        Effect { name: r###"ironwood_enhance_routing"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_enhance_routing"###, sql: Some(r###"CREATE TABLE "ironwood_enhance_routing" (
+                transaction_id INTEGER PRIMARY KEY
+                    REFERENCES transactions(id_tx) ON DELETE CASCADE,
+                route INTEGER NOT NULL CHECK (route IN (0, 1, 2)),
+                history_expiry_height INTEGER
+                    CHECK (history_expiry_height >= 0 AND history_expiry_height < 500000000)
+            , has_transparent_outputs INTEGER
+                 CHECK (has_transparent_outputs IN (0, 1)))"###) }) },
+    ] },
+    // one_time_pir; source sha256 b7035abd41344870ab457ee48bccd3769778f6ee35a395a6aa9b0286e8bcece5
+    Migration { id: 0x2eed2da721764d729461c9ae27491b0a, dependencies: &[0xc5b63b3b81904d0fb2173921d7aac225, 0xcbf88891ba834329a798c986649d77e8, 0x856ecde7c67047c19345b80ba5b12c4f], effects: &[
+        Effect { name: r###"idx_ironwood_one_time_keys_account_receiver"###, object: None },
+        Effect { name: r###"ironwood_one_time_disputed_receipts"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_one_time_disputed_receipts"###, sql: Some(r###"CREATE TABLE ironwood_one_time_disputed_receipts (
+                note_id INTEGER PRIMARY KEY REFERENCES ironwood_received_notes(id) ON DELETE CASCADE
+             )"###) }) },
+        Effect { name: r###"ironwood_one_time_keys"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_one_time_keys"###, sql: Some(r###"CREATE TABLE ironwood_one_time_keys (
+                id INTEGER PRIMARY KEY,
+                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+                purpose INTEGER NOT NULL CHECK (purpose BETWEEN 0 AND 255),
+                key_index BLOB NOT NULL CHECK (typeof(key_index) = 'blob' AND length(key_index) = 8),
+                receiver BLOB NOT NULL CHECK (typeof(receiver) = 'blob' AND length(receiver) = 43),
+                funding_height INTEGER CHECK (funding_height BETWEEN 0 AND 4294967295),
+                used INTEGER NOT NULL DEFAULT 0 CHECK (used IN (0, 1)),
+                prebirthday_height INTEGER CHECK (prebirthday_height BETWEEN 0 AND 4294967295),
+                reserved_at INTEGER,
+                released_at INTEGER,
+                reservation_floor INTEGER,
+                UNIQUE (account_id, purpose, key_index)
+            )"###) }) },
+        Effect { name: r###"ironwood_one_time_operation_receipts"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_one_time_operation_receipts"###, sql: Some(r###"CREATE TABLE ironwood_one_time_operation_receipts (
+                operation_id INTEGER NOT NULL REFERENCES ironwood_one_time_operations(id) ON DELETE CASCADE,
+                txid BLOB NOT NULL CHECK (length(txid) = 32),
+                PRIMARY KEY (operation_id, txid)
+             )"###) }) },
+        Effect { name: r###"ironwood_one_time_recovery"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_one_time_recovery"###, sql: Some(r###"CREATE TABLE ironwood_one_time_recovery (
+                account_id INTEGER PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE,
+                enabled INTEGER NOT NULL DEFAULT 0 CHECK (enabled IN (0, 1)),
+                generation INTEGER NOT NULL DEFAULT 0 CHECK (generation >= 0),
+                history_revision BLOB NOT NULL DEFAULT X'0000000000000000'
+                    CHECK (length(history_revision) = 8),
+                filter_height INTEGER CHECK (filter_height BETWEEN 0 AND 4294967295),
+                filter_hash BLOB CHECK (length(filter_hash) = 32),
+                skipped_height INTEGER CHECK (skipped_height BETWEEN 0 AND 4294967295),
+                restore_height INTEGER CHECK (restore_height BETWEEN 0 AND 4294967295),
+                restore_next BLOB NOT NULL DEFAULT X'0000000000000000' CHECK (length(restore_next) = 8),
+                restore_gap INTEGER NOT NULL DEFAULT 0 CHECK (restore_gap BETWEEN 0 AND 4),
+                restore_done INTEGER NOT NULL DEFAULT 0 CHECK (restore_done IN (0, 1)),
+                manual_active INTEGER NOT NULL DEFAULT 0 CHECK (manual_active IN (0, 1)),
+                manual_purpose INTEGER NOT NULL DEFAULT 0 CHECK (manual_purpose IN (0, 1)),
+                manual_next BLOB NOT NULL DEFAULT X'0000000000000000' CHECK (length(manual_next) = 8),
+                manual_end BLOB CHECK (length(manual_end) = 8),
+                manual_height INTEGER CHECK (manual_height BETWEEN 0 AND 4294967295), receive_end BLOB NOT NULL
+                DEFAULT X'0000000000000000' CHECK (length(receive_end) = 8), upgrade_required INTEGER NOT NULL
+                DEFAULT 0 CHECK (upgrade_required IN (0, 1)),
+                CHECK ((filter_height IS NULL) = (filter_hash IS NULL))
+            )"###) }) },
+        Effect { name: r###"ironwood_one_time_unchecked_raw"###, object: Some(Object { kind: r###"table"###, table: r###"ironwood_one_time_unchecked_raw"###, sql: Some(r###"CREATE TABLE ironwood_one_time_unchecked_raw (
+                transaction_id INTEGER PRIMARY KEY REFERENCES transactions(id_tx) ON DELETE CASCADE
+             )"###) }) },
+        Effect { name: r###"sqlite_autoindex_ironwood_one_time_operation_receipts_1"###, object: Some(Object { kind: r###"index"###, table: r###"ironwood_one_time_operation_receipts"###, sql: None }) },
+        Effect { name: r###"v_transactions"###, object: Some(Object { kind: r###"view"###, table: r###"v_transactions"###, sql: Some(r###"CREATE VIEW v_transactions AS
+WITH
+notes AS (
+    -- Outputs received in this transaction
+    SELECT ro.account_id              AS account_id,
+           ro.transaction_id          AS transaction_id,
+           ro.pool                    AS pool,
+           id_within_pool_table,
+           ro.value                   AS value,
+           ro.value                   AS received_value,
+           0                          AS spent_value,
+           0                          AS spent_note_count,
+           CASE
+                WHEN ro.is_change THEN 1
+                ELSE 0
+           END AS change_note_count,
+           CASE
+                WHEN ro.is_change THEN 0
+                ELSE 1
+           END AS received_count,
+           CASE
+             WHEN (ro.memo IS NULL OR ro.memo = X'F6')
+               THEN 0
+             ELSE 1
+           END AS memo_present,
+           -- The wallet cannot receive transparent outputs in shielding transactions.
+           CASE
+             WHEN ro.pool = 0
+               THEN 1
+             ELSE 0
+           END AS does_not_match_shielding
+    -- A private receipt whose transaction label raw bytes disproved is not received in it.
+    FROM (SELECT * FROM v_received_outputs
+          WHERE NOT (pool = 4 AND id_within_pool_table IN
+              (SELECT note_id FROM ironwood_one_time_disputed_receipts))) ro
+    UNION
+    -- Outputs spent in this transaction
+    SELECT ro.account_id              AS account_id,
+           ros.transaction_id         AS transaction_id,
+           ro.pool                    AS pool,
+           id_within_pool_table,
+           -ro.value                  AS value,
+           0                          AS received_value,
+           ro.value                   AS spent_value,
+           1                          AS spent_note_count,
+           0                          AS change_note_count,
+           0                          AS received_count,
+           0                          AS memo_present,
+           -- The wallet cannot spend shielded outputs in shielding transactions.
+           CASE
+             WHEN ro.pool != 0
+               THEN 1
+             ELSE 0
+           END AS does_not_match_shielding
+    FROM v_received_outputs ro
+    JOIN v_received_output_spends ros
+         ON ros.pool = ro.pool
+         AND ros.received_output_id = ro.id_within_pool_table
+),
+-- What each account spent and received in each pool, per transaction. A pool the account
+-- received value in but spent nothing from is a pool that value crossed into from
+-- elsewhere, which is what `pool_crossings` below is built on.
+notes_by_pool AS (
+    SELECT account_id, transaction_id, pool,
+           SUM(spent_note_count)                   AS spent_note_count,
+           SUM(received_count + change_note_count) AS received_note_count,
+           SUM(received_value)                     AS received_value
+    FROM notes
+    GROUP BY account_id, transaction_id, pool
+),
+-- Obtain a count of the notes that the wallet created in each transaction,
+-- not counting change notes.
+sent_note_counts AS (
+    SELECT sent_notes.from_account_id     AS account_id,
+           sent_notes.transaction_id      AS transaction_id,
+           COUNT(DISTINCT sent_notes.id)  AS sent_notes,
+           SUM(
+             CASE
+               WHEN (sent_notes.memo IS NULL OR sent_notes.memo = X'F6' OR ro.transaction_id IS NOT NULL)
+                 THEN 0
+               ELSE 1
+             END
+           ) AS memo_count
+    FROM sent_notes
+    LEFT JOIN v_received_outputs ro ON sent_notes.id = ro.sent_note_id
+    WHERE COALESCE(ro.is_change, 0) = 0
+    -- Group by the sending account. A bare `account_id` here would resolve to the joined
+    -- `ro.account_id`, splitting one sender's notes into a group per receiving account.
+    GROUP BY sent_notes.from_account_id, sent_notes.transaction_id
+),
+-- Identifies the transactions that are wallet-internal transfers moving an account's own
+-- funds between shielded pools, and reports the value that crossed. `crossing_value` is
+-- non-NULL exactly for such a transaction, so it carries both the classification and the
+-- amount; see the `pool_crossing_value` column below.
+pool_crossings AS (
+    SELECT notes_by_pool.account_id     AS account_id,
+           notes_by_pool.transaction_id AS transaction_id,
+           CASE WHEN (
+                -- Every note spent and every output received by the wallet is shielded.
+                SUM(CASE WHEN notes_by_pool.pool = 0 THEN notes_by_pool.spent_note_count + notes_by_pool.received_note_count ELSE 0 END) = 0
+                -- The transaction spends at least one of the account's notes.
+                AND SUM(notes_by_pool.spent_note_count) > 0
+                -- At least one output was received in a pool the account spent nothing
+                -- from, so value crossed between pools.
+                AND SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_note_count ELSE 0 END) > 0
+                -- We do not know about any external outputs of the transaction.
+                AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0
+           )
+           -- The total value received in the pools the account did not spend from. The
+           -- condition above guarantees at least one such output, so when this branch is
+           -- taken the sum is never NULL.
+           THEN SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_value ELSE 0 END)
+           END AS crossing_value
+    FROM notes_by_pool
+    LEFT JOIN sent_note_counts
+         ON sent_note_counts.account_id = notes_by_pool.account_id
+         AND sent_note_counts.transaction_id = notes_by_pool.transaction_id
+    GROUP BY notes_by_pool.account_id, notes_by_pool.transaction_id
+),
+blocks_max_height AS (
+    SELECT MAX(blocks.height) AS max_height FROM blocks
+)
+SELECT accounts.uuid                AS account_uuid,
+       transactions.mined_height    AS mined_height,
+       transactions.txid            AS txid,
+       transactions.tx_index        AS tx_index,
+       COALESCE(transactions.expiry_height, (SELECT history_expiry_height
+        FROM ironwood_enhance_routing WHERE transaction_id = transactions.id_tx AND route = 0))
+           AS expiry_height,
+       transactions.raw             AS raw,
+       SUM(notes.value)             AS account_balance_delta,
+       SUM(notes.spent_value)       AS total_spent,
+       SUM(notes.received_value)    AS total_received,
+       transactions.fee             AS fee_paid,
+       SUM(notes.change_note_count) > 0  AS has_change,
+       MAX(COALESCE(sent_note_counts.sent_notes, 0))  AS sent_note_count,
+       SUM(notes.received_count)         AS received_note_count,
+       SUM(notes.memo_present) + MAX(COALESCE(sent_note_counts.memo_count, 0)) AS memo_count,
+       blocks.time                       AS block_time,
+       (
+            transactions.mined_height IS NULL
+            AND transactions.expiry_height BETWEEN 1 AND blocks_max_height.max_height
+       ) AS expired_unmined,
+       SUM(notes.spent_note_count) AS spent_note_count,
+       (
+            -- All of the wallet-spent and wallet-received notes are consistent with a
+            -- shielding transaction.
+            SUM(notes.does_not_match_shielding) = 0
+            -- The transaction contains at least one wallet-spent output.
+            AND SUM(notes.spent_note_count) > 0
+            -- The transaction contains at least one wallet-received note.
+            AND (SUM(notes.received_count) + SUM(notes.change_note_count)) > 0
+            -- We do not know about any external outputs of the transaction.
+            AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0
+       ) AS is_shielding,
+       -- The value that crossed pools, when this transaction is a wallet-internal transfer
+       -- between shielded pools; NULL when it is not such a transfer. A transaction is one
+       -- exactly when this column is non-NULL.
+       pool_crossings.crossing_value AS pool_crossing_value,
+       transactions.trust_status,
+       transactions.zip318_kind
+FROM notes
+JOIN accounts ON accounts.id = notes.account_id
+JOIN transactions ON transactions.id_tx = notes.transaction_id
+LEFT JOIN blocks_max_height
+LEFT JOIN blocks ON blocks.height = transactions.mined_height
+LEFT JOIN sent_note_counts
+     ON sent_note_counts.account_id = notes.account_id
+     AND sent_note_counts.transaction_id = notes.transaction_id
+LEFT JOIN pool_crossings
+     ON pool_crossings.account_id = notes.account_id
+     AND pool_crossings.transaction_id = notes.transaction_id
+GROUP BY notes.account_id, notes.transaction_id"###) }) },
+        Effect { name: r###"v_tx_outputs"###, object: Some(Object { kind: r###"view"###, table: r###"v_tx_outputs"###, sql: Some(r###"CREATE VIEW v_tx_outputs AS
+WITH unioned AS (
+    -- select all outputs received by the wallet
+    SELECT t.id_tx                      AS transaction_id,
+           t.txid                       AS txid,
+           t.mined_height               AS mined_height,
+           IFNULL(t.trust_status, 0)    AS trust_status,
+           ro.pool                      AS output_pool,
+           ro.output_index              AS output_index,
+           from_account.uuid            AS from_account_uuid,
+           to_account.uuid              AS to_account_uuid,
+           -- for a transparent output, the address at which it was received is
+           -- the transparent receiver itself, not a unified address containing it
+           CASE ro.pool
+                WHEN 0 THEN a.cached_transparent_receiver_address
+                ELSE a.address
+           END                          AS to_address,
+           0                            AS is_sent_row,
+           a.diversifier_index_be       AS diversifier_index_be,
+           ro.value                     AS value,
+           ro.is_change                 AS is_change,
+           ro.memo                      AS memo,
+           a.key_scope                  AS recipient_key_scope
+    -- A private receipt whose transaction label raw bytes disproved is not an output of it.
+    FROM (SELECT * FROM v_received_outputs
+          WHERE NOT (pool = 4 AND id_within_pool_table IN
+              (SELECT note_id FROM ironwood_one_time_disputed_receipts))) ro
+    JOIN transactions t
+        ON t.id_tx = ro.transaction_id
+    LEFT JOIN addresses a ON a.id = ro.address_id
+    -- join to the sent_notes table to obtain `from_account_id`
+    LEFT JOIN sent_notes ON sent_notes.id = ro.sent_note_id
+    -- join on the accounts table to obtain account UUIDs
+    LEFT JOIN accounts from_account ON from_account.id = sent_notes.from_account_id
+    LEFT JOIN accounts to_account ON to_account.id = ro.account_id
+    UNION ALL
+    -- select all outputs sent by the wallet
+    SELECT t.id_tx                      AS transaction_id,
+           t.txid                       AS txid,
+           t.mined_height               AS mined_height,
+           IFNULL(t.trust_status, 0)    AS trust_status,
+           sent_notes.output_pool       AS output_pool,
+           sent_notes.output_index      AS output_index,
+           from_account.uuid            AS from_account_uuid,
+           NULL                         AS to_account_uuid,
+           sent_notes.to_address        AS to_address,
+           1                            AS is_sent_row,
+           NULL                         AS diversifier_index_be,
+           sent_notes.value             AS value,
+           0                            AS is_change,
+           sent_notes.memo              AS memo,
+           NULL                         AS recipient_key_scope
+    FROM sent_notes
+    JOIN transactions t
+        ON t.id_tx = sent_notes.transaction_id
+    LEFT JOIN v_received_outputs ro ON ro.sent_note_id = sent_notes.id
+    -- join on the accounts table to obtain account UUIDs
+    LEFT JOIN accounts from_account ON from_account.id = sent_notes.from_account_id
+)
+-- merge duplicate rows while retaining maximum information
+SELECT
+    transaction_id,
+    MAX(txid)                   AS txid,
+    MAX(mined_height)           AS tx_mined_height,
+    MIN(trust_status)           AS tx_trust_status,
+    output_pool,
+    output_index,
+    MAX(from_account_uuid)      AS from_account_uuid,
+    MAX(to_account_uuid)        AS to_account_uuid,
+    -- the recipient address recorded when the wallet created the output is
+    -- authoritative; the receiving address is reported only for outputs the
+    -- wallet did not create
+    COALESCE(
+        MAX(CASE WHEN is_sent_row THEN to_address END),
+        MAX(CASE WHEN NOT is_sent_row THEN to_address END)
+    )                           AS to_address,
+    MAX(value)                  AS value,
+    MAX(is_change)              AS is_change,
+    MAX(memo)                   AS memo,
+    MAX(recipient_key_scope)    AS recipient_key_scope
+FROM unioned
+GROUP BY transaction_id, output_pool, output_index"###) }) },
+    ] },
+    // transparent_txid_enhancement; source sha256 135c0895571727a9d76d35a6b54e42bc0f860e16bd0cfd63f367157498a0da47
+    Migration { id: 0x73d751a3dbdc461a9154e061903aae4f, dependencies: &[0x8f4c321004e149eb9de2d713ee0a8426], effects: &[
+        Effect { name: r###"sqlite_autoindex_transparent_tx_display_outputs_1"###, object: Some(Object { kind: r###"index"###, table: r###"transparent_tx_display_outputs"###, sql: None }) },
+        Effect { name: r###"transparent_detail_work"###, object: Some(Object { kind: r###"table"###, table: r###"transparent_detail_work"###, sql: Some(r###"CREATE TABLE transparent_detail_work (
+                transaction_id INTEGER PRIMARY KEY REFERENCES transactions(id_tx) ON DELETE CASCADE,
+                reasons INTEGER NOT NULL CHECK (reasons > 0 AND reasons < 8),
+                attempts INTEGER NOT NULL DEFAULT 0 CHECK (attempts >= 0),
+                next_attempt_at INTEGER NOT NULL DEFAULT 0,
+                attempted_at INTEGER,
+                attempted_height INTEGER CHECK (attempted_height >= 0),
+                last_outcome INTEGER CHECK (last_outcome BETWEEN 0 AND 6),
+                last_map_sha256 BLOB CHECK (length(last_map_sha256) = 32)
+            )"###) }) },
+        Effect { name: r###"transparent_tx_display"###, object: Some(Object { kind: r###"table"###, table: r###"transparent_tx_display"###, sql: Some(r###"CREATE TABLE transparent_tx_display (
+                transaction_id INTEGER PRIMARY KEY REFERENCES transactions(id_tx) ON DELETE CASCADE,
+                coinbase INTEGER NOT NULL CHECK (coinbase IN (0, 1)),
+                fee_zat INTEGER NOT NULL CHECK (fee_zat >= 0 AND fee_zat <= 2100000000000000),
+                input_count INTEGER NOT NULL CHECK (input_count >= 0 AND input_count <= 4294967295),
+                output_count INTEGER NOT NULL CHECK (output_count >= 0 AND output_count <= 4294967295),
+                shielded INTEGER NOT NULL CHECK (shielded IN (0, 1)),
+                sender_kind INTEGER NOT NULL CHECK (sender_kind IN (0, 1, 2, 3)),
+                sender_hash BLOB CHECK (length(sender_hash) = 20),
+                multiple_source_scripts INTEGER NOT NULL CHECK (multiple_source_scripts IN (0, 1)),
+                shielded_and_transparent_funding INTEGER NOT NULL
+                    CHECK (shielded_and_transparent_funding IN (0, 1)),
+                shard_id INTEGER NOT NULL,
+                revision INTEGER NOT NULL CHECK (revision >= 0),
+                map_sha256 BLOB NOT NULL CHECK (length(map_sha256) = 32),
+                looked_up_height INTEGER NOT NULL CHECK (looked_up_height >= 0),
+                stored_at INTEGER NOT NULL,
+                CHECK ((sender_kind IN (1, 2)) = (sender_hash IS NOT NULL)),
+                CHECK ((sender_kind = 0) = (input_count = 0)),
+                CHECK (coinbase = 0 OR (fee_zat = 0 AND input_count = 0)),
+                CHECK (coinbase = 1 OR input_count > 0 OR shielded = 1),
+                CHECK (multiple_source_scripts = 0 OR input_count >= 2),
+                CHECK (shielded_and_transparent_funding = 0 OR (input_count > 0 AND shielded = 1))
+            )"###) }) },
+        Effect { name: r###"transparent_tx_display_outputs"###, object: Some(Object { kind: r###"table"###, table: r###"transparent_tx_display_outputs"###, sql: Some(r###"CREATE TABLE transparent_tx_display_outputs (
+                transaction_id INTEGER NOT NULL
+                    REFERENCES transparent_tx_display(transaction_id) ON DELETE CASCADE,
+                output_index INTEGER NOT NULL CHECK (output_index IN (0, 1)),
+                value_zat INTEGER NOT NULL CHECK (value_zat >= 0 AND value_zat <= 2100000000000000),
+                address_kind INTEGER NOT NULL CHECK (address_kind IN (1, 2, 3)),
+                address_hash BLOB CHECK (length(address_hash) = 20),
+                CHECK ((address_kind = 3) = (address_hash IS NULL)),
+                PRIMARY KEY (transaction_id, output_index)
+            )"###) }) },
+    ] },
+    // transparent_detail_content_failures; source sha256 120b30495f3894b9b02975368570c1ae75291d3f5d2ac72a8f46739ba7e7bbe0
+    Migration { id: 0xe5339f96a98a4047827428efdb9107ce, dependencies: &[0x73d751a3dbdc461a9154e061903aae4f], effects: &[
+        Effect { name: r###"transparent_detail_work"###, object: Some(Object { kind: r###"table"###, table: r###"transparent_detail_work"###, sql: Some(r###"CREATE TABLE transparent_detail_work (
+                transaction_id INTEGER PRIMARY KEY REFERENCES transactions(id_tx) ON DELETE CASCADE,
+                reasons INTEGER NOT NULL CHECK (reasons > 0 AND reasons < 8),
+                attempts INTEGER NOT NULL DEFAULT 0 CHECK (attempts >= 0),
+                next_attempt_at INTEGER NOT NULL DEFAULT 0,
+                attempted_at INTEGER,
+                attempted_height INTEGER CHECK (attempted_height >= 0),
+                last_outcome INTEGER CHECK (last_outcome BETWEEN 0 AND 6),
+                last_map_sha256 BLOB CHECK (length(last_map_sha256) = 32)
+            , content_failures INTEGER NOT NULL
+                DEFAULT 0 CHECK (content_failures >= 0))"###) }) },
     ] },
 ];

@@ -4,7 +4,7 @@ fn propose(g:u32,op:&str,input:Value)->std::result::Result<Value,String>{
 }
 #[test]
 fn proposal_retains_native_selection_locks_and_reopens() {
-    let fixture=full_scan_fixture();
+    let fixture=confirmed_scan_fixture();
     let (path,g)=open();
     let (_,other)=open();
     let account=call(g,"account_import",fixture["import"].clone()).unwrap();
@@ -44,9 +44,9 @@ fn proposal_retains_native_selection_locks_and_reopens() {
     assert_eq!(plan["steps"][0]["outputs"][1]["address"],Value::Null);
     for key in ["proposalId","reviewCommitment"] {assert_eq!(plan[key].as_str().unwrap().len(),64);assert_ne!(plan[key],plan["operationId"]);}
     assert_ne!(plan["proposalId"],plan["reviewCommitment"]);
-    assert_eq!(plan["targetHeight"],101);
+    assert_eq!(plan["targetHeight"],102);
     assert_eq!(plan["steps"][0]["transactionVersion"],6);
-    assert_eq!(plan["expiryHeight"],141);
+    assert_eq!(plan["expiryHeight"],142);
     input["revision"]=plan["revision"].clone();
     assert_eq!(propose(g,"proposal_create",input).unwrap_err(),"INSUFFICIENT_FUNDS");
     crate::wallet::storage_close(g).unwrap();
@@ -105,7 +105,7 @@ fn proposal_schema_rejects_wrong_object_before_open() {
 }
 
 pub(super) fn shielding_fixture() -> Value {
-    let fixture=full_scan_fixture();let (path,g)=open();
+    let fixture=confirmed_scan_fixture();let (path,g)=open();
     let account=call(g,"account_import",fixture["import"].clone()).unwrap();
     let scan=|op:&str,v:Value|crate::wallet::scan::scan_call(g,op,&v.to_string()).map(|s|serde_json::from_str::<Value>(&s).unwrap()).unwrap();
     let mut revision=scan("scan_plan",json!({"target":fixture["target"]}))["revision"].clone();

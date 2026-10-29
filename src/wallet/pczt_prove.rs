@@ -26,7 +26,7 @@ fn prove(value:pczt::Pczt,spend:&[u8],output:&[u8])->Result<pczt::Pczt> {
         role=role.create_sapling_proofs(&spend,&output).map_err(|_|Failure::from("ROLE_PRECONDITION"))?;
     }
     if role.requires_ironwood_proof(){
-        let key=orchard::circuit::ProvingKey::build(orchard::circuit::OrchardCircuitVersion::PostNu6_3);
+        let key=orchard::circuit::ProvingKey::build(orchard::circuit::OrchardCircuitVersion::PostNu6_3).map_err(|_|Failure::from("ROLE_PRECONDITION"))?;
         role=role.create_ironwood_proof(&key).map_err(|_|Failure::from("ROLE_PRECONDITION"))?;
     }
     Ok(role.finish())

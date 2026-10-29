@@ -21,17 +21,18 @@ pub fn transaction_id(raw: &[u8], branch: u32) -> Result<Vec<u8>, String> {
     Ok(tx.txid().as_ref().to_vec())
 }
 
-const UPGRADES: [NetworkUpgrade; 10] = [
+const UPGRADES: [NetworkUpgrade; 11] = [
     NetworkUpgrade::Overwinter, NetworkUpgrade::Sapling, NetworkUpgrade::Blossom,
     NetworkUpgrade::Heartwood, NetworkUpgrade::Canopy, NetworkUpgrade::Nu5,
-    NetworkUpgrade::Nu6, NetworkUpgrade::Nu6_1, NetworkUpgrade::Nu6_2, NetworkUpgrade::Nu6_3,
+    NetworkUpgrade::Nu6, NetworkUpgrade::Nu6_1, NetworkUpgrade::Nu6_2, NetworkUpgrade::Nu6_3, NetworkUpgrade::Nu7,
 ];
-const KEYS: [&str; 10] = ["Overwinter", "Sapling", "Blossom", "Heartwood", "Canopy", "Nu5", "Nu6", "Nu6_1", "Nu6_2", "Nu6_3"];
+const KEYS: [&str; 11] = ["Overwinter", "Sapling", "Blossom", "Heartwood", "Canopy", "Nu5", "Nu6", "Nu6_1", "Nu6_2", "Nu6_3", "Nu7"];
 
 #[derive(Clone, Debug)]
 struct Document {
+    format: &'static str,
     encoding: NetworkType,
-    heights: [Option<BlockHeight>; 10],
+    heights: [Option<BlockHeight>; 11],
 }
 impl Parameters for Document {
     fn network_type(&self) -> NetworkType { self.encoding }
@@ -40,6 +41,12 @@ impl Parameters for Document {
     }
 }
 impl Document {
+    fn parse_format(format: &str, bytes: &[u8]) -> Result<Self, &'static str> {
+        let document = Self::parse(bytes)?;
+        if format != document.format { return Err("unsupported network format"); }
+        Ok(document)
+    }
+
     fn parse(bytes: &[u8]) -> Result<Self, &'static str> {
         let invalid = "invalid network document";
         if bytes.len() > 256 { return Err(invalid); }
@@ -47,9 +54,12 @@ impl Document {
         let rest = text.strip_prefix("{\"encoding\":\"").ok_or(invalid)?;
         let (name, mut rest) = rest.split_once('"').ok_or(invalid)?;
         let encoding = match name { "main" => NetworkType::Main, "test" => NetworkType::Test, "regtest" => NetworkType::Regtest, _ => return Err(invalid) };
-        let mut heights = [None; 10];
+        let mut heights = [None; 11];
+        let mut format = "zcash-js-network/2";
         let mut previous = Some(0);
         for (i, key) in KEYS.iter().enumerate() {
+            // Legacy bytes remain a distinct wallet identity with NU7 inactive.
+            if i == 10 && rest == "}" { format = "zcash-js-network/1"; break; }
             rest = rest.strip_prefix(&format!(",\"{key}\":")).ok_or(invalid)?;
             let end = rest.find([',', '}']).ok_or(invalid)?;
             let token = &rest[..end];
@@ -63,7 +73,7 @@ impl Document {
             rest = &rest[end..];
         }
         if rest != "}" { return Err(invalid); }
-        Ok(Self { encoding, heights })
+        Ok(Self { format, encoding, heights })
     }
 }
 
@@ -71,8 +81,7 @@ impl Document {
 /// The JS entry checks types/ranges before generated glue; raw glue is internal.
 #[wasm_bindgen]
 pub fn consensus_branch(format: &str, bytes: &[u8], height: u32) -> Result<u32, String> {
-    if format != "zcash-js-network/1" { return Err("unsupported network format".into()); }
-    let document = Document::parse(bytes)?;
+    let document = Document::parse_format(format, bytes)?;
     Ok(u32::from(BranchId::for_height(&document, height.into())))
 }
 

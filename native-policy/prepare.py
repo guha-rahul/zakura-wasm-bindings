@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Materialize the owned RC4 policy patches from verified, read-only Cargo inputs."""
+"""Materialize the owned wallet policy patches from verified, read-only Cargo inputs."""
 import hashlib
 import json
 import os

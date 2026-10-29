@@ -85,7 +85,8 @@ impl StandalonePczt {
 pub fn parse_standalone_pczt(parameters:&[u8],genesis:&[u8],height:u32,branch:u32,bytes:&[u8],maximum:u32)->Result<StandalonePczt> {
     if maximum==0 || genesis.len()!=32 {return Err("INVALID_ARGUMENT".into());}
     if bytes.len()>maximum as usize {return Err("RESOURCE_LIMIT".into());}
-    if crate::consensus_branch("zcash-js-network/1",parameters,height)? != branch {return Err("NETWORK_MISMATCH".into());}
+    let document=crate::Document::parse(parameters).map_err(|_|"INVALID_ARGUMENT")?;
+    if u32::from(BranchId::for_height(&document,height.into())) != branch {return Err("NETWORK_MISMATCH".into());}
     // Upstream parse accepts trailing bytes. Reuse its public versioned wire
     // types to check exact consumption; reserialization may normalize v2 to v1.
     let remaining=match u32::from_le_bytes(bytes.get(4..8).ok_or(INVALID)?.try_into().unwrap()) {
@@ -96,7 +97,6 @@ pub fn parse_standalone_pczt(parameters:&[u8],genesis:&[u8],height:u32,branch:u3
     if !remaining.is_empty() {return Err(INVALID.into());}
     let value=Pczt::parse(bytes).map_err(|_|INVALID)?;
     let global=value.global();
-    let document=crate::Document::parse(parameters).map_err(|_|"INVALID_ARGUMENT")?;
     if serde_json::to_value(global).map_err(|_|INVALID)?["coin_type"].as_u64()!=Some(u64::from(document.network_type().coin_type())) {return Err("NETWORK_MISMATCH".into());}
     if *global.consensus_branch_id()!=branch {return Err("NETWORK_MISMATCH".into());}
     let version=match (*global.tx_version(),*global.version_group_id()) {

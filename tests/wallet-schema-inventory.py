@@ -45,7 +45,7 @@ assert re.search(r'test result: ok\. \d+ passed; 0 failed', text)
 assert 'schema_document_committed_prefixes_resume ... ok' in text
 paths = re.findall(r'R1 prefix=\d+ user_version=\d+ ids=[^\n]*? path=([^\n]+)', text)
 new = [inspect(Path(path+'.interrupted.db')) for path in paths]
-assert len(new) == 67 and sorted(x['count'] for x in new) == list(range(67))
+assert len(new) == 88 and sorted(x['count'] for x in new) == list(range(88))
 assert not any(x['parameter_contradictions'] for x in new)
 source = json.loads(Path(__file__).with_name('wallet-schema-source.json').read_text())
 for migration in source:

@@ -80,8 +80,9 @@ pub fn pczt_finalize_call(generation:u32,operation_id:&str,artifact_id:&str,spen
         let mut domain=domain.try_borrow_mut().map_err(|_|Failure::from("STORAGE_BUSY"))?;
         if domain.failed.is_some(){return Err("DOMAIN_INVALID".into());}
         let active=domain.active.iter_mut().find(|a|a.generation==generation).ok_or(Failure::from("STALE_HANDLE"))?;
+        let parameters=active.wallet.params().clone();
         active.wallet.transactionally_with_extension(|db,ext|->Result<Value>{
-            let txid=zcash_client_backend::data_api::wallet::extract_and_store_transaction_from_pczt::<_,std::convert::Infallible>(db,value,keys.as_ref().map(|(s,o)|(s,o)),None).map_err(|_|Failure::from("ROLE_PRECONDITION"))?;
+            let txid=zcash_client_backend::data_api::wallet::extract_and_store_transaction_from_pczt::<_,std::convert::Infallible>(db,&parameters,value,keys.as_ref().map(|(s,o)|(s,o)),None).map_err(|_|Failure::from("ROLE_PRECONDITION"))?;
             let transaction=db.get_transaction(txid)?.ok_or(Failure::from("STORAGE_ERROR"))?;let mut bytes=vec![];transaction.write(&mut bytes).map_err(|_|Failure::from("STORAGE_ERROR"))?;
             if bytes.len()>maximum as usize{return Err("RESOURCE_LIMIT".into());}
             let digest=Sha256::digest(&bytes).to_vec();let txid_bytes=txid.as_ref().to_vec();

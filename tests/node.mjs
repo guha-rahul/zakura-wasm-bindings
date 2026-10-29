@@ -24,6 +24,11 @@ for (const [name, input, invoke, message] of [
 }
 await initialize(wasm);
 assert.deepEqual(consensusContext('zcash-js-network/1', bytes, 20), { height: 20, branchId: 0x76b809bb });
+const nu7 = new TextEncoder().encode(new TextDecoder().decode(bytes).replace('}', ',"Nu7":110}'));
+assert.deepEqual(consensusContext('zcash-js-network/2', nu7, 109), { height: 109, branchId: 0x37a5165b });
+assert.deepEqual(consensusContext('zcash-js-network/2', nu7, 110), { height: 110, branchId: 0x77190ad9 });
+assert.throws(() => consensusContext('zcash-js-network/1', nu7, 110));
+assert.throws(() => consensusContext('zcash-js-network/2', bytes, 110));
 for (const height of [-1, 4294967296, 1.1, NaN, Infinity, '20', 20n, null, {}, -Infinity]) {
   assert.throws(() => consensusContext('zcash-js-network/1', bytes, height), /invalid height/);
 }

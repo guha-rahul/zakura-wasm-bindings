@@ -62,7 +62,7 @@ pub fn signer_capabilities(token:u32)->Result<String,String> {
     let mut authorizations=Vec::new();
     for (version,branches,pczt_versions) in [
         (5,vec![BranchId::Nu5,BranchId::Nu6,BranchId::Nu6_1,BranchId::Nu6_2],vec![1,2]),
-        (6,vec![BranchId::Nu6_3],vec![2]),
+        (6,vec![BranchId::Nu6_3,BranchId::Nu7],vec![2]),
     ] {
         for pool in if version==5 { &["transparent","sapling"][..] } else { &["transparent","sapling","ironwood"][..] } {
             let circuits=match *pool { "sapling"=>vec!["sapling-groth16/1"],"ironwood"=>vec!["ironwood-post-nu6_3/1"],_=>vec![] };
@@ -224,6 +224,21 @@ mod authorization_tests {
     use zcash_script::script::Evaluable;
     const PARAMS:&[u8]=br#"{"encoding":"regtest","Overwinter":10,"Sapling":20,"Blossom":30,"Heartwood":40,"Canopy":50,"Nu5":60,"Nu6":70,"Nu6_1":80,"Nu6_2":90,"Nu6_3":100}"#;
     fn key(seed:u8)->UnifiedSpendingKey {UnifiedSpendingKey::from_seed(&crate::Document::parse(PARAMS).unwrap(),&[seed;32],zip32::AccountId::ZERO).unwrap()}
+    #[test]
+    fn nu7_wallet_signer_advertises_v6_authorization() {
+        let parameters=std::str::from_utf8(PARAMS).unwrap().replace('}', ",\"Nu7\":110}").into_bytes();
+        let token=SIGNERS.with(|table| {
+            let mut table=table.borrow_mut();
+            table.push(Some(Signer {key:key(7),parameters,genesis:vec![3;32],account_index:0,bindings:vec![]}));
+            table.len() as u32
+        });
+        let capabilities:serde_json::Value=serde_json::from_str(&signer_capabilities(token).unwrap()).unwrap();
+        signer_release(token).unwrap();
+        for pool in ["transparent","sapling","ironwood"] {
+            assert!(capabilities["authorizations"].as_array().unwrap().iter().any(|role|
+                role["pool"]==pool && role["txVersion"]==6 && role["branchIds"].as_array().unwrap().contains(&json!(0x77190ad9u32))));
+        }
+    }
     fn fixture_for(key:&UnifiedSpendingKey,branch:BranchId)->Pczt {
         // Native Creator/Updater plus synthetic effects, following upstream role fixtures.
         // This qualifies actual authorization signatures, not proofs or spendability.
@@ -242,9 +257,9 @@ mod authorization_tests {
         let rk:[u8;32]=sapling::keys::SpendValidatingKey::from(&key.sapling().expsk.ask).randomize(&1u64.into()).into();
         value["sapling"]=json!({"spends":[{"cv":cv,"nullifier":nullifier,"recipient":recipient.to_bytes().to_vec(),"value":1,"rseed":vec![7u8;32],"rcv":alpha,"witness":[0,witness],"rk":rk,"alpha":alpha,"proof_generation_key":[sapling::keys::SpendValidatingKey::from(&key.sapling().expsk.ask).to_bytes(),key.sapling().expsk.nsk.to_bytes()],"proprietary":{}}],"outputs":[],"value_sum":1,"anchor":anchor});
         let ask=orchard::keys::SpendAuthorizingKey::from(key.orchard());
-        let rk:[u8;32]=orchard::keys::SpendValidatingKey::from(&ask).randomize(&1u64.into()).into();
+        let rk:[u8;32]=orchard::keys::SpendValidatingKey::from(&ask).randomize(&orchard::primitives::redpallas::SpendAuthRandomizer::from_bytes(alpha).unwrap()).into();
         let cv=orchard::value::ValueCommitment::derive(orchard::value::NoteValue::from_raw(0)-orchard::value::NoteValue::from_raw(0),orchard::value::ValueCommitTrapdoor::from_bytes(alpha).unwrap()).to_bytes();
-        if branch==BranchId::Nu6_3 { value["ironwood"]=json!({"actions":[{"cv_net":cv,"spend":{"nullifier":vec![0u8;32],"rk":rk,"alpha":alpha,"fvk":orchard::keys::FullViewingKey::from(key.orchard()).to_bytes().to_vec(),"proprietary":{}},"output":{"cmx":vec![0u8;32],"ephemeral_key":rk,"enc_ciphertext":{"Encrypted":vec![0u8;580]},"out_ciphertext":vec![0u8;80],"proprietary":{}}}],"flags":7,"value_sum":[0,true],"anchor":null,"note_version":"V3"}); }
+        if matches!(branch,BranchId::Nu6_3|BranchId::Nu7) { value["ironwood"]=json!({"actions":[{"cv_net":cv,"spend":{"nullifier":vec![0u8;32],"rk":rk,"alpha":alpha,"fvk":orchard::keys::FullViewingKey::from(key.orchard()).to_bytes().to_vec(),"proprietary":{}},"output":{"cmx":vec![0u8;32],"ephemeral_key":rk,"enc_ciphertext":{"Encrypted":vec![0u8;580]},"out_ciphertext":vec![0u8;80],"proprietary":{}}}],"flags":7,"value_sum":[0,true],"anchor":null,"note_version":"V3"}); }
         let path=vec![0x8000002c,0x80000001,0x80000000,0,5];
         let p=crate::Document::parse(PARAMS).unwrap();
         let public=key.transparent().to_account_pubkey().derive_pubkey_at_bip32_path(&p,zip32::AccountId::ZERO,&path.iter().map(|n|(*n).into()).collect::<Vec<_>>()).unwrap();
@@ -256,6 +271,27 @@ mod authorization_tests {
         })).unwrap().finish()
     }
     fn fixture(key:&UnifiedSpendingKey)->Pczt { fixture_for(key,BranchId::Nu6_3) }
+    #[test]
+    fn nu7_authorization_signatures_verify_and_reject_a_pre_activation_context() {
+        let parameters=std::str::from_utf8(PARAMS).unwrap().replace('}', ",\"Nu7\":110}").into_bytes();
+        let authority=key(63);
+        let original=fixture_for(&authority,BranchId::Nu7);
+        let bytes=original.clone().serialize().unwrap();
+        let token=SIGNERS.with(|table| {
+            let mut table=table.borrow_mut();
+            table.push(Some(Signer {key:authority,parameters:parameters.clone(),genesis:vec![3;32],account_index:0,bindings:vec![]}));
+            table.len() as u32
+        });
+        assert_eq!(signer_authorize(token,&parameters,&[3;32],109,0x77190ad9,&bytes,65536).unwrap_err(),"NETWORK_MISMATCH");
+        let signed=Pczt::parse(&signer_authorize(token,&parameters,&[3;32],110,0x77190ad9,&bytes,65536).unwrap()).unwrap();
+        signer_release(token).unwrap();
+        let mut sapling_signature=None;
+        Verifier::new(signed.clone()).with_sapling::<(),_>(|bundle|{sapling_signature=bundle.spends()[0].spend_auth_sig().clone();Ok(())}).unwrap()
+            .with_transparent::<(),_>(|bundle|{assert_eq!(bundle.inputs()[0].partial_signatures().len(),1);Ok(())}).unwrap();
+        let mut verifier=Role::new(original).unwrap();
+        verifier.apply_sapling_signature(0,sapling_signature.unwrap()).unwrap();
+        verifier.apply_ironwood_signature(0,signed.ironwood().actions()[0].spend().spend_auth_sig().unwrap().into()).unwrap();
+    }
     #[test]
     fn native_signer_authorizes_three_pools_with_verified_signatures() {
         assert_eq!(super::super::accounts::mnemonic_account(0,"account_import_hd","{}",SecretVec::new(b"abandon ".repeat(12)),SecretVec::new(vec![])).err().unwrap().0,"INVALID_MNEMONIC");
