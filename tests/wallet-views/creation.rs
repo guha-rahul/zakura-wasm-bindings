@@ -16,6 +16,29 @@ pub(super) fn ready(g:u32) {
     crate::wallet::sync::sync_call(g,"scan_complete",&input.to_string()).unwrap();
 }
 #[test]
+fn creation_defers_unspent_discovery_until_a_scanned_tip_can_bind_the_reply() {
+    let (_,g)=open();
+    let prior=complete(g,99);
+    crate::wallet::sync::sync_call(g,"scan_complete",&prior.to_string()).unwrap();
+    hd(g,"account_create_hd",40,json!({})).unwrap();
+    let requests=||->Value {serde_json::from_str(&crate::wallet::enhancement::enhancement_call(g,"enhancement_requests","{}").unwrap()).unwrap()};
+    assert_eq!(requests()["requests"],json!([]),"a birthday checkpoint is not a scanned UTXO observation point");
+    let same=complete(g,99);
+    crate::wallet::sync::sync_call(g,"scan_complete",&same.to_string()).unwrap();
+    let target=json!({"height":100,"hash":"08".repeat(32)});
+    let plan:Value=serde_json::from_str(&crate::wallet::scan::scan_call(g,"scan_plan",&json!({"target":target}).to_string()).unwrap()).unwrap();
+    let block=zcash_client_backend::proto::compact_formats::CompactBlock {
+        height:100,hash:vec![8;32],prev_hash:vec![7;32],
+        chain_metadata:Some(zcash_client_backend::proto::compact_formats::ChainMetadata {
+            sapling_commitment_tree_size:0,orchard_commitment_tree_size:0,ironwood_commitment_tree_size:0
+        }),..Default::default()
+    };
+    crate::wallet::scan::scan_call(g,"scan_ingest_batch",&json!({"revision":plan["revision"],"target":target,
+        "priorTreeState":prior["treeState"],"blocks":[hex::encode(block.encode_to_vec())]}).to_string()).unwrap();
+    assert!(requests()["requests"].as_array().unwrap().iter().any(|r|r["kind"]=="address"&&r["outputStatus"]=="unspent"));
+    crate::wallet::storage_close(g).unwrap();
+}
+#[test]
 fn creation_empty_completion_reopen_and_newer_target_freshness() {
     let (path,g)=open();
     let before=std::fs::read(&path).unwrap();

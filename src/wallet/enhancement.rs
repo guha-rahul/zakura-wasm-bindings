@@ -74,12 +74,19 @@ fn execute(generation:u32,operation:&str,input:&Value)->Result<Value> {
             requests.extend(db.transaction_data_requests()?.into_iter().map(|request|match request {
                 TransactionDataRequest::TransactionsInvolvingAddress(r)=>Request::TransactionsInvolvingAddress(r),
             }));
+            // A new account's birthday is not a scanned block that can bind a UTXO reply.
+            let unspent_ready=db.chain_height()?.map(|height|db.get_block_hash(height)).transpose()?.flatten().is_some();
+            if !unspent_ready {
+                requests.retain(|request|!matches!(request,Request::TransactionsInvolvingAddress(r)
+                    if matches!(r.tx_status_filter(),TransactionStatusFilter::All)
+                    && matches!(r.output_status_filter(),OutputStatusFilter::Unspent)&&r.block_range_end().is_none()));
+            }
             let mut ordinary=std::collections::BTreeMap::new();
             // Upstream requests discover ephemeral returns and spends of known outputs,
             // not initial deposits to ordinary receivers. Poll the wallet-owned receiver
             // window once per native scan plan. Completion is owner-local: reopening,
             // replanning or rewinding must query again, including at the same height.
-            if db.chain_height()?.is_some() {
+            if unspent_ready {
                 for account in db.get_account_ids()? {
                     let mut receivers=db.get_transparent_receivers(account,true,false)?
                         .into_keys().collect::<Vec<_>>();
