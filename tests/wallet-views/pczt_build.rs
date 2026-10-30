@@ -4,7 +4,7 @@ fn invoke(g:u32,operation:&str,input:Value)->std::result::Result<Value,String> {
 }
 const WORDS:&str="abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
 fn prepared(post_zip212:bool)->(String,u32,Value) {let (path,g,plan,_)=prepared_signer(post_zip212,false,false);(path,g,plan)}
-fn scan_fixture(with_signer:bool,internal:bool)->Value {
+pub(super) fn scan_fixture(with_signer:bool,internal:bool)->Value {
         let p=crate::Document::parse(PARAMS).unwrap();let mut import=fixture(10);
         let key=if with_signer {
             let seed=bip39::Mnemonic::parse(WORDS).unwrap().to_seed("");
