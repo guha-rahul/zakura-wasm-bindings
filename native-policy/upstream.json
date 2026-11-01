@@ -1,14 +1,14 @@
 {
   "zakura-client-backend": {
     "name": "zakura-client-backend",
-    "version": "0.1.0-rc4",
+    "version": "0.1.0-rc9.4",
     "source": "registry+https://github.com/rust-lang/crates.io-index",
-    "checksum": "5a70f61bb142b29dfd260561cccb21a657acdf86c2e901189817acdf3e25d5d6"
+    "checksum": "7f29d97e137b6ab0fdb28d88f4c27b11017777cfd3fa41f6cb333513f3c715d5"
   },
   "zakura-client-sqlite": {
     "name": "zakura-client-sqlite",
-    "version": "0.1.0-rc4",
+    "version": "0.1.0-rc9.4",
     "source": "registry+https://github.com/rust-lang/crates.io-index",
-    "checksum": "0b1a4276239587ef4090c28320246c76fb25a6a76b788020d0082e128153c53b"
+    "checksum": "cb382cf113b67c29041e0a8bf4a5cd29ef37df803b0394183649c4842c66043b"
   }
 }

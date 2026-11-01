@@ -22,7 +22,7 @@ export async function initializeStorage(wasm, backend, format, parameters, genes
 function network(format, parameters, genesis) {
   const params = copyBytes(parameters, 256, 'invalid parameters');
   const identity = copyBytes(genesis, 32, 'invalid genesis');
-  if (identity.length !== 32 || format !== 'zcash-js-network/1') throw TypeError('INVALID_ARGUMENT');
+  if (identity.length !== 32 || !['zcash-js-network/1', 'zcash-js-network/2'].includes(format)) throw TypeError('INVALID_ARGUMENT');
   return { params, identity };
 }
 

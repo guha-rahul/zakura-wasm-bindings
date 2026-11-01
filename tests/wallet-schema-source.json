@@ -186,7 +186,7 @@
       "761884d630d844efb2040b82551c4ca1",
       "0ddbe561825942129ab766fdc4a74e1d"
     ],
-    "source_sha256": "0eebdf22f9aa75ecad096ce6aa266ad8dd42feeb6155c3cf6b5e10cb5316d5ff",
+    "source_sha256": "d4063973e8204d8be29a1cadb9bb68a3f056628b2b03cc81b6d2e233704a23ca",
     "source_sql_lines": [
       63,
       139,
@@ -399,7 +399,7 @@
     "dependencies": [
       "7da6489de83546578be5f512bcce6cbf"
     ],
-    "source_sha256": "386ebfbe47673f74f4dc5586064128a84421c27db5a368f8c93ac0f1f2cd7b20",
+    "source_sha256": "b9bbaffcd5692e0ace89042923a8209568803aec74a080e8559ce3359856548b",
     "source_sql_lines": [
       110
     ],
@@ -989,7 +989,7 @@
       "07610aacb0e34ba8aaa6cda606f0fd7b",
       "e2d71ac56a444c6ba9a06d0a79d355f1"
     ],
-    "source_sha256": "c394d2cb1bf56deeb4d90676120bef83d227f2f778ddfc916ca3ca61edc6e290",
+    "source_sha256": "fd5d1a63039353097b5e571cde5551e2173f07eff39a9a42908be217e845266e",
     "source_sql_lines": [
       72
     ],
@@ -1018,7 +1018,7 @@
     "dependencies": [
       "fec02b6139884b4f969998977fac9e7f"
     ],
-    "source_sha256": "f6c6b7ad5b423e4179afa00c184bc4d866ede04ab43443af45f73e16da558f3c",
+    "source_sha256": "89ec7d4252b3a8d0f5c4d46bfb6f915bd16468636197eaece16a725c5ab8ad32",
     "source_sql_lines": [
       41
     ],
@@ -1056,7 +1056,7 @@
     "dependencies": [
       "156d8c8f21734b5989b675697d5a2103"
     ],
-    "source_sha256": "fda006e2d0b428e964ecd5701111b5e56a61eab4026ca4ef2bd104f4fad1b6f2",
+    "source_sha256": "fe76c5b6749a1a6538b9ed4676d1e7076996d989a1aaa229d58e16ec3469d657",
     "source_sql_lines": [],
     "statements": []
   },
@@ -1171,7 +1171,7 @@
     "dependencies": [
       "cccc623f324343c7b884ceef25149e04"
     ],
-    "source_sha256": "8adcda6ac63fec26b2b1c5b9e0649e02eb10b1d6a36e16a8f2462de60e1117d6",
+    "source_sha256": "a274af86738fb2fe2bbee63593bb653fda2e0a1b3befb835dc4a5fb9c6be78b5",
     "source_sql_lines": [
       174,
       295,
@@ -1997,7 +1997,7 @@
       "3a6487f7e06842bb9d126bb8dbe6da00",
       "c5bf7f71229741ff89e175e07c4e8838"
     ],
-    "source_sha256": "dc827974e99906fb7e503fdd717f6899c3eee2daa624b5d6b6cda3c3cc501f14",
+    "source_sha256": "955bc281ceaa8920eeb0b3603eea91bd52a4f8886801426504b6ddec2f8aa490",
     "source_sql_lines": [
       53,
       60,
@@ -2346,9 +2346,9 @@
     "dependencies": [
       "7b2f6a419c3d4e588a172f6b9d0c4e11"
     ],
-    "source_sha256": "4c45ff7e79d1de02bcf17724032e75ca17ce421534a699e477b5849f565651c6",
+    "source_sha256": "106d0d49bc1f2b30669f56bcc7a4a7b4a4532bdcf0e98a91924d984f760f1158",
     "source_sql_lines": [
-      83
+      84
     ],
     "statements": []
   },
@@ -2358,24 +2358,24 @@
     "dependencies": [
       "1ab3caf9ef1e482c93a3a3f1080038df"
     ],
-    "source_sha256": "d4145b19f340697123bf7554e3f57d9f55928e0492440c22003edcff9c794bdc",
+    "source_sha256": "e97304a9c112b0420a637d092636c76f94dc4cb45b730ddbbdb1e6e384ff3424",
     "source_sql_lines": [
       105,
-      256,
-      278,
-      353
+      255,
+      277,
+      352
     ],
     "statements": [
       {
-        "line": 256,
+        "line": 255,
         "sql": "ALTER TABLE orchard_ironwood_migration_transactions\n                RENAME COLUMN tx_id TO transfer_id;"
       },
       {
-        "line": 256,
+        "line": 255,
         "sql": "\n             ALTER TABLE orchard_ironwood_migration_transaction_deps\n                RENAME COLUMN tx_id TO transfer_id;"
       },
       {
-        "line": 256,
+        "line": 255,
         "sql": "\n             ALTER TABLE orchard_ironwood_migration_transaction_deps\n                RENAME COLUMN depends_on_tx_id TO depends_on_transfer_id;"
       },
       {
@@ -2383,19 +2383,19 @@
         "sql": "CREATE TABLE orchard_ironwood_migration_spend_nullifiers (\n    migration_id INTEGER NOT NULL,\n    transfer_id INTEGER NOT NULL,\n    ordinal INTEGER NOT NULL,\n    nullifier BLOB NOT NULL CHECK (length(nullifier) = 32),\n    PRIMARY KEY (migration_id, transfer_id, ordinal),\n    FOREIGN KEY (migration_id, transfer_id)\n        REFERENCES orchard_ironwood_migration_transactions(migration_id, transfer_id) ON DELETE CASCADE\n);"
       },
       {
-        "line": 278,
+        "line": 277,
         "sql": "ALTER TABLE orchard_ironwood_migration_transactions\n                ADD COLUMN unsatisfiable_at INTEGER;"
       },
       {
-        "line": 278,
+        "line": 277,
         "sql": "\n             ALTER TABLE orchard_ironwood_migration_transactions\n                ADD COLUMN unsatisfiable_kind TEXT;"
       },
       {
-        "line": 278,
+        "line": 277,
         "sql": "\n             ALTER TABLE orchard_ironwood_migration_transactions\n                ADD COLUMN broadcast_failure_at INTEGER;"
       },
       {
-        "line": 353,
+        "line": 352,
         "sql": "ALTER TABLE orchard_ironwood_migrations\n                ADD COLUMN replan_threshold INTEGER NOT NULL DEFAULT 20;"
       }
     ]
@@ -2572,6 +2572,634 @@
       {
         "line": 63,
         "sql": "\n            CREATE VIEW v_tx_outputs AS\n            WITH unioned AS (\n                -- select all outputs received by the wallet\n                SELECT t.id_tx                      AS transaction_id,\n                       t.txid                       AS txid,\n                       t.mined_height               AS mined_height,\n                       IFNULL(t.trust_status, 0)    AS trust_status,\n                       ro.pool                      AS output_pool,\n                       ro.output_index              AS output_index,\n                       from_account.uuid            AS from_account_uuid,\n                       to_account.uuid              AS to_account_uuid,\n                       -- for a transparent output, the address at which it was received is\n                       -- the transparent receiver itself, not a unified address containing it\n                       CASE ro.pool\n                            WHEN 0 THEN a.cached_transparent_receiver_address\n                            ELSE a.address\n                       END                          AS to_address,\n                       0                            AS is_sent_row,\n                       a.diversifier_index_be       AS diversifier_index_be,\n                       ro.value                     AS value,\n                       ro.is_change                 AS is_change,\n                       ro.memo                      AS memo,\n                       a.key_scope                  AS recipient_key_scope\n                FROM v_received_outputs ro\n                JOIN transactions t\n                    ON t.id_tx = ro.transaction_id\n                LEFT JOIN addresses a ON a.id = ro.address_id\n                -- join to the sent_notes table to obtain `from_account_id`\n                LEFT JOIN sent_notes ON sent_notes.id = ro.sent_note_id\n                -- join on the accounts table to obtain account UUIDs\n                LEFT JOIN accounts from_account ON from_account.id = sent_notes.from_account_id\n                LEFT JOIN accounts to_account ON to_account.id = ro.account_id\n                UNION ALL\n                -- select all outputs sent by the wallet\n                SELECT t.id_tx                      AS transaction_id,\n                       t.txid                       AS txid,\n                       t.mined_height               AS mined_height,\n                       IFNULL(t.trust_status, 0)    AS trust_status,\n                       sent_notes.output_pool       AS output_pool,\n                       sent_notes.output_index      AS output_index,\n                       from_account.uuid            AS from_account_uuid,\n                       NULL                         AS to_account_uuid,\n                       sent_notes.to_address        AS to_address,\n                       1                            AS is_sent_row,\n                       NULL                         AS diversifier_index_be,\n                       sent_notes.value             AS value,\n                       0                            AS is_change,\n                       sent_notes.memo              AS memo,\n                       NULL                         AS recipient_key_scope\n                FROM sent_notes\n                JOIN transactions t\n                    ON t.id_tx = sent_notes.transaction_id\n                LEFT JOIN v_received_outputs ro ON ro.sent_note_id = sent_notes.id\n                -- join on the accounts table to obtain account UUIDs\n                LEFT JOIN accounts from_account ON from_account.id = sent_notes.from_account_id\n            )\n            -- merge duplicate rows while retaining maximum information\n            SELECT\n                transaction_id,\n                MAX(txid)                   AS txid,\n                MAX(mined_height)           AS tx_mined_height,\n                MIN(trust_status)           AS tx_trust_status,\n                output_pool,\n                output_index,\n                MAX(from_account_uuid)      AS from_account_uuid,\n                MAX(to_account_uuid)        AS to_account_uuid,\n                -- the recipient address recorded when the wallet created the output is\n                -- authoritative; the receiving address is reported only for outputs the\n                -- wallet did not create\n                COALESCE(\n                    MAX(CASE WHEN is_sent_row THEN to_address END),\n                    MAX(CASE WHEN NOT is_sent_row THEN to_address END)\n                )                           AS to_address,\n                MAX(value)                  AS value,\n                MAX(is_change)              AS is_change,\n                MAX(memo)                   AS memo,\n                MAX(recipient_key_scope)    AS recipient_key_scope\n            FROM unioned\n            GROUP BY transaction_id, output_pool, output_index;"
+      }
+    ]
+  },
+  {
+    "name": "ironwood_enhance",
+    "id": "cf147152694f47e88c05c6dd853ac329",
+    "dependencies": [
+      "a1d4a28c75824457b0f4d3f297b62a71",
+      "d7ab0ab214874cb7ba7472ece5fdba2f",
+      "6f2b1c849a3d4e50b7c62d9f1a4e83b7"
+    ],
+    "source_sha256": "fa05ccffd8a73cc9516702e10e263c3c9f95789cf4758f70517e064e46d40c7c",
+    "source_sql_lines": [
+      50,
+      57,
+      125
+    ],
+    "statements": [
+      {
+        "line": 50,
+        "sql": "ALTER TABLE ironwood_received_notes ADD COLUMN ephemeral_key BLOB;"
+      },
+      {
+        "line": 50,
+        "sql": "\n             ALTER TABLE ironwood_received_notes ADD COLUMN compact_ciphertext BLOB\n                CHECK ((ephemeral_key IS NULL AND compact_ciphertext IS NULL) OR\n                       (ephemeral_key IS NOT NULL AND compact_ciphertext IS NOT NULL AND\n                        length(ephemeral_key) = 32 AND length(compact_ciphertext) = 52));"
+      },
+      {
+        "line": 57,
+        "sql": "CREATE TABLE ironwood_memo_retrieval_queue (\n                received_note_id INTEGER PRIMARY KEY\n                    REFERENCES ironwood_received_notes(id) ON DELETE CASCADE,\n                commitment_tree_position INTEGER NOT NULL UNIQUE\n                    CHECK (commitment_tree_position >= 0)\n            );"
+      },
+      {
+        "line": 57,
+        "sql": "\n            CREATE TABLE ironwood_enhance_outgoing_queue (\n                commitment_tree_position INTEGER PRIMARY KEY\n                    CHECK (commitment_tree_position >= 0),\n                transaction_id INTEGER NOT NULL\n                    REFERENCES transactions(id_tx) ON DELETE CASCADE,\n                output_index INTEGER NOT NULL CHECK (output_index >= 0),\n                nullifier BLOB NOT NULL CHECK (length(nullifier) = 32),\n                cmx BLOB NOT NULL CHECK (length(cmx) = 32),\n                ephemeral_key BLOB NOT NULL CHECK (length(ephemeral_key) = 32),\n                compact_ciphertext BLOB NOT NULL CHECK (length(compact_ciphertext) = 52),\n                not_recoverable INTEGER NOT NULL DEFAULT 0 CHECK (not_recoverable IN (0, 1)),\n                UNIQUE(transaction_id, output_index)\n            );"
+      },
+      {
+        "line": 57,
+        "sql": "\n            CREATE TABLE ironwood_enhance_outgoing_accounts (\n                commitment_tree_position INTEGER NOT NULL\n                    REFERENCES ironwood_enhance_outgoing_queue(commitment_tree_position)\n                    ON DELETE CASCADE,\n                account_id INTEGER NOT NULL\n                    REFERENCES accounts(id) ON DELETE CASCADE,\n                PRIMARY KEY(commitment_tree_position, account_id)\n            );"
+      },
+      {
+        "line": 57,
+        "sql": "\n            CREATE TABLE ironwood_enhance_routing (\n                transaction_id INTEGER PRIMARY KEY\n                    REFERENCES transactions(id_tx) ON DELETE CASCADE,\n                route INTEGER NOT NULL CHECK (route IN (0, 1)),\n                history_expiry_height INTEGER\n                    CHECK (history_expiry_height >= 0 AND history_expiry_height < 500000000)\n            );"
+      },
+      {
+        "line": 57,
+        "sql": "\n            CREATE TABLE ironwood_enhance_discovery_queue (\n                transaction_id INTEGER PRIMARY KEY\n                    REFERENCES transactions(id_tx) ON DELETE CASCADE,\n                suspended INTEGER NOT NULL DEFAULT 0 CHECK (suspended IN (0, 1))\n            );"
+      },
+      {
+        "line": 57,
+        "sql": "\n            CREATE TABLE ironwood_enhance_metadata_queue (\n                transaction_id INTEGER PRIMARY KEY REFERENCES transactions(id_tx) ON DELETE CASCADE,\n                commitment_tree_position INTEGER UNIQUE CHECK (commitment_tree_position >= 0),\n                output_index INTEGER CHECK (output_index >= 0),\n                compact_bound INTEGER NOT NULL DEFAULT 0 CHECK (compact_bound IN (0, 1)),\n                CHECK ((commitment_tree_position IS NULL) = (output_index IS NULL)),\n                CHECK (compact_bound = 0 OR commitment_tree_position IS NOT NULL)\n            );"
+      },
+      {
+        "line": 125,
+        "sql": "DROP VIEW v_transactions;"
+      },
+      {
+        "line": 126,
+        "sql": "CREATE VIEW v_transactions AS\n            WITH\n            notes AS (\n                -- Outputs received in this transaction\n                SELECT ro.account_id              AS account_id,\n                       ro.transaction_id          AS transaction_id,\n                       ro.pool                    AS pool,\n                       id_within_pool_table,\n                       ro.value                   AS value,\n                       ro.value                   AS received_value,\n                       0                          AS spent_value,\n                       0                          AS spent_note_count,\n                       CASE\n                            WHEN ro.is_change THEN 1\n                            ELSE 0\n                       END AS change_note_count,\n                       CASE\n                            WHEN ro.is_change THEN 0\n                            ELSE 1\n                       END AS received_count,\n                       CASE\n                         WHEN (ro.memo IS NULL OR ro.memo = X'F6')\n                           THEN 0\n                         ELSE 1\n                       END AS memo_present,\n                       -- The wallet cannot receive transparent outputs in shielding transactions.\n                       CASE\n                         WHEN ro.pool = 0\n                           THEN 1\n                         ELSE 0\n                       END AS does_not_match_shielding\n                FROM v_received_outputs ro\n                UNION\n                -- Outputs spent in this transaction\n                SELECT ro.account_id              AS account_id,\n                       ros.transaction_id         AS transaction_id,\n                       ro.pool                    AS pool,\n                       id_within_pool_table,\n                       -ro.value                  AS value,\n                       0                          AS received_value,\n                       ro.value                   AS spent_value,\n                       1                          AS spent_note_count,\n                       0                          AS change_note_count,\n                       0                          AS received_count,\n                       0                          AS memo_present,\n                       -- The wallet cannot spend shielded outputs in shielding transactions.\n                       CASE\n                         WHEN ro.pool != 0\n                           THEN 1\n                         ELSE 0\n                       END AS does_not_match_shielding\n                FROM v_received_outputs ro\n                JOIN v_received_output_spends ros\n                     ON ros.pool = ro.pool\n                     AND ros.received_output_id = ro.id_within_pool_table\n            ),\n            -- What each account spent and received in each pool, per transaction. A pool the account\n            -- received value in but spent nothing from is a pool that value crossed into from\n            -- elsewhere, which is what `pool_crossings` below is built on.\n            notes_by_pool AS (\n                SELECT account_id, transaction_id, pool,\n                       SUM(spent_note_count)                   AS spent_note_count,\n                       SUM(received_count + change_note_count) AS received_note_count,\n                       SUM(received_value)                     AS received_value\n                FROM notes\n                GROUP BY account_id, transaction_id, pool\n            ),\n            -- Obtain a count of the notes that the wallet created in each transaction,\n            -- not counting change notes.\n            sent_note_counts AS (\n                SELECT sent_notes.from_account_id     AS account_id,\n                       sent_notes.transaction_id      AS transaction_id,\n                       COUNT(DISTINCT sent_notes.id)  AS sent_notes,\n                       SUM(\n                         CASE\n                           WHEN (sent_notes.memo IS NULL OR sent_notes.memo = X'F6' OR ro.transaction_id IS NOT NULL)\n                             THEN 0\n                           ELSE 1\n                         END\n                       ) AS memo_count\n                FROM sent_notes\n                LEFT JOIN v_received_outputs ro ON sent_notes.id = ro.sent_note_id\n                WHERE COALESCE(ro.is_change, 0) = 0\n                GROUP BY account_id, sent_notes.transaction_id\n            ),\n            -- Identifies the transactions that are wallet-internal transfers moving an account's own\n            -- funds between shielded pools, and reports the value that crossed. `crossing_value` is\n            -- non-NULL exactly for such a transaction, so it carries both the classification and the\n            -- amount; see the `pool_crossing_value` column below.\n            pool_crossings AS (\n                SELECT notes_by_pool.account_id     AS account_id,\n                       notes_by_pool.transaction_id AS transaction_id,\n                       CASE WHEN (\n                            -- Every note spent and every output received by the wallet is shielded.\n                            SUM(CASE WHEN notes_by_pool.pool = 0 THEN notes_by_pool.spent_note_count + notes_by_pool.received_note_count ELSE 0 END) = 0\n                            -- The transaction spends at least one of the account's notes.\n                            AND SUM(notes_by_pool.spent_note_count) > 0\n                            -- At least one output was received in a pool the account spent nothing\n                            -- from, so value crossed between pools.\n                            AND SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_note_count ELSE 0 END) > 0\n                            -- We do not know about any external outputs of the transaction.\n                            AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0\n                       )\n                       -- The total value received in the pools the account did not spend from. The\n                       -- condition above guarantees at least one such output, so when this branch is\n                       -- taken the sum is never NULL.\n                       THEN SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_value ELSE 0 END)\n                       END AS crossing_value\n                FROM notes_by_pool\n                LEFT JOIN sent_note_counts\n                     ON sent_note_counts.account_id = notes_by_pool.account_id\n                     AND sent_note_counts.transaction_id = notes_by_pool.transaction_id\n                GROUP BY notes_by_pool.account_id, notes_by_pool.transaction_id\n            ),\n            blocks_max_height AS (\n                SELECT MAX(blocks.height) AS max_height FROM blocks\n            )\n            SELECT accounts.uuid                AS account_uuid,\n                   transactions.mined_height    AS mined_height,\n                   transactions.txid            AS txid,\n                   transactions.tx_index        AS tx_index,\n                   COALESCE(transactions.expiry_height, (SELECT history_expiry_height FROM ironwood_enhance_routing WHERE transaction_id = transactions.id_tx AND route = 0)) AS expiry_height,\n                   transactions.raw             AS raw,\n                   SUM(notes.value)             AS account_balance_delta,\n                   SUM(notes.spent_value)       AS total_spent,\n                   SUM(notes.received_value)    AS total_received,\n                   transactions.fee             AS fee_paid,\n                   SUM(notes.change_note_count) > 0  AS has_change,\n                   MAX(COALESCE(sent_note_counts.sent_notes, 0))  AS sent_note_count,\n                   SUM(notes.received_count)         AS received_note_count,\n                   SUM(notes.memo_present) + MAX(COALESCE(sent_note_counts.memo_count, 0)) AS memo_count,\n                   blocks.time                       AS block_time,\n                   (\n                        transactions.mined_height IS NULL\n                        AND transactions.expiry_height BETWEEN 1 AND blocks_max_height.max_height\n                   ) AS expired_unmined,\n                   SUM(notes.spent_note_count) AS spent_note_count,\n                   (\n                        -- All of the wallet-spent and wallet-received notes are consistent with a\n                        -- shielding transaction.\n                        SUM(notes.does_not_match_shielding) = 0\n                        -- The transaction contains at least one wallet-spent output.\n                        AND SUM(notes.spent_note_count) > 0\n                        -- The transaction contains at least one wallet-received note.\n                        AND (SUM(notes.received_count) + SUM(notes.change_note_count)) > 0\n                        -- We do not know about any external outputs of the transaction.\n                        AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0\n                   ) AS is_shielding,\n                   -- The value that crossed pools, when this transaction is a wallet-internal transfer\n                   -- between shielded pools; NULL when it is not such a transfer. A transaction is one\n                   -- exactly when this column is non-NULL.\n                   pool_crossings.crossing_value AS pool_crossing_value,\n                   transactions.trust_status,\n                   transactions.zip318_kind\n            FROM notes\n            JOIN accounts ON accounts.id = notes.account_id\n            JOIN transactions ON transactions.id_tx = notes.transaction_id\n            LEFT JOIN blocks_max_height\n            LEFT JOIN blocks ON blocks.height = transactions.mined_height\n            LEFT JOIN sent_note_counts\n                 ON sent_note_counts.account_id = notes.account_id\n                 AND sent_note_counts.transaction_id = notes.transaction_id\n            LEFT JOIN pool_crossings\n                 ON pool_crossings.account_id = notes.account_id\n                 AND pool_crossings.transaction_id = notes.transaction_id\n            GROUP BY notes.account_id, notes.transaction_id;"
+      }
+    ]
+  },
+  {
+    "name": "one_time_ivk",
+    "id": "5775610295834af5b4115eead49fc9f0",
+    "dependencies": [
+      "cf147152694f47e88c05c6dd853ac329"
+    ],
+    "source_sha256": "07f12a13863e2b94feb8efc01b4d6a82cd193bda494abfb04d8859b6693dd4b1",
+    "source_sql_lines": [
+      38
+    ],
+    "statements": [
+      {
+        "line": 38,
+        "sql": "CREATE TABLE ironwood_one_time_keys (\n                id INTEGER PRIMARY KEY,\n                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,\n                purpose INTEGER NOT NULL CHECK (purpose BETWEEN 0 AND 255),\n                key_index BLOB NOT NULL CHECK (typeof(key_index) = 'blob' AND length(key_index) = 8),\n                receiver BLOB NOT NULL CHECK (typeof(receiver) = 'blob' AND length(receiver) = 43),\n                funding_height INTEGER CHECK (funding_height BETWEEN 0 AND 4294967295),\n                used INTEGER NOT NULL DEFAULT 0 CHECK (used IN (0, 1)),\n                prebirthday_height INTEGER CHECK (prebirthday_height BETWEEN 0 AND 4294967295),\n                registered_at INTEGER NOT NULL DEFAULT 0,\n                reserved_at INTEGER,\n                released_at INTEGER,\n                reservation_floor INTEGER,\n                UNIQUE (account_id, purpose, key_index)\n            );"
+      },
+      {
+        "line": 38,
+        "sql": "\n            CREATE INDEX idx_ironwood_one_time_keys_account_receiver\n                ON ironwood_one_time_keys(account_id, receiver);"
+      },
+      {
+        "line": 38,
+        "sql": "\n            ALTER TABLE ironwood_received_notes ADD COLUMN one_time_key_id INTEGER\n                REFERENCES ironwood_one_time_keys(id);"
+      },
+      {
+        "line": 38,
+        "sql": "\n            CREATE INDEX idx_ironwood_received_notes_one_time_key ON ironwood_received_notes (\n                one_time_key_id ASC\n            ) WHERE one_time_key_id IS NOT NULL;"
+      },
+      {
+        "line": 38,
+        "sql": "\n            CREATE TABLE ironwood_one_time_operations (\n                id INTEGER PRIMARY KEY,\n                one_time_key_id INTEGER NOT NULL REFERENCES ironwood_one_time_keys(id) ON DELETE CASCADE,\n                request TEXT UNIQUE,\n                reference TEXT,\n                memo TEXT,\n                deadline INTEGER NOT NULL,\n                begun_at INTEGER NOT NULL,\n                started INTEGER NOT NULL DEFAULT 0 CHECK (started IN (0, 1)),\n                funded INTEGER NOT NULL DEFAULT 0 CHECK (funded IN (0, 1)),\n                rejected INTEGER NOT NULL DEFAULT 0 CHECK (rejected IN (0, 1)),\n                observed_at INTEGER NOT NULL DEFAULT 0,\n                expectation INTEGER NOT NULL DEFAULT 0 CHECK (expectation BETWEEN 0 AND 255),\n                expected_value INTEGER CHECK (expected_value > 0),\n                CHECK (request IS NOT NULL OR reference IS NOT NULL)\n            );"
+      },
+      {
+        "line": 38,
+        "sql": "\n            CREATE INDEX idx_ironwood_one_time_operations_key\n                ON ironwood_one_time_operations(one_time_key_id);"
+      }
+    ]
+  },
+  {
+    "name": "one_time_ivk_discovery",
+    "id": "c5b63b3b81904d0fb2173921d7aac225",
+    "dependencies": [
+      "5775610295834af5b4115eead49fc9f0"
+    ],
+    "source_sha256": "388c0b0aa771e2529c8940446eaa2ee6c9c361cb223d0f5ab8dfcab85814961e",
+    "source_sql_lines": [
+      44,
+      70,
+      76,
+      80,
+      85
+    ],
+    "statements": [
+      {
+        "line": 85,
+        "sql": "CREATE TABLE ironwood_one_time_recovery (\n                account_id INTEGER PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE,\n                enabled INTEGER NOT NULL DEFAULT 0 CHECK (enabled IN (0, 1)),\n                generation INTEGER NOT NULL DEFAULT 0 CHECK (generation >= 0),\n                history_revision BLOB NOT NULL DEFAULT X'0000000000000000'\n                    CHECK (length(history_revision) = 8),\n                filter_height INTEGER CHECK (filter_height BETWEEN 0 AND 4294967295),\n                filter_hash BLOB CHECK (length(filter_hash) = 32),\n                skipped_height INTEGER CHECK (skipped_height BETWEEN 0 AND 4294967295),\n                restore_height INTEGER CHECK (restore_height BETWEEN 0 AND 4294967295),\n                restore_next BLOB NOT NULL DEFAULT X'0000000000000000' CHECK (length(restore_next) = 8),\n                restore_gap INTEGER NOT NULL DEFAULT 0 CHECK (restore_gap BETWEEN 0 AND 4),\n                restore_done INTEGER NOT NULL DEFAULT 0 CHECK (restore_done IN (0, 1)),\n                manual_active INTEGER NOT NULL DEFAULT 0 CHECK (manual_active IN (0, 1)),\n                manual_purpose INTEGER NOT NULL DEFAULT 0 CHECK (manual_purpose IN (0, 1)),\n                manual_next BLOB NOT NULL DEFAULT X'0000000000000000' CHECK (length(manual_next) = 8),\n                manual_end BLOB CHECK (length(manual_end) = 8),\n                manual_height INTEGER CHECK (manual_height BETWEEN 0 AND 4294967295),\n                CHECK ((filter_height IS NULL) = (filter_hash IS NULL))\n            );"
+      },
+      {
+        "line": 85,
+        "sql": "\n            CREATE TABLE ironwood_one_time_lookups (\n                one_time_key_id INTEGER PRIMARY KEY REFERENCES ironwood_one_time_keys(id) ON DELETE CASCADE,\n                target_height INTEGER CHECK (target_height BETWEEN 0 AND 4294967295),\n                reasons INTEGER NOT NULL DEFAULT 0 CHECK (reasons BETWEEN 0 AND 7),\n                done_height INTEGER CHECK (done_height BETWEEN 0 AND 4294967295),\n                done_from INTEGER CHECK (done_from BETWEEN 0 AND 4294967295),\n                start_height INTEGER NOT NULL DEFAULT 0 CHECK (start_height BETWEEN 0 AND 4294967295),\n                checked_height INTEGER CHECK (checked_height BETWEEN 0 AND 4294967295),\n                inventory BLOB CHECK (length(inventory) = 32),\n                shard INTEGER CHECK (shard BETWEEN 0 AND 4294967295),\n                segment INTEGER CHECK (segment BETWEEN 0 AND 4294967295),\n                last_record BLOB CHECK (length(last_record) = 289),\n                read_complete INTEGER NOT NULL DEFAULT 0 CHECK (read_complete IN (0, 1)),\n                attempts INTEGER NOT NULL DEFAULT 0 CHECK (attempts >= 0),\n                next_attempt_at INTEGER NOT NULL DEFAULT 0,\n                CHECK ((inventory IS NULL) = (shard IS NULL)\n                    AND (inventory IS NULL) = (segment IS NULL)),\n                CHECK (inventory IS NOT NULL OR last_record IS NULL)\n            );"
+      },
+      {
+        "line": 85,
+        "sql": "\n            CREATE TABLE ironwood_one_time_payment_recovery (\n                one_time_key_id INTEGER NOT NULL REFERENCES ironwood_one_time_keys(id) ON DELETE CASCADE,\n                txid BLOB NOT NULL CHECK (length(txid) = 32),\n                action_index INTEGER NOT NULL CHECK (action_index BETWEEN 0 AND 4294967295),\n                height INTEGER NOT NULL CHECK (height BETWEEN 0 AND 4294967295),\n                block_hash BLOB NOT NULL CHECK (length(block_hash) = 32),\n                tx_index INTEGER NOT NULL CHECK (tx_index BETWEEN 0 AND 65535),\n                position INTEGER NOT NULL CHECK (position BETWEEN 0 AND 4294967295),\n                encrypted_note BLOB NOT NULL CHECK (length(encrypted_note) = 148),\n                payments BLOB CHECK (length(payments) = 32),\n                witnesses BLOB CHECK (length(witnesses) = 32),\n                ordinal INTEGER CHECK (ordinal BETWEEN 0 AND 4294967295),\n                witness BLOB CHECK (length(witness) = 512),\n                witness_height INTEGER CHECK (witness_height BETWEEN 0 AND 4294967295),\n                witness_hash BLOB CHECK (length(witness_hash) = 32),\n                witness_size INTEGER CHECK (witness_size BETWEEN 0 AND 4294967296),\n                PRIMARY KEY (txid, action_index),\n                CHECK ((payments IS NULL) = (ordinal IS NULL)\n                    AND (payments IS NULL) = (witnesses IS NULL)),\n                CHECK ((witness IS NULL OR payments IS NOT NULL)\n                    AND (witness IS NULL) = (witness_height IS NULL)\n                    AND (witness IS NULL) = (witness_hash IS NULL)\n                    AND (witness IS NULL) = (witness_size IS NULL))\n            );"
+      },
+      {
+        "line": 85,
+        "sql": "\n            CREATE TABLE IF NOT EXISTS ironwood_spend_journal (\n                block_height INTEGER NOT NULL CHECK (block_height BETWEEN 0 AND 4294967295),\n                tx_index INTEGER NOT NULL CHECK (tx_index BETWEEN 0 AND 65535),\n                txid BLOB NOT NULL CHECK (length(txid) = 32),\n                PRIMARY KEY (block_height, tx_index)\n            );"
+      },
+      {
+        "line": 85,
+        "sql": "\n            CREATE TABLE IF NOT EXISTS ironwood_spend_journal_nullifiers (\n                block_height INTEGER NOT NULL,\n                tx_index INTEGER NOT NULL,\n                action_index INTEGER NOT NULL CHECK (action_index >= 0),\n                nf BLOB NOT NULL CHECK (length(nf) = 32),\n                PRIMARY KEY (block_height, tx_index, action_index),\n                FOREIGN KEY (block_height, tx_index)\n                    REFERENCES ironwood_spend_journal(block_height, tx_index) ON DELETE CASCADE\n            );"
+      },
+      {
+        "line": 85,
+        "sql": "\n            CREATE INDEX IF NOT EXISTS idx_ironwood_spend_journal_nullifiers_nf\n                ON ironwood_spend_journal_nullifiers(nf);"
+      },
+      {
+        "line": 85,
+        "sql": "\n            CREATE TABLE IF NOT EXISTS ironwood_journal_coverage (\n                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,\n                start_height INTEGER NOT NULL CHECK (start_height BETWEEN 0 AND 4294967295),\n                end_height INTEGER NOT NULL\n                    CHECK (end_height > start_height AND end_height <= 4294967296),\n                PRIMARY KEY (account_id, start_height)\n            );"
+      }
+    ]
+  },
+  {
+    "name": "status_inclusion_evidence",
+    "id": "b6f3d060803a4b17aecd6a02d9cb2249",
+    "dependencies": [
+      "cf147152694f47e88c05c6dd853ac329",
+      "d334a9fab9dc46bd9b311fba6aa47f55",
+      "dab89587cd0543b0a5b58cb64a702791",
+      "cc104d0d54d64e079404202676561d94",
+      "62032f4a88b5454da59110f3d4c4d2b7"
+    ],
+    "source_sha256": "013e8c403afe53369237c581c03406784a2246d50a7c04f719651fdc2f654e27",
+    "source_sql_lines": [],
+    "statements": []
+  },
+  {
+    "name": "drop_zip318_pool_migration",
+    "id": "772a06323d0e4dffb1f8c64863eefaaa",
+    "dependencies": [
+      "b6f3d060803a4b17aecd6a02d9cb2249"
+    ],
+    "source_sha256": "d8933220c03d746aa7bedc7c8d20c9c60e7e2b41d773d72748169a970a74dfd8",
+    "source_sql_lines": [
+      90
+    ],
+    "statements": [
+      {
+        "line": 90,
+        "sql": "DROP INDEX IF EXISTS idx_orchard_ironwood_migration_tx_due;"
+      },
+      {
+        "line": 90,
+        "sql": "\n             DROP INDEX IF EXISTS idx_orchard_ironwood_migrations_account;"
+      },
+      {
+        "line": 90,
+        "sql": "\n             DROP TABLE IF EXISTS orchard_ironwood_migration_spend_nullifiers;"
+      },
+      {
+        "line": 90,
+        "sql": "\n             DROP TABLE IF EXISTS orchard_ironwood_migration_transaction_deps;"
+      },
+      {
+        "line": 90,
+        "sql": "\n             DROP TABLE IF EXISTS orchard_ironwood_migration_transactions;"
+      },
+      {
+        "line": 90,
+        "sql": "\n             DROP TABLE IF EXISTS orchard_ironwood_migration_prep_direct_funding;"
+      },
+      {
+        "line": 90,
+        "sql": "\n             DROP TABLE IF EXISTS orchard_ironwood_migration_prep_outputs;"
+      },
+      {
+        "line": 90,
+        "sql": "\n             DROP TABLE IF EXISTS orchard_ironwood_migration_prep_inputs;"
+      },
+      {
+        "line": 90,
+        "sql": "\n             DROP TABLE IF EXISTS orchard_ironwood_migration_crossing_values;"
+      },
+      {
+        "line": 90,
+        "sql": "\n             DROP TABLE IF EXISTS orchard_ironwood_migrations;"
+      }
+    ]
+  },
+  {
+    "name": "transparent_ledger_schema",
+    "id": "8f290af0eb5a4f1e88d43550fc0ff911",
+    "dependencies": [
+      "772a06323d0e4dffb1f8c64863eefaaa",
+      "856ecde7c67047c19345b80ba5b12c4f",
+      "93278b0f77fe473cb88e7f285da38dd3",
+      "3d4f12d63da94aceac65a0dd0a7adc32",
+      "47c0e9c22eda4b9cbe1563c636c0e1c7"
+    ],
+    "source_sha256": "b0bf10834d7b5c35c905aed4afd9582bebbb648623508832b3a2b218919d5036",
+    "source_sql_lines": [
+      53
+    ],
+    "statements": [
+      {
+        "line": 53,
+        "sql": "\n            CREATE TABLE tpir_meta (\n                id INTEGER PRIMARY KEY CHECK (id = 0),\n                applied_mode INTEGER NOT NULL CHECK (applied_mode IN (0, 2)),\n                policy_generation INTEGER NOT NULL CHECK (policy_generation >= 0),\n                min_reader_version INTEGER NOT NULL CHECK (min_reader_version >= 1)\n            );"
+      },
+      {
+        "line": 53,
+        "sql": "\n\n            CREATE TABLE tpir_output_origins (\n                output_id INTEGER NOT NULL\n                    REFERENCES transparent_received_outputs(id) ON DELETE CASCADE,\n                origin INTEGER NOT NULL CHECK (origin IN (0, 1, 2, 3)),\n                UNIQUE (output_id, origin)\n            );"
+      },
+      {
+        "line": 53,
+        "sql": "\n\n            CREATE TABLE tpir_spend_origins (\n                spending_transaction_id INTEGER NOT NULL\n                    REFERENCES transactions(id_tx) ON DELETE CASCADE,\n                prevout_txid BLOB NOT NULL,\n                prevout_output_index INTEGER NOT NULL,\n                origin INTEGER NOT NULL CHECK (origin IN (0, 1, 2, 3)),\n                UNIQUE (spending_transaction_id, prevout_txid, prevout_output_index, origin)\n            );"
+      }
+    ]
+  },
+  {
+    "name": "transparent_policy_generation",
+    "id": "b7c4e2a19d3f4e8ba6c51f0e8d7c6b5a",
+    "dependencies": [
+      "8f290af0eb5a4f1e88d43550fc0ff911"
+    ],
+    "source_sha256": "77a142f445e887fd4eb03bea2b7c17116b868b6b3ddd1f6c23adf2967657aeb6",
+    "source_sql_lines": [
+      40,
+      51,
+      53
+    ],
+    "statements": [
+      {
+        "line": 40,
+        "sql": "ALTER TABLE tx_retrieval_queue\n             ADD COLUMN policy_generation INTEGER NOT NULL DEFAULT 0;"
+      },
+      {
+        "line": 51,
+        "sql": "DROP VIEW v_transactions;"
+      },
+      {
+        "line": 53,
+        "sql": "\n            CREATE TABLE ironwood_enhance_routing_new (\n                transaction_id INTEGER PRIMARY KEY\n                    REFERENCES transactions(id_tx) ON DELETE CASCADE,\n                route INTEGER NOT NULL CHECK (route IN (0, 1, 2)),\n                history_expiry_height INTEGER\n                    CHECK (history_expiry_height >= 0 AND history_expiry_height < 500000000)\n            );"
+      },
+      {
+        "line": 53,
+        "sql": "\n            DROP TABLE ironwood_enhance_routing;"
+      },
+      {
+        "line": 53,
+        "sql": "\n            ALTER TABLE ironwood_enhance_routing_new RENAME TO ironwood_enhance_routing;"
+      },
+      {
+        "line": 70,
+        "sql": "CREATE VIEW v_transactions AS\n            WITH\n            notes AS (\n                -- Outputs received in this transaction\n                SELECT ro.account_id              AS account_id,\n                       ro.transaction_id          AS transaction_id,\n                       ro.pool                    AS pool,\n                       id_within_pool_table,\n                       ro.value                   AS value,\n                       ro.value                   AS received_value,\n                       0                          AS spent_value,\n                       0                          AS spent_note_count,\n                       CASE\n                            WHEN ro.is_change THEN 1\n                            ELSE 0\n                       END AS change_note_count,\n                       CASE\n                            WHEN ro.is_change THEN 0\n                            ELSE 1\n                       END AS received_count,\n                       CASE\n                         WHEN (ro.memo IS NULL OR ro.memo = X'F6')\n                           THEN 0\n                         ELSE 1\n                       END AS memo_present,\n                       -- The wallet cannot receive transparent outputs in shielding transactions.\n                       CASE\n                         WHEN ro.pool = 0\n                           THEN 1\n                         ELSE 0\n                       END AS does_not_match_shielding\n                FROM v_received_outputs ro\n                UNION\n                -- Outputs spent in this transaction\n                SELECT ro.account_id              AS account_id,\n                       ros.transaction_id         AS transaction_id,\n                       ro.pool                    AS pool,\n                       id_within_pool_table,\n                       -ro.value                  AS value,\n                       0                          AS received_value,\n                       ro.value                   AS spent_value,\n                       1                          AS spent_note_count,\n                       0                          AS change_note_count,\n                       0                          AS received_count,\n                       0                          AS memo_present,\n                       -- The wallet cannot spend shielded outputs in shielding transactions.\n                       CASE\n                         WHEN ro.pool != 0\n                           THEN 1\n                         ELSE 0\n                       END AS does_not_match_shielding\n                FROM v_received_outputs ro\n                JOIN v_received_output_spends ros\n                     ON ros.pool = ro.pool\n                     AND ros.received_output_id = ro.id_within_pool_table\n            ),\n            -- What each account spent and received in each pool, per transaction. A pool the account\n            -- received value in but spent nothing from is a pool that value crossed into from\n            -- elsewhere, which is what `pool_crossings` below is built on.\n            notes_by_pool AS (\n                SELECT account_id, transaction_id, pool,\n                       SUM(spent_note_count)                   AS spent_note_count,\n                       SUM(received_count + change_note_count) AS received_note_count,\n                       SUM(received_value)                     AS received_value\n                FROM notes\n                GROUP BY account_id, transaction_id, pool\n            ),\n            -- Obtain a count of the notes that the wallet created in each transaction,\n            -- not counting change notes.\n            sent_note_counts AS (\n                SELECT sent_notes.from_account_id     AS account_id,\n                       sent_notes.transaction_id      AS transaction_id,\n                       COUNT(DISTINCT sent_notes.id)  AS sent_notes,\n                       SUM(\n                         CASE\n                           WHEN (sent_notes.memo IS NULL OR sent_notes.memo = X'F6' OR ro.transaction_id IS NOT NULL)\n                             THEN 0\n                           ELSE 1\n                         END\n                       ) AS memo_count\n                FROM sent_notes\n                LEFT JOIN v_received_outputs ro ON sent_notes.id = ro.sent_note_id\n                WHERE COALESCE(ro.is_change, 0) = 0\n                GROUP BY account_id, sent_notes.transaction_id\n            ),\n            -- Identifies the transactions that are wallet-internal transfers moving an account's own\n            -- funds between shielded pools, and reports the value that crossed. `crossing_value` is\n            -- non-NULL exactly for such a transaction, so it carries both the classification and the\n            -- amount; see the `pool_crossing_value` column below.\n            pool_crossings AS (\n                SELECT notes_by_pool.account_id     AS account_id,\n                       notes_by_pool.transaction_id AS transaction_id,\n                       CASE WHEN (\n                            -- Every note spent and every output received by the wallet is shielded.\n                            SUM(CASE WHEN notes_by_pool.pool = 0 THEN notes_by_pool.spent_note_count + notes_by_pool.received_note_count ELSE 0 END) = 0\n                            -- The transaction spends at least one of the account's notes.\n                            AND SUM(notes_by_pool.spent_note_count) > 0\n                            -- At least one output was received in a pool the account spent nothing\n                            -- from, so value crossed between pools.\n                            AND SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_note_count ELSE 0 END) > 0\n                            -- We do not know about any external outputs of the transaction.\n                            AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0\n                       )\n                       -- The total value received in the pools the account did not spend from. The\n                       -- condition above guarantees at least one such output, so when this branch is\n                       -- taken the sum is never NULL.\n                       THEN SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_value ELSE 0 END)\n                       END AS crossing_value\n                FROM notes_by_pool\n                LEFT JOIN sent_note_counts\n                     ON sent_note_counts.account_id = notes_by_pool.account_id\n                     AND sent_note_counts.transaction_id = notes_by_pool.transaction_id\n                GROUP BY notes_by_pool.account_id, notes_by_pool.transaction_id\n            ),\n            blocks_max_height AS (\n                SELECT MAX(blocks.height) AS max_height FROM blocks\n            )\n            SELECT accounts.uuid                AS account_uuid,\n                   transactions.mined_height    AS mined_height,\n                   transactions.txid            AS txid,\n                   transactions.tx_index        AS tx_index,\n                   COALESCE(transactions.expiry_height, (SELECT history_expiry_height FROM ironwood_enhance_routing WHERE transaction_id = transactions.id_tx AND route = 0)) AS expiry_height,\n                   transactions.raw             AS raw,\n                   SUM(notes.value)             AS account_balance_delta,\n                   SUM(notes.spent_value)       AS total_spent,\n                   SUM(notes.received_value)    AS total_received,\n                   transactions.fee             AS fee_paid,\n                   SUM(notes.change_note_count) > 0  AS has_change,\n                   MAX(COALESCE(sent_note_counts.sent_notes, 0))  AS sent_note_count,\n                   SUM(notes.received_count)         AS received_note_count,\n                   SUM(notes.memo_present) + MAX(COALESCE(sent_note_counts.memo_count, 0)) AS memo_count,\n                   blocks.time                       AS block_time,\n                   (\n                        transactions.mined_height IS NULL\n                        AND transactions.expiry_height BETWEEN 1 AND blocks_max_height.max_height\n                   ) AS expired_unmined,\n                   SUM(notes.spent_note_count) AS spent_note_count,\n                   (\n                        -- All of the wallet-spent and wallet-received notes are consistent with a\n                        -- shielding transaction.\n                        SUM(notes.does_not_match_shielding) = 0\n                        -- The transaction contains at least one wallet-spent output.\n                        AND SUM(notes.spent_note_count) > 0\n                        -- The transaction contains at least one wallet-received note.\n                        AND (SUM(notes.received_count) + SUM(notes.change_note_count)) > 0\n                        -- We do not know about any external outputs of the transaction.\n                        AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0\n                   ) AS is_shielding,\n                   -- The value that crossed pools, when this transaction is a wallet-internal transfer\n                   -- between shielded pools; NULL when it is not such a transfer. A transaction is one\n                   -- exactly when this column is non-NULL.\n                   pool_crossings.crossing_value AS pool_crossing_value,\n                   transactions.trust_status,\n                   transactions.zip318_kind\n            FROM notes\n            JOIN accounts ON accounts.id = notes.account_id\n            JOIN transactions ON transactions.id_tx = notes.transaction_id\n            LEFT JOIN blocks_max_height\n            LEFT JOIN blocks ON blocks.height = transactions.mined_height\n            LEFT JOIN sent_note_counts\n                 ON sent_note_counts.account_id = notes.account_id\n                 AND sent_note_counts.transaction_id = notes.transaction_id\n            LEFT JOIN pool_crossings\n                 ON pool_crossings.account_id = notes.account_id\n                 AND pool_crossings.transaction_id = notes.transaction_id\n            GROUP BY notes.account_id, notes.transaction_id;"
+      }
+    ]
+  },
+  {
+    "name": "transparent_recovery_schema",
+    "id": "9302bbcf425a426b9074084d626e45bd",
+    "dependencies": [
+      "b7c4e2a19d3f4e8ba6c51f0e8d7c6b5a"
+    ],
+    "source_sha256": "eccb93498cef315a4e7d19df39c6cb9e0f93703a66a1b4a82aaf89cbaf2e6021",
+    "source_sql_lines": [
+      41
+    ],
+    "statements": [
+      {
+        "line": 41,
+        "sql": "\n            CREATE TABLE tpir_candidate_windows (\n                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,\n                key_scope INTEGER NOT NULL CHECK (key_scope IN (0, 1, 2)),\n                end_index INTEGER NOT NULL CHECK (end_index >= 0 AND end_index <= 2147483648),\n                PRIMARY KEY (account_id, key_scope)\n            );"
+      },
+      {
+        "line": 41,
+        "sql": "\n            CREATE TABLE tpir_revisions (\n                id INTEGER PRIMARY KEY,\n                source BLOB NOT NULL,\n                revision BLOB NOT NULL,\n                lineage INTEGER NOT NULL CHECK (lineage >= 0),\n                sealed INTEGER NOT NULL CHECK (sealed IN (0, 1)),\n                publication_height INTEGER NOT NULL CHECK (publication_height >= 0),\n                publication_hash BLOB NOT NULL,\n                UNIQUE (source, revision),\n                UNIQUE (source, lineage)\n            );"
+      },
+      {
+        "line": 41,
+        "sql": "\n            CREATE TABLE tpir_receive_events (\n                id INTEGER PRIMARY KEY,\n                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,\n                txid BLOB NOT NULL,\n                output_index INTEGER NOT NULL CHECK (output_index >= 0),\n                script BLOB NOT NULL,\n                value_zat INTEGER NOT NULL CHECK (value_zat >= 0),\n                coinbase INTEGER NOT NULL CHECK (coinbase IN (0, 1)),\n                mined_height INTEGER CHECK (mined_height >= 0),\n                UNIQUE (txid, output_index)\n            );"
+      },
+      {
+        "line": 41,
+        "sql": "\n            CREATE TABLE tpir_receive_observations (\n                receive_id INTEGER NOT NULL REFERENCES tpir_receive_events(id) ON DELETE CASCADE,\n                revision_id INTEGER NOT NULL REFERENCES tpir_revisions(id),\n                PRIMARY KEY (receive_id, revision_id)\n            );"
+      },
+      {
+        "line": 41,
+        "sql": "\n            CREATE TABLE tpir_spend_events (\n                id INTEGER PRIMARY KEY,\n                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,\n                spending_txid BLOB NOT NULL,\n                input_index INTEGER NOT NULL CHECK (input_index >= 0),\n                prevout_txid BLOB NOT NULL,\n                prevout_output_index INTEGER NOT NULL CHECK (prevout_output_index >= 0),\n                prevout_script BLOB NOT NULL,\n                mined_height INTEGER CHECK (mined_height >= 0),\n                UNIQUE (spending_txid, input_index)\n            );"
+      },
+      {
+        "line": 41,
+        "sql": "\n            CREATE TABLE tpir_spend_observations (\n                spend_id INTEGER NOT NULL REFERENCES tpir_spend_events(id) ON DELETE CASCADE,\n                revision_id INTEGER NOT NULL REFERENCES tpir_revisions(id),\n                PRIMARY KEY (spend_id, revision_id)\n            );"
+      },
+      {
+        "line": 41,
+        "sql": "\n            CREATE TABLE tpir_coverage (\n                id INTEGER PRIMARY KEY,\n                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,\n                script BLOB NOT NULL,\n                from_height INTEGER NOT NULL CHECK (from_height >= 0),\n                through_height INTEGER NOT NULL,\n                anchor_height INTEGER NOT NULL,\n                anchor_hash BLOB NOT NULL,\n                revision_id INTEGER NOT NULL REFERENCES tpir_revisions(id),\n                supported INTEGER NOT NULL CHECK (supported IN (0, 1)),\n                CHECK (from_height <= through_height AND through_height <= anchor_height)\n            );"
+      },
+      {
+        "line": 41,
+        "sql": "\n            CREATE TABLE tpir_pending_pages (\n                id INTEGER PRIMARY KEY,\n                account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,\n                revision_id INTEGER NOT NULL REFERENCES tpir_revisions(id),\n                page BLOB NOT NULL,\n                from_height INTEGER NOT NULL CHECK (from_height >= 0),\n                through_height INTEGER NOT NULL,\n                target_height INTEGER NOT NULL,\n                target_hash BLOB NOT NULL,\n                UNIQUE (account_id, revision_id, page),\n                CHECK (from_height <= through_height AND through_height <= target_height)\n            );"
+      },
+      {
+        "line": 41,
+        "sql": "\n            CREATE TABLE tpir_pending_page_scripts (\n                page_id INTEGER NOT NULL REFERENCES tpir_pending_pages(id) ON DELETE CASCADE,\n                script BLOB NOT NULL,\n                PRIMARY KEY (page_id, script)\n            );"
+      },
+      {
+        "line": 41,
+        "sql": "\n            CREATE INDEX idx_tpir_coverage_script ON tpir_coverage (account_id, script);"
+      },
+      {
+        "line": 41,
+        "sql": "\n            CREATE INDEX idx_tpir_receive_events_account ON tpir_receive_events (account_id);"
+      },
+      {
+        "line": 41,
+        "sql": "\n            CREATE INDEX idx_tpir_spend_events_account ON tpir_spend_events (account_id);"
+      },
+      {
+        "line": 41,
+        "sql": "\n            CREATE INDEX idx_tpir_spend_events_prevout ON tpir_spend_events (prevout_txid, prevout_output_index);"
+      }
+    ]
+  },
+  {
+    "name": "transparent_activation_schema",
+    "id": "88cad11149144382a78fd85bb3507c5c",
+    "dependencies": [
+      "9302bbcf425a426b9074084d626e45bd"
+    ],
+    "source_sha256": "6e5e877ce315b4a84ac30e1a5bc380894bab0aac00dd7743c3ca56a97508f551",
+    "source_sql_lines": [
+      40
+    ],
+    "statements": [
+      {
+        "line": 40,
+        "sql": "\n            CREATE TABLE tpir_active_accounts (\n                account_id INTEGER PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE\n            );"
+      },
+      {
+        "line": 40,
+        "sql": "\n            CREATE TABLE tpir_qualified_revisions (\n                revision_id INTEGER PRIMARY KEY REFERENCES tpir_revisions(id)\n            );"
+      },
+      {
+        "line": 40,
+        "sql": "\n            CREATE TABLE tpir_quarantined_sources (\n                source BLOB PRIMARY KEY\n            );"
+      },
+      {
+        "line": 40,
+        "sql": "\n            CREATE TABLE tpir_quarantined_accounts (\n                account_id INTEGER PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE\n            );"
+      }
+    ]
+  },
+  {
+    "name": "transparent_activity_metadata",
+    "id": "935cd43609fd4f4fa808260ee399cb21",
+    "dependencies": [
+      "88cad11149144382a78fd85bb3507c5c"
+    ],
+    "source_sha256": "adcdbb6e92d0df1e9d3f5518076349ee6341e29961b932497d5081ceef4df15c",
+    "source_sql_lines": [],
+    "statements": [
+      {
+        "line": 2116,
+        "sql": "\nCREATE TABLE tpir_transaction_metadata (\n    account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,\n    txid BLOB NOT NULL CHECK (length(txid) = 32),\n    revision_id INTEGER NOT NULL REFERENCES tpir_revisions(id) ON DELETE CASCADE,\n    mined_height INTEGER NOT NULL CHECK (mined_height >= 0),\n    fee_state INTEGER NOT NULL CHECK (fee_state IN (0, 1, 2)),\n    fee_zat INTEGER CHECK (fee_zat >= 0 AND fee_zat <= 2100000000000000),\n    input_count INTEGER NOT NULL CHECK (input_count >= 0 AND input_count <= 4294967295),\n    shielded INTEGER NOT NULL CHECK (shielded IN (0, 1)),\n    CHECK ((fee_state = 0 AND fee_zat IS NOT NULL) OR (fee_state != 0 AND fee_zat IS NULL)),\n    CHECK (fee_state != 2 OR input_count = 0),\n    PRIMARY KEY (account_id, txid, revision_id)\n);"
+      }
+    ],
+    "external_sources": {
+      "../../db.rs": "4d9a044626b875ef5b67a6d974be5184ec9e8c499269bc6870ef3c72cc6d4f1b"
+    }
+  },
+  {
+    "name": "transparent_shared_derivations",
+    "id": "a03b0d6a60854859ae77bce948345214",
+    "dependencies": [
+      "935cd43609fd4f4fa808260ee399cb21"
+    ],
+    "source_sha256": "ff43ee53c9c12cf515322568429e6e08d71ffdbef1938708194076ca57539ca4",
+    "source_sql_lines": [],
+    "statements": [
+      {
+        "line": 871,
+        "sql": "\nCREATE TABLE tpir_shared_derivations (\n    account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,\n    key_scope INTEGER NOT NULL CHECK (key_scope IN (0, 1, 2)),\n    child_index INTEGER NOT NULL CHECK (child_index >= 0 AND child_index < 2147483648),\n    PRIMARY KEY (account_id, key_scope, child_index)\n);"
+      }
+    ],
+    "external_sources": {
+      "../../db.rs": "4d9a044626b875ef5b67a6d974be5184ec9e8c499269bc6870ef3c72cc6d4f1b"
+    }
+  },
+  {
+    "name": "v_transactions_sender_grouping",
+    "id": "0eaf99b94db74d0bb0bd00a9a6bbd8cf",
+    "dependencies": [
+      "a03b0d6a60854859ae77bce948345214"
+    ],
+    "source_sha256": "8201e49be95a493fac738854c51f6e836f18c60c3a7be6d5231f06e22a604489",
+    "source_sql_lines": [
+      43,
+      53
+    ],
+    "statements": [
+      {
+        "line": 43,
+        "sql": "DROP VIEW v_transactions;"
+      },
+      {
+        "line": 53,
+        "sql": "\nCREATE VIEW v_transactions AS\nWITH\nnotes AS (\n    -- Outputs received in this transaction\n    SELECT ro.account_id              AS account_id,\n           ro.transaction_id          AS transaction_id,\n           ro.pool                    AS pool,\n           id_within_pool_table,\n           ro.value                   AS value,\n           ro.value                   AS received_value,\n           0                          AS spent_value,\n           0                          AS spent_note_count,\n           CASE\n                WHEN ro.is_change THEN 1\n                ELSE 0\n           END AS change_note_count,\n           CASE\n                WHEN ro.is_change THEN 0\n                ELSE 1\n           END AS received_count,\n           CASE\n             WHEN (ro.memo IS NULL OR ro.memo = X'F6')\n               THEN 0\n             ELSE 1\n           END AS memo_present,\n           -- The wallet cannot receive transparent outputs in shielding transactions.\n           CASE\n             WHEN ro.pool = 0\n               THEN 1\n             ELSE 0\n           END AS does_not_match_shielding\n    FROM v_received_outputs ro\n    UNION\n    -- Outputs spent in this transaction\n    SELECT ro.account_id              AS account_id,\n           ros.transaction_id         AS transaction_id,\n           ro.pool                    AS pool,\n           id_within_pool_table,\n           -ro.value                  AS value,\n           0                          AS received_value,\n           ro.value                   AS spent_value,\n           1                          AS spent_note_count,\n           0                          AS change_note_count,\n           0                          AS received_count,\n           0                          AS memo_present,\n           -- The wallet cannot spend shielded outputs in shielding transactions.\n           CASE\n             WHEN ro.pool != 0\n               THEN 1\n             ELSE 0\n           END AS does_not_match_shielding\n    FROM v_received_outputs ro\n    JOIN v_received_output_spends ros\n         ON ros.pool = ro.pool\n         AND ros.received_output_id = ro.id_within_pool_table\n),\n-- What each account spent and received in each pool, per transaction. A pool the account\n-- received value in but spent nothing from is a pool that value crossed into from\n-- elsewhere, which is what `pool_crossings` below is built on.\nnotes_by_pool AS (\n    SELECT account_id, transaction_id, pool,\n           SUM(spent_note_count)                   AS spent_note_count,\n           SUM(received_count + change_note_count) AS received_note_count,\n           SUM(received_value)                     AS received_value\n    FROM notes\n    GROUP BY account_id, transaction_id, pool\n),\n-- Obtain a count of the notes that the wallet created in each transaction,\n-- not counting change notes.\nsent_note_counts AS (\n    SELECT sent_notes.from_account_id     AS account_id,\n           sent_notes.transaction_id      AS transaction_id,\n           COUNT(DISTINCT sent_notes.id)  AS sent_notes,\n           SUM(\n             CASE\n               WHEN (sent_notes.memo IS NULL OR sent_notes.memo = X'F6' OR ro.transaction_id IS NOT NULL)\n                 THEN 0\n               ELSE 1\n             END\n           ) AS memo_count\n    FROM sent_notes\n    LEFT JOIN v_received_outputs ro ON sent_notes.id = ro.sent_note_id\n    WHERE COALESCE(ro.is_change, 0) = 0\n    -- Group by the sending account. A bare `account_id` here would resolve to the joined\n    -- `ro.account_id`, splitting one sender's notes into a group per receiving account.\n    GROUP BY sent_notes.from_account_id, sent_notes.transaction_id\n),\n-- Identifies the transactions that are wallet-internal transfers moving an account's own\n-- funds between shielded pools, and reports the value that crossed. `crossing_value` is\n-- non-NULL exactly for such a transaction, so it carries both the classification and the\n-- amount; see the `pool_crossing_value` column below.\npool_crossings AS (\n    SELECT notes_by_pool.account_id     AS account_id,\n           notes_by_pool.transaction_id AS transaction_id,\n           CASE WHEN (\n                -- Every note spent and every output received by the wallet is shielded.\n                SUM(CASE WHEN notes_by_pool.pool = 0 THEN notes_by_pool.spent_note_count + notes_by_pool.received_note_count ELSE 0 END) = 0\n                -- The transaction spends at least one of the account's notes.\n                AND SUM(notes_by_pool.spent_note_count) > 0\n                -- At least one output was received in a pool the account spent nothing\n                -- from, so value crossed between pools.\n                AND SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_note_count ELSE 0 END) > 0\n                -- We do not know about any external outputs of the transaction.\n                AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0\n           )\n           -- The total value received in the pools the account did not spend from. The\n           -- condition above guarantees at least one such output, so when this branch is\n           -- taken the sum is never NULL.\n           THEN SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_value ELSE 0 END)\n           END AS crossing_value\n    FROM notes_by_pool\n    LEFT JOIN sent_note_counts\n         ON sent_note_counts.account_id = notes_by_pool.account_id\n         AND sent_note_counts.transaction_id = notes_by_pool.transaction_id\n    GROUP BY notes_by_pool.account_id, notes_by_pool.transaction_id\n),\nblocks_max_height AS (\n    SELECT MAX(blocks.height) AS max_height FROM blocks\n)\nSELECT accounts.uuid                AS account_uuid,\n       transactions.mined_height    AS mined_height,\n       transactions.txid            AS txid,\n       transactions.tx_index        AS tx_index,\n       COALESCE(transactions.expiry_height, (SELECT history_expiry_height\n        FROM ironwood_enhance_routing WHERE transaction_id = transactions.id_tx AND route = 0))\n           AS expiry_height,\n       transactions.raw             AS raw,\n       SUM(notes.value)             AS account_balance_delta,\n       SUM(notes.spent_value)       AS total_spent,\n       SUM(notes.received_value)    AS total_received,\n       transactions.fee             AS fee_paid,\n       SUM(notes.change_note_count) > 0  AS has_change,\n       MAX(COALESCE(sent_note_counts.sent_notes, 0))  AS sent_note_count,\n       SUM(notes.received_count)         AS received_note_count,\n       SUM(notes.memo_present) + MAX(COALESCE(sent_note_counts.memo_count, 0)) AS memo_count,\n       blocks.time                       AS block_time,\n       (\n            transactions.mined_height IS NULL\n            AND transactions.expiry_height BETWEEN 1 AND blocks_max_height.max_height\n       ) AS expired_unmined,\n       SUM(notes.spent_note_count) AS spent_note_count,\n       (\n            -- All of the wallet-spent and wallet-received notes are consistent with a\n            -- shielding transaction.\n            SUM(notes.does_not_match_shielding) = 0\n            -- The transaction contains at least one wallet-spent output.\n            AND SUM(notes.spent_note_count) > 0\n            -- The transaction contains at least one wallet-received note.\n            AND (SUM(notes.received_count) + SUM(notes.change_note_count)) > 0\n            -- We do not know about any external outputs of the transaction.\n            AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0\n       ) AS is_shielding,\n       -- The value that crossed pools, when this transaction is a wallet-internal transfer\n       -- between shielded pools; NULL when it is not such a transfer. A transaction is one\n       -- exactly when this column is non-NULL.\n       pool_crossings.crossing_value AS pool_crossing_value,\n       transactions.trust_status,\n       transactions.zip318_kind\nFROM notes\nJOIN accounts ON accounts.id = notes.account_id\nJOIN transactions ON transactions.id_tx = notes.transaction_id\nLEFT JOIN blocks_max_height\nLEFT JOIN blocks ON blocks.height = transactions.mined_height\nLEFT JOIN sent_note_counts\n     ON sent_note_counts.account_id = notes.account_id\n     AND sent_note_counts.transaction_id = notes.transaction_id\nLEFT JOIN pool_crossings\n     ON pool_crossings.account_id = notes.account_id\n     AND pool_crossings.transaction_id = notes.transaction_id\nGROUP BY notes.account_id, notes.transaction_id\n;"
+      }
+    ]
+  },
+  {
+    "name": "unmined_status_obligations",
+    "id": "31eeaa720c174e22b8023f8161d6accd",
+    "dependencies": [
+      "0eaf99b94db74d0bb0bd00a9a6bbd8cf"
+    ],
+    "source_sha256": "4b7437f399851f1963ec13a213880a9a77de311c703331b3f368b5da3b556227",
+    "source_sql_lines": [],
+    "statements": []
+  },
+  {
+    "name": "status_reconfirmation",
+    "id": "6ad71499aa45439d8b4b3f7cff9c0017",
+    "dependencies": [
+      "31eeaa720c174e22b8023f8161d6accd"
+    ],
+    "source_sha256": "467f6fd68943f6316248637f116cc1b6039206272dc2ed7f6d6205b12f08c135",
+    "source_sql_lines": [
+      45
+    ],
+    "statements": [
+      {
+        "line": 45,
+        "sql": "ALTER TABLE tx_retrieval_queue ADD COLUMN reconfirm_mined INTEGER NOT NULL DEFAULT 0;"
+      }
+    ]
+  },
+  {
+    "name": "transaction_reconfirmation_receipts",
+    "id": "96bc0e7251cf4cdbb11f85a460db37ab",
+    "dependencies": [
+      "6ad71499aa45439d8b4b3f7cff9c0017"
+    ],
+    "source_sha256": "863bd755cb953c2d9861defe75746d69d98905349863a1b4e3ba9a055fa450b2",
+    "source_sql_lines": [],
+    "statements": [
+      {
+        "line": 31,
+        "sql": "\n    CREATE TABLE tx_reconfirmation_receipts (\n        transaction_id INTEGER PRIMARY KEY REFERENCES transactions(id_tx) ON DELETE CASCADE,\n        mined_height INTEGER NOT NULL CHECK (typeof(mined_height) = 'integer' AND mined_height BETWEEN 0 AND 4294967295),\n        block_hash BLOB NOT NULL CHECK (typeof(block_hash) = 'blob' AND length(block_hash) = 32),\n        tx_index INTEGER CHECK (tx_index IS NULL OR (typeof(tx_index) = 'integer' AND tx_index BETWEEN 0 AND 65535)),\n        replacement_observed INTEGER NOT NULL DEFAULT 0 CHECK (replacement_observed IN (0, 1))\n    );"
+      },
+      {
+        "line": 31,
+        "sql": "\n    CREATE INDEX idx_tx_reconfirmation_receipts_height ON tx_reconfirmation_receipts(mined_height);"
+      }
+    ],
+    "external_sources": {
+      "../../transaction_reconfirmation.rs": "d06bcd10ef80e4fc654713b94f69a11900a74eb10b1c3623d97513809a0488ff"
+    }
+  },
+  {
+    "name": "v_transactions_legacy_projection",
+    "id": "cbf88891ba834329a798c986649d77e8",
+    "dependencies": [
+      "0eaf99b94db74d0bb0bd00a9a6bbd8cf"
+    ],
+    "source_sha256": "2b2d53ac08f857e4d7204910156617ae635a6256d47359a72d7524ce853aaf08",
+    "source_sql_lines": [
+      40,
+      53
+    ],
+    "statements": [
+      {
+        "line": 40,
+        "sql": "DROP VIEW v_transactions;"
+      },
+      {
+        "line": 53,
+        "sql": "\nCREATE VIEW v_transactions AS\nWITH\nnotes AS (\n    -- Outputs received in this transaction\n    SELECT ro.account_id              AS account_id,\n           ro.transaction_id          AS transaction_id,\n           ro.pool                    AS pool,\n           id_within_pool_table,\n           ro.value                   AS value,\n           ro.value                   AS received_value,\n           0                          AS spent_value,\n           0                          AS spent_note_count,\n           CASE\n                WHEN ro.is_change THEN 1\n                ELSE 0\n           END AS change_note_count,\n           CASE\n                WHEN ro.is_change THEN 0\n                ELSE 1\n           END AS received_count,\n           CASE\n             WHEN (ro.memo IS NULL OR ro.memo = X'F6')\n               THEN 0\n             ELSE 1\n           END AS memo_present,\n           -- The wallet cannot receive transparent outputs in shielding transactions.\n           CASE\n             WHEN ro.pool = 0\n               THEN 1\n             ELSE 0\n           END AS does_not_match_shielding\n    FROM v_received_outputs ro\n    UNION\n    -- Outputs spent in this transaction\n    SELECT ro.account_id              AS account_id,\n           ros.transaction_id         AS transaction_id,\n           ro.pool                    AS pool,\n           id_within_pool_table,\n           -ro.value                  AS value,\n           0                          AS received_value,\n           ro.value                   AS spent_value,\n           1                          AS spent_note_count,\n           0                          AS change_note_count,\n           0                          AS received_count,\n           0                          AS memo_present,\n           -- The wallet cannot spend shielded outputs in shielding transactions.\n           CASE\n             WHEN ro.pool != 0\n               THEN 1\n             ELSE 0\n           END AS does_not_match_shielding\n    FROM v_received_outputs ro\n    JOIN v_received_output_spends ros\n         ON ros.pool = ro.pool\n         AND ros.received_output_id = ro.id_within_pool_table\n),\n-- What each account spent and received in each pool, per transaction. A pool the account\n-- received value in but spent nothing from is a pool that value crossed into from\n-- elsewhere, which is what `pool_crossings` below is built on.\nnotes_by_pool AS (\n    SELECT account_id, transaction_id, pool,\n           SUM(spent_note_count)                   AS spent_note_count,\n           SUM(received_count + change_note_count) AS received_note_count,\n           SUM(received_value)                     AS received_value\n    FROM notes\n    GROUP BY account_id, transaction_id, pool\n),\n-- Obtain a count of the notes that the wallet created in each transaction,\n-- not counting change notes.\nsent_note_counts AS (\n    SELECT sent_notes.from_account_id     AS account_id,\n           sent_notes.transaction_id      AS transaction_id,\n           COUNT(DISTINCT sent_notes.id)  AS sent_notes,\n           SUM(\n             CASE\n               WHEN (sent_notes.memo IS NULL OR sent_notes.memo = X'F6' OR ro.transaction_id IS NOT NULL)\n                 THEN 0\n               ELSE 1\n             END\n           ) AS memo_count\n    FROM sent_notes\n    LEFT JOIN v_received_outputs ro ON sent_notes.id = ro.sent_note_id\n    WHERE COALESCE(ro.is_change, 0) = 0\n    -- Group by the sending account. A bare `account_id` here would resolve to the joined\n    -- `ro.account_id`, splitting one sender's notes into a group per receiving account.\n    GROUP BY sent_notes.from_account_id, sent_notes.transaction_id\n),\n-- Identifies the transactions that are wallet-internal transfers moving an account's own\n-- funds between shielded pools, and reports the value that crossed. `crossing_value` is\n-- non-NULL exactly for such a transaction, so it carries both the classification and the\n-- amount; see the `pool_crossing_value` column below.\npool_crossings AS (\n    SELECT notes_by_pool.account_id     AS account_id,\n           notes_by_pool.transaction_id AS transaction_id,\n           CASE WHEN (\n                -- Every note spent and every output received by the wallet is shielded.\n                SUM(CASE WHEN notes_by_pool.pool = 0 THEN notes_by_pool.spent_note_count + notes_by_pool.received_note_count ELSE 0 END) = 0\n                -- The transaction spends at least one of the account's notes.\n                AND SUM(notes_by_pool.spent_note_count) > 0\n                -- At least one output was received in a pool the account spent nothing\n                -- from, so value crossed between pools.\n                AND SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_note_count ELSE 0 END) > 0\n                -- We do not know about any external outputs of the transaction.\n                AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0\n           )\n           -- The total value received in the pools the account did not spend from. The\n           -- condition above guarantees at least one such output, so when this branch is\n           -- taken the sum is never NULL.\n           THEN SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_value ELSE 0 END)\n           END AS crossing_value\n    FROM notes_by_pool\n    LEFT JOIN sent_note_counts\n         ON sent_note_counts.account_id = notes_by_pool.account_id\n         AND sent_note_counts.transaction_id = notes_by_pool.transaction_id\n    GROUP BY notes_by_pool.account_id, notes_by_pool.transaction_id\n),\nblocks_max_height AS (\n    SELECT MAX(blocks.height) AS max_height FROM blocks\n)\nSELECT accounts.uuid                AS account_uuid,\n       transactions.mined_height    AS mined_height,\n       transactions.txid            AS txid,\n       transactions.tx_index        AS tx_index,\n       COALESCE(transactions.expiry_height, (SELECT history_expiry_height\n        FROM ironwood_enhance_routing WHERE transaction_id = transactions.id_tx AND route = 0))\n           AS expiry_height,\n       transactions.raw             AS raw,\n       SUM(notes.value)             AS account_balance_delta,\n       SUM(notes.spent_value)       AS total_spent,\n       SUM(notes.received_value)    AS total_received,\n       transactions.fee             AS fee_paid,\n       SUM(notes.change_note_count) > 0  AS has_change,\n       MAX(COALESCE(sent_note_counts.sent_notes, 0))  AS sent_note_count,\n       SUM(notes.received_count)         AS received_note_count,\n       SUM(notes.memo_present) + MAX(COALESCE(sent_note_counts.memo_count, 0)) AS memo_count,\n       blocks.time                       AS block_time,\n       (\n            transactions.mined_height IS NULL\n            AND transactions.expiry_height BETWEEN 1 AND blocks_max_height.max_height\n       ) AS expired_unmined,\n       SUM(notes.spent_note_count) AS spent_note_count,\n       (\n            -- All of the wallet-spent and wallet-received notes are consistent with a\n            -- shielding transaction.\n            SUM(notes.does_not_match_shielding) = 0\n            -- The transaction contains at least one wallet-spent output.\n            AND SUM(notes.spent_note_count) > 0\n            -- The transaction contains at least one wallet-received note.\n            AND (SUM(notes.received_count) + SUM(notes.change_note_count)) > 0\n            -- We do not know about any external outputs of the transaction.\n            AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0\n       ) AS is_shielding,\n       -- The value that crossed pools, when this transaction is a wallet-internal transfer\n       -- between shielded pools; NULL when it is not such a transfer. A transaction is one\n       -- exactly when this column is non-NULL.\n       pool_crossings.crossing_value AS pool_crossing_value,\n       transactions.trust_status,\n       transactions.zip318_kind\nFROM notes\nJOIN accounts ON accounts.id = notes.account_id\nJOIN transactions ON transactions.id_tx = notes.transaction_id\nLEFT JOIN blocks_max_height\nLEFT JOIN blocks ON blocks.height = transactions.mined_height\nLEFT JOIN sent_note_counts\n     ON sent_note_counts.account_id = notes.account_id\n     AND sent_note_counts.transaction_id = notes.transaction_id\nLEFT JOIN pool_crossings\n     ON pool_crossings.account_id = notes.account_id\n     AND pool_crossings.transaction_id = notes.transaction_id\nGROUP BY notes.account_id, notes.transaction_id\n;"
+      }
+    ]
+  },
+  {
+    "name": "ironwood_unsupported_memo_retry",
+    "id": "3d1c7a528e0b4f6d9a475be2c0f19e84",
+    "dependencies": [
+      "cbf88891ba834329a798c986649d77e8",
+      "96bc0e7251cf4cdbb11f85a460db37ab"
+    ],
+    "source_sha256": "756ebc0b7fd99bee0f79052b4343da9a345144b92875e6edfdfc542d33797561",
+    "source_sql_lines": [],
+    "statements": []
+  },
+  {
+    "name": "ironwood_transparent_output_shape",
+    "id": "8f4c321004e149eb9de2d713ee0a8426",
+    "dependencies": [
+      "3d1c7a528e0b4f6d9a475be2c0f19e84"
+    ],
+    "source_sha256": "2ed0dca5e891fb40bbb48959b425aecf95c5bd67c8bebd06c9f960265b32942c",
+    "source_sql_lines": [
+      29
+    ],
+    "statements": [
+      {
+        "line": 29,
+        "sql": "ALTER TABLE ironwood_enhance_routing ADD COLUMN has_transparent_outputs INTEGER\n                 CHECK (has_transparent_outputs IN (0, 1));"
+      }
+    ]
+  },
+  {
+    "name": "one_time_pir",
+    "id": "2eed2da721764d729461c9ae27491b0a",
+    "dependencies": [
+      "c5b63b3b81904d0fb2173921d7aac225",
+      "cbf88891ba834329a798c986649d77e8",
+      "856ecde7c67047c19345b80ba5b12c4f"
+    ],
+    "source_sha256": "b7035abd41344870ab457ee48bccd3769778f6ee35a395a6aa9b0286e8bcece5",
+    "source_sql_lines": [
+      15,
+      192,
+      307
+    ],
+    "statements": [
+      {
+        "line": 307,
+        "sql": "ALTER TABLE ironwood_one_time_recovery ADD COLUMN receive_end BLOB NOT NULL\n                DEFAULT X'0000000000000000' CHECK (length(receive_end) = 8);"
+      },
+      {
+        "line": 307,
+        "sql": "\n             ALTER TABLE ironwood_one_time_recovery ADD COLUMN upgrade_required INTEGER NOT NULL\n                DEFAULT 0 CHECK (upgrade_required IN (0, 1));"
+      },
+      {
+        "line": 307,
+        "sql": "\n             DROP INDEX IF EXISTS idx_ironwood_one_time_keys_account_receiver;"
+      },
+      {
+        "line": 307,
+        "sql": "\n             ALTER TABLE ironwood_one_time_keys DROP COLUMN registered_at;"
+      },
+      {
+        "line": 307,
+        "sql": "\n             CREATE TABLE ironwood_one_time_operation_receipts (\n                operation_id INTEGER NOT NULL REFERENCES ironwood_one_time_operations(id) ON DELETE CASCADE,\n                txid BLOB NOT NULL CHECK (length(txid) = 32),\n                PRIMARY KEY (operation_id, txid)\n             );"
+      },
+      {
+        "line": 307,
+        "sql": "\n             CREATE TABLE ironwood_one_time_disputed_receipts (\n                note_id INTEGER PRIMARY KEY REFERENCES ironwood_received_notes(id) ON DELETE CASCADE\n             );"
+      },
+      {
+        "line": 307,
+        "sql": "\n             CREATE TABLE ironwood_one_time_unchecked_raw (\n                transaction_id INTEGER PRIMARY KEY REFERENCES transactions(id_tx) ON DELETE CASCADE\n             );"
+      },
+      {
+        "line": 307,
+        "sql": "\n             DROP VIEW v_transactions;"
+      },
+      {
+        "line": 307,
+        "sql": "\n             DROP VIEW v_tx_outputs;"
+      },
+      {
+        "line": 15,
+        "sql": "\nCREATE VIEW v_transactions AS\nWITH\nnotes AS (\n    -- Outputs received in this transaction\n    SELECT ro.account_id              AS account_id,\n           ro.transaction_id          AS transaction_id,\n           ro.pool                    AS pool,\n           id_within_pool_table,\n           ro.value                   AS value,\n           ro.value                   AS received_value,\n           0                          AS spent_value,\n           0                          AS spent_note_count,\n           CASE\n                WHEN ro.is_change THEN 1\n                ELSE 0\n           END AS change_note_count,\n           CASE\n                WHEN ro.is_change THEN 0\n                ELSE 1\n           END AS received_count,\n           CASE\n             WHEN (ro.memo IS NULL OR ro.memo = X'F6')\n               THEN 0\n             ELSE 1\n           END AS memo_present,\n           -- The wallet cannot receive transparent outputs in shielding transactions.\n           CASE\n             WHEN ro.pool = 0\n               THEN 1\n             ELSE 0\n           END AS does_not_match_shielding\n    -- A private receipt whose transaction label raw bytes disproved is not received in it.\n    FROM (SELECT * FROM v_received_outputs\n          WHERE NOT (pool = 4 AND id_within_pool_table IN\n              (SELECT note_id FROM ironwood_one_time_disputed_receipts))) ro\n    UNION\n    -- Outputs spent in this transaction\n    SELECT ro.account_id              AS account_id,\n           ros.transaction_id         AS transaction_id,\n           ro.pool                    AS pool,\n           id_within_pool_table,\n           -ro.value                  AS value,\n           0                          AS received_value,\n           ro.value                   AS spent_value,\n           1                          AS spent_note_count,\n           0                          AS change_note_count,\n           0                          AS received_count,\n           0                          AS memo_present,\n           -- The wallet cannot spend shielded outputs in shielding transactions.\n           CASE\n             WHEN ro.pool != 0\n               THEN 1\n             ELSE 0\n           END AS does_not_match_shielding\n    FROM v_received_outputs ro\n    JOIN v_received_output_spends ros\n         ON ros.pool = ro.pool\n         AND ros.received_output_id = ro.id_within_pool_table\n),\n-- What each account spent and received in each pool, per transaction. A pool the account\n-- received value in but spent nothing from is a pool that value crossed into from\n-- elsewhere, which is what `pool_crossings` below is built on.\nnotes_by_pool AS (\n    SELECT account_id, transaction_id, pool,\n           SUM(spent_note_count)                   AS spent_note_count,\n           SUM(received_count + change_note_count) AS received_note_count,\n           SUM(received_value)                     AS received_value\n    FROM notes\n    GROUP BY account_id, transaction_id, pool\n),\n-- Obtain a count of the notes that the wallet created in each transaction,\n-- not counting change notes.\nsent_note_counts AS (\n    SELECT sent_notes.from_account_id     AS account_id,\n           sent_notes.transaction_id      AS transaction_id,\n           COUNT(DISTINCT sent_notes.id)  AS sent_notes,\n           SUM(\n             CASE\n               WHEN (sent_notes.memo IS NULL OR sent_notes.memo = X'F6' OR ro.transaction_id IS NOT NULL)\n                 THEN 0\n               ELSE 1\n             END\n           ) AS memo_count\n    FROM sent_notes\n    LEFT JOIN v_received_outputs ro ON sent_notes.id = ro.sent_note_id\n    WHERE COALESCE(ro.is_change, 0) = 0\n    -- Group by the sending account. A bare `account_id` here would resolve to the joined\n    -- `ro.account_id`, splitting one sender's notes into a group per receiving account.\n    GROUP BY sent_notes.from_account_id, sent_notes.transaction_id\n),\n-- Identifies the transactions that are wallet-internal transfers moving an account's own\n-- funds between shielded pools, and reports the value that crossed. `crossing_value` is\n-- non-NULL exactly for such a transaction, so it carries both the classification and the\n-- amount; see the `pool_crossing_value` column below.\npool_crossings AS (\n    SELECT notes_by_pool.account_id     AS account_id,\n           notes_by_pool.transaction_id AS transaction_id,\n           CASE WHEN (\n                -- Every note spent and every output received by the wallet is shielded.\n                SUM(CASE WHEN notes_by_pool.pool = 0 THEN notes_by_pool.spent_note_count + notes_by_pool.received_note_count ELSE 0 END) = 0\n                -- The transaction spends at least one of the account's notes.\n                AND SUM(notes_by_pool.spent_note_count) > 0\n                -- At least one output was received in a pool the account spent nothing\n                -- from, so value crossed between pools.\n                AND SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_note_count ELSE 0 END) > 0\n                -- We do not know about any external outputs of the transaction.\n                AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0\n           )\n           -- The total value received in the pools the account did not spend from. The\n           -- condition above guarantees at least one such output, so when this branch is\n           -- taken the sum is never NULL.\n           THEN SUM(CASE WHEN notes_by_pool.spent_note_count = 0 THEN notes_by_pool.received_value ELSE 0 END)\n           END AS crossing_value\n    FROM notes_by_pool\n    LEFT JOIN sent_note_counts\n         ON sent_note_counts.account_id = notes_by_pool.account_id\n         AND sent_note_counts.transaction_id = notes_by_pool.transaction_id\n    GROUP BY notes_by_pool.account_id, notes_by_pool.transaction_id\n),\nblocks_max_height AS (\n    SELECT MAX(blocks.height) AS max_height FROM blocks\n)\nSELECT accounts.uuid                AS account_uuid,\n       transactions.mined_height    AS mined_height,\n       transactions.txid            AS txid,\n       transactions.tx_index        AS tx_index,\n       COALESCE(transactions.expiry_height, (SELECT history_expiry_height\n        FROM ironwood_enhance_routing WHERE transaction_id = transactions.id_tx AND route = 0))\n           AS expiry_height,\n       transactions.raw             AS raw,\n       SUM(notes.value)             AS account_balance_delta,\n       SUM(notes.spent_value)       AS total_spent,\n       SUM(notes.received_value)    AS total_received,\n       transactions.fee             AS fee_paid,\n       SUM(notes.change_note_count) > 0  AS has_change,\n       MAX(COALESCE(sent_note_counts.sent_notes, 0))  AS sent_note_count,\n       SUM(notes.received_count)         AS received_note_count,\n       SUM(notes.memo_present) + MAX(COALESCE(sent_note_counts.memo_count, 0)) AS memo_count,\n       blocks.time                       AS block_time,\n       (\n            transactions.mined_height IS NULL\n            AND transactions.expiry_height BETWEEN 1 AND blocks_max_height.max_height\n       ) AS expired_unmined,\n       SUM(notes.spent_note_count) AS spent_note_count,\n       (\n            -- All of the wallet-spent and wallet-received notes are consistent with a\n            -- shielding transaction.\n            SUM(notes.does_not_match_shielding) = 0\n            -- The transaction contains at least one wallet-spent output.\n            AND SUM(notes.spent_note_count) > 0\n            -- The transaction contains at least one wallet-received note.\n            AND (SUM(notes.received_count) + SUM(notes.change_note_count)) > 0\n            -- We do not know about any external outputs of the transaction.\n            AND MAX(COALESCE(sent_note_counts.sent_notes, 0)) = 0\n       ) AS is_shielding,\n       -- The value that crossed pools, when this transaction is a wallet-internal transfer\n       -- between shielded pools; NULL when it is not such a transfer. A transaction is one\n       -- exactly when this column is non-NULL.\n       pool_crossings.crossing_value AS pool_crossing_value,\n       transactions.trust_status,\n       transactions.zip318_kind\nFROM notes\nJOIN accounts ON accounts.id = notes.account_id\nJOIN transactions ON transactions.id_tx = notes.transaction_id\nLEFT JOIN blocks_max_height\nLEFT JOIN blocks ON blocks.height = transactions.mined_height\nLEFT JOIN sent_note_counts\n     ON sent_note_counts.account_id = notes.account_id\n     AND sent_note_counts.transaction_id = notes.transaction_id\nLEFT JOIN pool_crossings\n     ON pool_crossings.account_id = notes.account_id\n     AND pool_crossings.transaction_id = notes.transaction_id\nGROUP BY notes.account_id, notes.transaction_id\n;"
+      },
+      {
+        "line": 192,
+        "sql": "\nCREATE VIEW v_tx_outputs AS\nWITH unioned AS (\n    -- select all outputs received by the wallet\n    SELECT t.id_tx                      AS transaction_id,\n           t.txid                       AS txid,\n           t.mined_height               AS mined_height,\n           IFNULL(t.trust_status, 0)    AS trust_status,\n           ro.pool                      AS output_pool,\n           ro.output_index              AS output_index,\n           from_account.uuid            AS from_account_uuid,\n           to_account.uuid              AS to_account_uuid,\n           -- for a transparent output, the address at which it was received is\n           -- the transparent receiver itself, not a unified address containing it\n           CASE ro.pool\n                WHEN 0 THEN a.cached_transparent_receiver_address\n                ELSE a.address\n           END                          AS to_address,\n           0                            AS is_sent_row,\n           a.diversifier_index_be       AS diversifier_index_be,\n           ro.value                     AS value,\n           ro.is_change                 AS is_change,\n           ro.memo                      AS memo,\n           a.key_scope                  AS recipient_key_scope\n    -- A private receipt whose transaction label raw bytes disproved is not an output of it.\n    FROM (SELECT * FROM v_received_outputs\n          WHERE NOT (pool = 4 AND id_within_pool_table IN\n              (SELECT note_id FROM ironwood_one_time_disputed_receipts))) ro\n    JOIN transactions t\n        ON t.id_tx = ro.transaction_id\n    LEFT JOIN addresses a ON a.id = ro.address_id\n    -- join to the sent_notes table to obtain `from_account_id`\n    LEFT JOIN sent_notes ON sent_notes.id = ro.sent_note_id\n    -- join on the accounts table to obtain account UUIDs\n    LEFT JOIN accounts from_account ON from_account.id = sent_notes.from_account_id\n    LEFT JOIN accounts to_account ON to_account.id = ro.account_id\n    UNION ALL\n    -- select all outputs sent by the wallet\n    SELECT t.id_tx                      AS transaction_id,\n           t.txid                       AS txid,\n           t.mined_height               AS mined_height,\n           IFNULL(t.trust_status, 0)    AS trust_status,\n           sent_notes.output_pool       AS output_pool,\n           sent_notes.output_index      AS output_index,\n           from_account.uuid            AS from_account_uuid,\n           NULL                         AS to_account_uuid,\n           sent_notes.to_address        AS to_address,\n           1                            AS is_sent_row,\n           NULL                         AS diversifier_index_be,\n           sent_notes.value             AS value,\n           0                            AS is_change,\n           sent_notes.memo              AS memo,\n           NULL                         AS recipient_key_scope\n    FROM sent_notes\n    JOIN transactions t\n        ON t.id_tx = sent_notes.transaction_id\n    LEFT JOIN v_received_outputs ro ON ro.sent_note_id = sent_notes.id\n    -- join on the accounts table to obtain account UUIDs\n    LEFT JOIN accounts from_account ON from_account.id = sent_notes.from_account_id\n)\n-- merge duplicate rows while retaining maximum information\nSELECT\n    transaction_id,\n    MAX(txid)                   AS txid,\n    MAX(mined_height)           AS tx_mined_height,\n    MIN(trust_status)           AS tx_trust_status,\n    output_pool,\n    output_index,\n    MAX(from_account_uuid)      AS from_account_uuid,\n    MAX(to_account_uuid)        AS to_account_uuid,\n    -- the recipient address recorded when the wallet created the output is\n    -- authoritative; the receiving address is reported only for outputs the\n    -- wallet did not create\n    COALESCE(\n        MAX(CASE WHEN is_sent_row THEN to_address END),\n        MAX(CASE WHEN NOT is_sent_row THEN to_address END)\n    )                           AS to_address,\n    MAX(value)                  AS value,\n    MAX(is_change)              AS is_change,\n    MAX(memo)                   AS memo,\n    MAX(recipient_key_scope)    AS recipient_key_scope\nFROM unioned\nGROUP BY transaction_id, output_pool, output_index;"
+      }
+    ]
+  },
+  {
+    "name": "transparent_txid_enhancement",
+    "id": "73d751a3dbdc461a9154e061903aae4f",
+    "dependencies": [
+      "8f4c321004e149eb9de2d713ee0a8426"
+    ],
+    "source_sha256": "135c0895571727a9d76d35a6b54e42bc0f860e16bd0cfd63f367157498a0da47",
+    "source_sql_lines": [
+      29
+    ],
+    "statements": [
+      {
+        "line": 29,
+        "sql": "\n            CREATE TABLE transparent_detail_work (\n                transaction_id INTEGER PRIMARY KEY REFERENCES transactions(id_tx) ON DELETE CASCADE,\n                reasons INTEGER NOT NULL CHECK (reasons > 0 AND reasons < 8),\n                attempts INTEGER NOT NULL DEFAULT 0 CHECK (attempts >= 0),\n                next_attempt_at INTEGER NOT NULL DEFAULT 0,\n                attempted_at INTEGER,\n                attempted_height INTEGER CHECK (attempted_height >= 0),\n                last_outcome INTEGER CHECK (last_outcome BETWEEN 0 AND 6),\n                last_map_sha256 BLOB CHECK (length(last_map_sha256) = 32)\n            );"
+      },
+      {
+        "line": 29,
+        "sql": "\n            CREATE TABLE transparent_tx_display (\n                transaction_id INTEGER PRIMARY KEY REFERENCES transactions(id_tx) ON DELETE CASCADE,\n                coinbase INTEGER NOT NULL CHECK (coinbase IN (0, 1)),\n                fee_zat INTEGER NOT NULL CHECK (fee_zat >= 0 AND fee_zat <= 2100000000000000),\n                input_count INTEGER NOT NULL CHECK (input_count >= 0 AND input_count <= 4294967295),\n                output_count INTEGER NOT NULL CHECK (output_count >= 0 AND output_count <= 4294967295),\n                shielded INTEGER NOT NULL CHECK (shielded IN (0, 1)),\n                sender_kind INTEGER NOT NULL CHECK (sender_kind IN (0, 1, 2, 3)),\n                sender_hash BLOB CHECK (length(sender_hash) = 20),\n                multiple_source_scripts INTEGER NOT NULL CHECK (multiple_source_scripts IN (0, 1)),\n                shielded_and_transparent_funding INTEGER NOT NULL\n                    CHECK (shielded_and_transparent_funding IN (0, 1)),\n                shard_id INTEGER NOT NULL,\n                revision INTEGER NOT NULL CHECK (revision >= 0),\n                map_sha256 BLOB NOT NULL CHECK (length(map_sha256) = 32),\n                looked_up_height INTEGER NOT NULL CHECK (looked_up_height >= 0),\n                stored_at INTEGER NOT NULL,\n                CHECK ((sender_kind IN (1, 2)) = (sender_hash IS NOT NULL)),\n                CHECK ((sender_kind = 0) = (input_count = 0)),\n                CHECK (coinbase = 0 OR (fee_zat = 0 AND input_count = 0)),\n                CHECK (coinbase = 1 OR input_count > 0 OR shielded = 1),\n                CHECK (multiple_source_scripts = 0 OR input_count >= 2),\n                CHECK (shielded_and_transparent_funding = 0 OR (input_count > 0 AND shielded = 1))\n            );"
+      },
+      {
+        "line": 29,
+        "sql": "\n            CREATE TABLE transparent_tx_display_outputs (\n                transaction_id INTEGER NOT NULL\n                    REFERENCES transparent_tx_display(transaction_id) ON DELETE CASCADE,\n                output_index INTEGER NOT NULL CHECK (output_index IN (0, 1)),\n                value_zat INTEGER NOT NULL CHECK (value_zat >= 0 AND value_zat <= 2100000000000000),\n                address_kind INTEGER NOT NULL CHECK (address_kind IN (1, 2, 3)),\n                address_hash BLOB CHECK (length(address_hash) = 20),\n                CHECK ((address_kind = 3) = (address_hash IS NULL)),\n                PRIMARY KEY (transaction_id, output_index)\n            );"
+      }
+    ]
+  },
+  {
+    "name": "transparent_detail_content_failures",
+    "id": "e5339f96a98a4047827428efdb9107ce",
+    "dependencies": [
+      "73d751a3dbdc461a9154e061903aae4f"
+    ],
+    "source_sha256": "120b30495f3894b9b02975368570c1ae75291d3f5d2ac72a8f46739ba7e7bbe0",
+    "source_sql_lines": [
+      39
+    ],
+    "statements": [
+      {
+        "line": 39,
+        "sql": "ALTER TABLE transparent_detail_work ADD COLUMN content_failures INTEGER NOT NULL\n                DEFAULT 0 CHECK (content_failures >= 0);"
       }
     ]
   }

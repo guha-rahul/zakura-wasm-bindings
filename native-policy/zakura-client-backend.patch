@@ -1,12 +1,12 @@
 --- a/src/data_api.rs
 +++ b/src/data_api.rs
-@@ -2976,6 +2976,42 @@
-             orchard,
-             #[cfg(feature = "orchard")]
-             ironwood,
-+        }
-+    }
-+
+@@ -2859,12 +2859,48 @@
+     ironwood: ScannedBundles<orchard::tree::MerkleHashOrchard, orchard::note::Nullifier>,
+     #[cfg(feature = "orchard")]
+     scanned_accounts: Vec<AccountId>,
+ }
+
+ impl<AccountId> ScannedBlock<AccountId> {
 +    /// Applies the wallet's spending-state retention policy before storing a scan.
 +    /// Viewing history and nullifiers remain available; only per-note witness marks
 +    /// are withheld. Shared block checkpoints are preserved.
@@ -40,6 +40,12 @@
 +                    unmark(&mut self.ironwood, output.note_commitment_tree_position());
 +                }
 +            }
-         }
-     }
- 
++        }
++    }
++
+     /// Constructs a new `ScannedBlock`
+     pub(crate) fn from_parts(
+         block_height: BlockHeight,
+         block_hash: BlockHash,
+         block_time: u32,
+         transactions: Vec<WalletTx<AccountId>>,

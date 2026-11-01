@@ -4,17 +4,17 @@ fn invoke(g:u32,operation:&str,input:Value)->std::result::Result<Value,String> {
 }
 const WORDS:&str="abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about";
 fn prepared(post_zip212:bool)->(String,u32,Value) {let (path,g,plan,_)=prepared_signer(post_zip212,false,false);(path,g,plan)}
-fn scan_fixture(with_signer:bool,internal:bool)->Value {
+pub(super) fn scan_fixture(with_signer:bool,internal:bool)->Value {
         let p=crate::Document::parse(PARAMS).unwrap();let mut import=fixture(10);
         let key=if with_signer {
             let seed=bip39::Mnemonic::parse(WORDS).unwrap().to_seed("");
             zcash_keys::keys::UnifiedSpendingKey::from_seed(&p,&seed,zip32::AccountId::ZERO).unwrap().to_unified_full_viewing_key()
         } else {UnifiedFullViewingKey::decode(&p,import["viewingKey"].as_str().unwrap()).unwrap()};
         import["viewingKey"]=json!(key.encode(&p));
-        let state=TreeState{network:"regtest".into(),height:39999,hash:"07".repeat(32),time:1,sapling_tree:"000000".into(),orchard_tree:"000000".into(),ironwood_tree:"000000".into()};
-        import["birthday"]["firstScanHeight"]=json!(40000);import["birthday"].as_object_mut().unwrap().remove("recoverUntilExclusive");
+        let state=TreeState{network:"regtest".into(),height:39998,hash:"07".repeat(32),time:1,sapling_tree:"000000".into(),orchard_tree:"000000".into(),ironwood_tree:"000000".into()};
+        import["birthday"]["firstScanHeight"]=json!(39999);import["birthday"].as_object_mut().unwrap().remove("recoverUntilExclusive");
         import["birthday"]["priorTreeState"]=json!(hex::encode(state.encode_to_vec()));
-        let mut block=policy_block(&key);block.height=40000;
+        let mut block=policy_block(&key);block.height=39999;block.hash=vec![9;32];
         if internal {
             use zcash_note_encryption::Domain;
             let dfvk=key.sapling().unwrap();
@@ -22,7 +22,12 @@ fn scan_fixture(with_signer:bool,internal:bool)->Value {
             let encryptor=sapling::note_encryption::sapling_note_encryption(Some(dfvk.to_internal_fvk().ovk),note.clone(),[0;512],&mut rand_core::UnwrapErr(getrandom::SysRng));
             block.vtx[0].outputs[0]=zcash_client_backend::proto::compact_formats::CompactSaplingOutput{cmu:note.cmu().to_bytes().to_vec(),ephemeral_key:sapling::note_encryption::SaplingDomain::epk_bytes(encryptor.epk()).0.to_vec(),ciphertext:encryptor.encrypt_note_plaintext()[..52].to_vec()};
         }
-        json!({"import":import,"target":{"height":40000,"hash":"08".repeat(32)},"batches":[{"priorTreeState":hex::encode(state.encode_to_vec()),"blocks":[hex::encode(block.encode_to_vec())]}]})
+        // ZIP 218 requires an anchor behind the tip, independently of confirmation counts.
+        let confirmation=zcash_client_backend::proto::compact_formats::CompactBlock {
+            height:40000,hash:vec![8;32],prev_hash:block.hash.clone(),time:2,
+            chain_metadata:block.chain_metadata.clone(),..Default::default()
+        };
+        json!({"import":import,"target":{"height":40000,"hash":"08".repeat(32)},"batches":[{"priorTreeState":hex::encode(state.encode_to_vec()),"blocks":[hex::encode(block.encode_to_vec()),hex::encode(confirmation.encode_to_vec())]}]})
 }
 pub(super) fn pczt_fixture()->Value {
     json!({"mnemonic":WORDS,"accountIndex":0,"external":scan_fixture(true,false),"internal":scan_fixture(true,true),"publicWallet":public_wallet_funds(&serde_json::from_str(include_str!("../public-wallet-funding.json")).unwrap())})
@@ -30,7 +35,7 @@ pub(super) fn pczt_fixture()->Value {
 fn prepared_signer(post_zip212:bool,with_signer:bool,internal:bool)->(String,u32,Value,Option<u32>) {prepared_proving(post_zip212,with_signer,internal,false)}
 fn prepared_proving(post_zip212:bool,with_signer:bool,internal:bool,ironwood:bool)->(String,u32,Value,Option<u32>) {prepared_mode(post_zip212,with_signer,internal,ironwood,"transfer")}
 fn prepared_mode(post_zip212:bool,with_signer:bool,internal:bool,ironwood:bool,mode:&str)->(String,u32,Value,Option<u32>) {
-    let fixture=if post_zip212{scan_fixture(with_signer,internal)}else{full_scan_fixture()};
+    let fixture=if post_zip212{scan_fixture(with_signer,internal)}else{confirmed_scan_fixture()};
     let (path,g)=open();
     let (account,token)=if with_signer {
         let input=json!({"accountIndex":0,"birthday":fixture["import"]["birthday"]});
@@ -462,6 +467,7 @@ pub(super) fn public_wallet_funds(funding:&Value)->Value {
         let Some(request)=pending["requests"].as_array().unwrap().first() else{break};
         if request["kind"]=="address"&&request["outputStatus"]=="unspent"{break;}
         let result=if request["kind"]=="enhancement" {let (raw,height)=if request["txid"]==funding["txid"]{(&funding["raw"],40001)}else{assert_eq!(request["txid"],funding["parent"]["txid"]);(&funding["parent"]["raw"],39900)};json!({"transactions":[{"bytes":raw,"minedHeight":height}]})}
+        else if request["kind"]=="status" {let height=if request["txid"]==funding["txid"]{40001}else{assert_eq!(request["txid"],funding["parent"]["txid"]);39900};json!({"status":"mined","height":height})}
         else if request["kind"]=="address" {let end=request["endExclusive"].as_u64().unwrap_or_else(||panic!("unhandled funding request {request}"));let contains=request["start"].as_u64().unwrap_or(0)<=40001&&end>40001;json!({"transactions":if contains{json!([{"bytes":funding["raw"],"minedHeight":40001}])}else{json!([])},"complete":true,"asOfHeight":end-1})}
         else{panic!("unexpected funding request {request}")};
         crate::wallet::enhancement::enhancement_call(g,"enhancement_apply",&json!({"revision":pending["revision"],"request":request,"result":result}).to_string()).unwrap();
@@ -476,7 +482,7 @@ pub(super) fn public_wallet_funds(funding:&Value)->Value {
 fn public_wallet_funding_fixture(){
     let data=public_wallet_funds(&serde_json::from_str(include_str!("../public-wallet-funding.json")).unwrap());
     let(path,g)=open();crate::wallet::storage_close(g).unwrap();std::fs::write(&path,hex::decode(data["database"].as_str().unwrap()).unwrap()).unwrap();let g=crate::wallet::initialize_path(&path,"zcash-js-network/1",PARAMS,&[3;32]).unwrap();
-    let balance=call(g,"account_balance",json!({"accountId":data["accountId"],"confirmations":{"trusted":1,"untrusted":1,"allowZeroConfirmationShielding":false}})).unwrap();assert_eq!(balance["amounts"]["transparent"]["regular"]["spendable"],"40000");assert_eq!(balance["amounts"]["sapling"]["spendable"],"40000");
+    let balance=call(g,"account_balance",json!({"accountId":data["accountId"],"confirmations":{"trusted":1,"untrusted":1,"allowZeroConfirmationShielding":false}})).unwrap();assert_eq!(balance["amounts"]["transparent"]["regular"]["spendable"],"40000");assert_eq!(balance["amounts"]["sapling"]["spendable"],"0");assert_eq!(balance["amounts"]["sapling"]["pendingSpendability"],"40000");
     let initial:Value=serde_json::from_str(&crate::wallet::enhancement::enhancement_call(g,"enhancement_requests","{}").unwrap()).unwrap();assert!(!initial["requests"].as_array().unwrap().is_empty());
     for request in initial["requests"].as_array().unwrap(){
         let current:Value=serde_json::from_str(&crate::wallet::enhancement::enhancement_call(g,"enhancement_requests","{}").unwrap()).unwrap();

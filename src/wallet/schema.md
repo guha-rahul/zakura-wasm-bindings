@@ -11,7 +11,7 @@ writable initialization; integer exhaustion rejects and rolls back mutations.
 
 The contract is the schema produced by the existing host from an empty database,
 with its own version-1 binding marker and the locked `zakura-client-sqlite
-0.1.0-rc4` migrations, Orchard and transparent inputs enabled. Native SQLite is
+0.1.0-rc9.4` migrations, Orchard and transparent inputs enabled. Native SQLite is
 3.50.2 from locked rusqlite 0.37.0. The WASM build uses the same vendored SQLite
 with the approved host compile flags; its real Node/Firefox checks remain a
 separate acceptance gate. This is structural admission, not general wallet
@@ -48,8 +48,8 @@ recovery scenario.
 
 ## Source effects, not sampled schemas
 
-`tests/wallet-schema-source.json` records all 66 pinned source hashes, IDs,
-direct dependencies, source SQL block lines and the 414 projected statements.
+`tests/wallet-schema-source.json` records all 87 pinned source hashes, IDs,
+direct dependencies, source SQL block lines and the 498 projected statements.
 The source checker verifies those source bytes, IDs, edges and rendered
 statements. Its lexical extraction is a consistency check for the frozen audited
 blocks, **not a completeness proof from a regex inventory**. A new source hash
@@ -69,7 +69,7 @@ source `legacy_alter_table` setting.
 SQL bodies are retained, including CHECK/UNIQUE/FK clauses, partial indexes,
 views and literals. The native test executes this source projection only in
 in-memory **test** connections, taking complete before/after schema inventories
-for each migration's dependency closure. It derives 294 replacement/tombstone
+for each migration's dependency closure. It derives 399 replacement/tombstone
 entries, including automatic index removal/recreation and `sqlite_sequence`.
 Thus it includes SQLite's actual indirect rewrites rather than merely names
 following CREATE/DROP/ALTER. For example, the three pool-migration column
@@ -80,7 +80,7 @@ backend migrations into a reference database during admission.
 
 All schema-changing blocks in the listed migrations are unconditional on a
 successful transaction, subject to the fixed feature graph and the explicit
-anchor-history exception below. The other conditional operations decode keys,
+historical-producer exceptions below. The other conditional operations decode keys,
 transactions and PCZTs, backfill/repair rows, derive addresses, manage tree
 contents, or error/roll back. The helper paths from `ensure_default_transparent_address`
 (`insert_initial_transparent_addrs`), `fix_broken_commitment_trees`
@@ -101,14 +101,14 @@ fixture or production database.
 ## Composition scope and checks
 
 Direct dependencies order every overlapping persistent writer in the native
-net-effect inventory: all 297 incomparable pairs have disjoint replacement/
+net-effect inventory: all 389 incomparable pairs have disjoint replacement/
 tombstone names. Table replacements carry their automatic index effects. ALTER
 renames operate on the fixed source identifiers and their stored references;
 the whole-inventory delta includes the affected FK/view/index definitions.
 The native composition test deliberately applies every incomparable pair in
 both orders, in both the minimal union of its ancestor closures and the maximal
 closed predecessor context excluding both migrations and their descendants.
-It compares both inventories and the static-effect fold (594 contexts).
+It compares both inventories and the static-effect fold (778 contexts).
 
 The compositional argument depends on source effect completeness and context
 invariance, not just these test counts. For the fixed CREATE/DROP/ALTER paths,
@@ -123,7 +123,7 @@ sets. Observed backend prefixes never determine catalog membership.
 
 ## Historical variants and remaining exceptions
 
-The producer scope is explicit: the host's locked RC4-from-empty history. Its
+The producer scope is explicit: the host's locked rc9.4-from-empty history and the earlier RC4 prefixes. Its
 binding marker is established before the same pinned backend creates tables;
 there is no general historical-wallet import/binding operation. Previously
 accepting arbitrary marker-shaped schemas was the admission bug, not an import
@@ -144,9 +144,39 @@ silently generalized into this contract:
 There are no intentionally omitted persistent effects for the stated producer.
 Broader historical producer admission remains outside this contract and would
 need explicit full source-backed predecessor contracts and separate review.
-The six empty effects are the five data-only migrations listed in the inventory
-and the RC4-specific anchor repair no-op. Empty effects are not fabricated
+Empty effects represent data-only migrations or the creator-specific anchor repair no-op. Empty effects are not fabricated
 applied IDs: real backend migration transactions still record their own UUIDs.
+
+## NU7 dependency upgrade
+
+The 66 existing migration projections retain exactly the same SQL. The changed
+upstream files alter tests, comments, transaction-expiry DML or helper wiring;
+they do not change those migrations' persistent schema. Existing SDK wallets
+therefore retain admission before the backend applies the 21 added migrations.
+The network marker retains the original canonical bytes; v1 and v2 are distinct
+identities, even when NU7 is disabled in v2.
+
+The new source audit includes these paths that a literal inventory alone misses:
+
+- `ironwood_enhance` replaces one expiry expression in the prior source-defined
+  `v_transactions`; `transparent_policy_generation` drops and restores that
+  exact view around a table replacement. The projection derives both from source.
+- `transparent_activity_metadata`, `transparent_shared_derivations` and
+  `transaction_reconfirmation_receipts` execute constants in other source files.
+  Their complete source hashes and exact SQL are included in the manifest.
+- `one_time_ivk_discovery` repairs an obsolete development schema only when
+  `scan_from` exists. Neither the old SDK nor the pinned creator produces that
+  column, so this branch is outside admission. Its normal creation batch is
+  included. `one_time_pir` depends on that migration, so its conditional replay
+  is a no-op for admitted wallets; its alterations and both views are included.
+- `ironwood_transparent_output_shape` calls an output-shape queue helper that
+  changes rows only. Dropped ZIP 318 tables were not used by this runtime; their
+  historical migrations remain recognized and their removal is catalogued.
+
+The native composition check covers 389 incomparable migration pairs in both
+minimal and maximal dependency contexts. Interrupted migration tests cover all
+88 committed prefixes. Schema rejection tests retain exact input bytes on
+failure. These native checks do not qualify browser storage or a live payment.
 
 ## Qualification and reproduction
 
@@ -208,7 +238,7 @@ Full hashes and UUIDs are in the source JSON. Lines refer to the pinned migratio
 | `wallet_summaries` | 42, 48, 65 | 2 |
 | `full_account_ids` | 69, 249, 411 | 24 |
 | `orchard_received_notes` | 41, 83, 121, 140, 270 | 11 |
-| `ensure_orchard_ua_receiver` | data only | 0 |
+| `ensure_orchard_ua_receiver` | external constant / data only | 0 |
 | `utxos_to_txos` | 36 | 14 |
 | `ephemeral_addresses` | 108 | 2 |
 | `spend_key_available` | 38 | 1 |
@@ -216,12 +246,12 @@ Full hashes and UUIDs are in the source JSON. Lines refer to the pinned migratio
 | `tx_retrieval_queue` | 72 | 7 |
 | `tx_retrieval_queue_expiry` | 41 | 1 |
 | `support_legacy_sqlite` | 35 | 1 |
-| `fix_broken_commitment_trees` | data only | 0 |
-| `fix_bad_change_flagging` | data only | 0 |
+| `fix_broken_commitment_trees` | external constant / data only | 0 |
+| `fix_bad_change_flagging` | external constant / data only | 0 |
 | `add_account_uuids` | 57, 139 | 7 |
 | `v_transactions_additional_totals` | 40 | 1 |
 | `transparent_gap_limit_handling` | 174, 295, 437, 476, 621, 656 | 14 |
-| `ensure_default_transparent_address` | data only | 0 |
+| `ensure_default_transparent_address` | external constant / data only | 0 |
 | `fix_transparent_received_outputs` | 46 | 1 |
 | `support_zcashd_wallet_import` | 41 | 5 |
 | `fix_v_transactions_expired_unmined` | 38 | 1 |
@@ -237,13 +267,13 @@ Full hashes and UUIDs are in the source JSON. Lines refer to the pinned migratio
 | `witness_stabilized_notes` | 53 | 4 |
 | `orchard_note_version` | 48 | 1 |
 | `ironwood_received_notes` | 49 | 11 |
-| `fix_bad_ironwood_change_flagging` | data only | 0 |
+| `fix_bad_ironwood_change_flagging` | external constant / data only | 0 |
 | `ironwood_pool_code_views` | 50 | 2 |
 | `ivk_item_cache` | 106, 184 | 5 |
 | `note_locking` | 45 | 4 |
 | `orchard_ironwood_migration_tables` | 65 | 15 |
-| `orchard_ironwood_migration_anchor_interval` | 83 | 0 |
-| `orchard_ironwood_migration_unsatisfiability` | 105, 256, 278, 353 | 5 |
+| `orchard_ironwood_migration_anchor_interval` | 84 | 0 |
+| `orchard_ironwood_migration_unsatisfiability` | 105, 255, 277, 352 | 5 |
 | `tree_retained_checkpoints` | 41 | 2 |
 | `tx_status_observation_intent` | 91 | 2 |
 | `v_address_uses_ironwood` | 64 | 1 |
@@ -252,3 +282,24 @@ Full hashes and UUIDs are in the source JSON. Lines refer to the pinned migratio
 | `v_transactions_zip318_kind` | 60 | 1 |
 | `v_tx_outputs_key_scopes` | 37 | 1 |
 | `v_tx_outputs_transparent_addresses` | 63 | 1 |
+| `ironwood_enhance` | 50, 57, 125 | 12 |
+| `one_time_ivk` | 38 | 8 |
+| `one_time_ivk_discovery` | 44, 70, 76, 80, 85 | 11 |
+| `status_inclusion_evidence` | external constant / data only | 0 |
+| `drop_zip318_pool_migration` | 90 | 17 |
+| `transparent_ledger_schema` | 53 | 5 |
+| `transparent_policy_generation` | 40, 51, 53 | 2 |
+| `transparent_recovery_schema` | 41 | 22 |
+| `transparent_activation_schema` | 40 | 5 |
+| `transparent_activity_metadata` | external constant / data only | 2 |
+| `transparent_shared_derivations` | external constant / data only | 2 |
+| `v_transactions_sender_grouping` | 43, 53 | 1 |
+| `unmined_status_obligations` | external constant / data only | 0 |
+| `status_reconfirmation` | 45 | 1 |
+| `transaction_reconfirmation_receipts` | external constant / data only | 2 |
+| `v_transactions_legacy_projection` | 40, 53 | 0 |
+| `ironwood_unsupported_memo_retry` | external constant / data only | 0 |
+| `ironwood_transparent_output_shape` | 29 | 1 |
+| `one_time_pir` | 15, 192, 307 | 9 |
+| `transparent_txid_enhancement` | 29 | 4 |
+| `transparent_detail_content_failures` | 39 | 1 |

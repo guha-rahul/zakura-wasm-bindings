@@ -68,8 +68,8 @@ fn bind_network(conn: &mut Connection, bytes: &[u8], genesis: &[u8]) -> Result<(
 }
 
 fn initialize(path: &str, format: &str, bytes: &[u8], genesis: &[u8]) -> Result<u32, String> {
-    if format != "zcash-js-network/1" || genesis.len() != 32 { return Err("INVALID_ARGUMENT".into()); }
-    let document = super::Document::parse(bytes).map_err(|_| "INVALID_ARGUMENT")?;
+    if genesis.len() != 32 { return Err("INVALID_ARGUMENT".into()); }
+    let document = super::Document::parse_format(format, bytes).map_err(|_| "INVALID_ARGUMENT")?;
     let mut epoch = [0; 16];
     getrandom::fill(&mut epoch).map_err(|_| "ENTROPY_UNAVAILABLE")?;
     DOMAIN.with(|domain| {
@@ -126,7 +126,13 @@ fn initialize(path: &str, format: &str, bytes: &[u8], genesis: &[u8]) -> Result<
             if receipt.borrow().error.is_some() { domain.failed = Some(receipt); return Err("STORAGE_CLOSE_FAILED".into()); }
             return Err(error);
         }
-        let wallet = WalletDb::from_connection(owned, document, HostClock, rand_core::UnwrapErr(getrandom::SysRng));
+        // This runtime uses the application's configured public lightwallet transport.
+        let wallet = WalletDb::from_connection(owned, document, HostClock, rand_core::UnwrapErr(getrandom::SysRng))
+            .with_handle_modes(zcash_client_sqlite::WalletHandleModes {
+                status: zcash_client_backend::data_api::status::TransactionStatusMode::Public,
+                transparent_ledger: zcash_client_backend::data_api::transparent_ledger::TransparentLedgerMode::Public,
+                enhancement: zcash_client_backend::data_api::enhance_pir::EnhancementMode::Standard,
+            });
         domain.generation = generation;
         domain.active.push(Active { transparent_checks:Default::default(), scan_plan:None, wallet, bytes: bytes.to_vec(), generation, receipt });
         Ok(generation)

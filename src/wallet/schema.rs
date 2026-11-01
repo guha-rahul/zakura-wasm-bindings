@@ -1,4 +1,4 @@
-//! Read-only admission for the host's pinned RC4 producer; see schema.md.
+//! Read-only admission for the host's pinned producer and compatible legacy prefixes; see schema.md.
 use std::collections::{BTreeMap, BTreeSet};
 use rusqlite::Connection;
 use zcash_protocol::consensus::{NetworkUpgrade, Parameters};
@@ -51,7 +51,7 @@ pub(super) fn validate(conn: &Connection, bytes: &[u8], genesis: &[u8]) -> Resul
         if actual.get("schemer_migrations") != Some(&metadata) { return Err(MISMATCH.into()); }
         expected.insert("schemer_migrations".into(), metadata);
         expected.insert("sqlite_autoindex_schemer_migrations_1".into(), ("index".into(), "schemer_migrations".into(), None));
-        let mut statement = conn.prepare("SELECT id FROM schemer_migrations LIMIT 67").map_err(|_| MISMATCH)?;
+        let mut statement = conn.prepare(&format!("SELECT id FROM schemer_migrations LIMIT {}", catalog::MIGRATIONS.len() + 1)).map_err(|_| MISMATCH)?;
         let rows = statement.query_map([], |r| r.get::<_, Vec<u8>>(0)).map_err(|_| MISMATCH)?;
         for row in rows {
             let id: [u8; 16] = row.map_err(|_| MISMATCH)?.try_into().map_err(|_| MISMATCH)?;
