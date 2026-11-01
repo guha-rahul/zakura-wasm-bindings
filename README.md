@@ -210,6 +210,13 @@ prover or proof-verification claim. Proof material is not required for signing.
 Native role checks remain authoritative; unsupported/malformed material rejects.
 Actual WASM and SDK qualification is separate from these native source fixtures.
 
+### ZIP-321 payment requests
+
+`proposal_create` accepts `payments` either as the existing payment list or as a
+[ZIP-321](https://zips.z.cash/zip-0321) `zcash:` URI string (at most 8192
+characters). The URI is parsed by the pinned backend's ZIP-321 codec. Every
+payment must name an amount above zero and an address on the wallet's network.
+
 ### Retained PCZT import candidate
 
 `pczt_import_call(generation, operationId, bytes, maximum)` accepts at most 4 MiB for an

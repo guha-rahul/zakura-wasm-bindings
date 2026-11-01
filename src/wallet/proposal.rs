@@ -111,6 +111,17 @@ fn project(plan:&wire::Proposal,account:&str,expiry:u32)->Result<Vec<Value>> {
 #[allow(deprecated)] // Reuse the pinned backend's ZIP321 types; no second request codec.
 fn payments(input:&Value,p:&crate::Document)->Result<zcash_client_backend::zip321::TransactionRequest> {
     use zcash_client_backend::zip321::{Payment,TransactionRequest};
+    // ZIP-321 payment request URI; amounts are required because selection needs them.
+    if let Some(Value::String(uri))=input.get("payments") {
+        if uri.len()>8192{return Err("RESOURCE_LIMIT".into());}
+        let request=TransactionRequest::from_uri(uri).map_err(|_|Failure::from("INVALID_ARGUMENT"))?;
+        if request.payments().is_empty()||request.payments().len()>16{return Err("RESOURCE_LIMIT".into());}
+        for payment in request.payments().values() {
+            zcash_keys::address::Address::try_from_zcash_address(p,payment.recipient_address().clone()).map_err(|_|Failure::from("NETWORK_MISMATCH"))?;
+            if payment.amount().is_none_or(|a|a==Zatoshis::ZERO){return Err("INVALID_ARGUMENT".into());}
+        }
+        return Ok(request);
+    }
     let list=input.get("payments").and_then(Value::as_array).ok_or(Failure::from("INVALID_ARGUMENT"))?;
     if list.is_empty()||list.len()>16{return Err("RESOURCE_LIMIT".into());}
     let mut payments=Vec::new();

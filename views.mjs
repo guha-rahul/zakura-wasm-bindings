@@ -96,7 +96,7 @@ function lowerProposal(args, operation) {
     if(Object.hasOwn(input,'fromAddresses'))input.fromAddresses=list(input.fromAddresses,256,value=>text(value,2048),0);
   }else {
     if(Object.hasOwn(input,'kind')||Object.hasOwn(input,'threshold')||Object.hasOwn(input,'fromAddresses'))throw TypeError('INVALID_ARGUMENT');
-    input.payments=list(input.payments,16,value=>{
+    input.payments=typeof input.payments==='string'?text(input.payments,8192):list(input.payments,16,value=>{
     const payment=scanFields(value,['to','amount','memo']);text(payment.to,2048);payment.amount=money(payment.amount);
     if(Object.hasOwn(payment,'memo')&&payment.memo!==null)payment.memo=scanHex(copyBytes(payment.memo,512,'INVALID_ARGUMENT',0));
     return payment;

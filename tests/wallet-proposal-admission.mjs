@@ -17,6 +17,8 @@ const call=(op,args)=>owner.call(1,storage.instance,op,args);
 const input={revision:'native:1',accountId:'a'.repeat(36),payments:[{to:'synthetic',amount:10n,memo:new Uint8Array([0,255])}],policy:{spendPools:['sapling'],transparent:'disallow',changePool:'sapling',feeRule:'zip317-standard',confirmations:{trusted:1,untrusted:1,allowZeroConfirmationShielding:false},expiry:{kind:'offset',blocks:40},lockExpiryBlocks:20}};
 const result=call('proposal_create',input);
 assert.equal(received.payments[0].amount,'10');assert.equal(received.payments[0].memo,'00ff');assert.equal(result.totalFee,10000n);assert.deepEqual([...result.steps[0].outputs[0].memo],[0,255]);
+call('proposal_create',{...input,payments:'zcash:synthetic?amount=0.0001'});assert.equal(received.payments,'zcash:synthetic?amount=0.0001');
+assert.throws(()=>call('proposal_create',{...input,payments:'z'.repeat(8193)}),e=>e.commit==='none');
 assert.equal(call('proposal_get',{operationId:'ab'.repeat(32)}),null);
 assert.equal(call('proposal_list',{afterSequence:'0',limit:1}).highWater,'1');
 for(const payments of [[],Array(17),[{get to(){throw Error('getter');},amount:1n}]]) {
