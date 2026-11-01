@@ -216,6 +216,9 @@ Actual WASM and SDK qualification is separate from these native source fixtures.
 [ZIP-321](https://zips.z.cash/zip-0321) `zcash:` URI string (at most 8192
 characters). The URI is parsed by the pinned backend's ZIP-321 codec. Every
 payment must name an amount above zero and an address on the wallet's network.
+URIs without an amount are rejected because selection needs one. Unknown `req-`
+parameters (including `req-asset`) reject the URI. Review payment outputs
+include the URI's `label` and `message` (or `null`) for display.
 
 ### Retained PCZT import candidate
 

@@ -73,7 +73,7 @@ fn project(plan:&wire::Proposal,account:&str,expiry:u32)->Result<Vec<Value>> {
         let mut outputs=Vec::new();let mut indices=Vec::new();
         for (&payment_index,payment) in request.payments() {
             let pool=step.payment_output_pools.iter().find(|v|v.payment_index as usize==payment_index).ok_or(Failure::from("BACKEND_ERROR"))?;
-            outputs.push(json!({"kind":"payment","accountId":null,"pool":pool_name(pool.value_pool)?,"address":payment.recipient_address().encode(),"amount":u64::from(payment.amount().ok_or(Failure::from("BACKEND_ERROR"))?).to_string(),"memo":payment.memo().map(|m|hex::encode(m.as_array()))}));
+            outputs.push(json!({"kind":"payment","accountId":null,"pool":pool_name(pool.value_pool)?,"address":payment.recipient_address().encode(),"amount":u64::from(payment.amount().ok_or(Failure::from("BACKEND_ERROR"))?).to_string(),"memo":payment.memo().map(|m|hex::encode(m.as_array())),"label":payment.label(),"message":payment.message()}));
             indices.push(payment_index);
         }
         let balance=step.balance.as_ref().ok_or(Failure::from("BACKEND_ERROR"))?;
